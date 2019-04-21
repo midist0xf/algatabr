@@ -12,9 +12,9 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("/view/mainview.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/view/menuview.fxml"));
 			primaryStage.setTitle("AlgaT - ABR");
-			primaryStage.setScene(new Scene(root, 700, 400));
+			primaryStage.setScene(new Scene(root, 700, 500));
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
