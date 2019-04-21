@@ -34,9 +34,7 @@ public class Main extends Application {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlResource));
 			Parent root = loader.load();
-			//TODO: si "dovrebbe" controllare che il controller sia settato, se lasciamo il codice
-			// 		cosi com'e' dobbiamo creare SEMPRE un controller per ogni .fxml ed associarlo
-			//		inoltre il controller deve pure estendere la classe astartta Controller
+			
 			Controller controller = loader.getController();
 			controller.setMainApp(this);
 			
