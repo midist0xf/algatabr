@@ -1,7 +1,8 @@
 package app;
 
 
-import controller.Controller;
+import controller.LessonController;
+import controller.NavigationController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -19,7 +20,7 @@ public class Main extends Application {
 			this.primaryStage = primaryStage;
 			this.primaryStage.setTitle("AlgaT - ABR");
 			
-			changeScene("/view/menuview.fxml");
+			gotoLesson("Lezione 1");
 			
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -30,12 +31,32 @@ public class Main extends Application {
 		launch(args);
 	}
 	
-	public void changeScene(String fxmlResource) {
+	public void gotoLesson(String lessonName) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LessonView.fxml"));
+			Parent root = loader.load();
+			
+			LessonController controller = loader.getController();
+			controller.setMainApp(this);
+			controller.setLesson(lessonName);
+			
+			this.primaryStage.setScene(new Scene(root, 700, 500));
+			this.primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void gotoMenu() {
+		changeScene("/view/MenuView.fxml");
+	}
+	
+	private void changeScene(String fxmlResource) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlResource));
 			Parent root = loader.load();
 			
-			Controller controller = loader.getController();
+			NavigationController controller = loader.getController();
 			controller.setMainApp(this);
 			
 			this.primaryStage.setScene(new Scene(root, 700, 500));

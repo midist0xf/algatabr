@@ -2,7 +2,7 @@ package controller;
 
 import app.Main;
 
-public abstract class Controller {
+public abstract class NavigationController {
 	
 	protected Main mainApp;
 
