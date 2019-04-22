@@ -11,7 +11,7 @@ public class Lezione1Controller extends Controller {
 
 	@FXML
 	public void handleMenuClick() {
-		this.mainApp.changeScene("/view/MenuView.fxml");
+		this.mainApp.changeScene("/view/menuview.fxml");
 	}
 
 }
