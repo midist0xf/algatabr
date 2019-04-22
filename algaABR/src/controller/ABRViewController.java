@@ -30,7 +30,7 @@ public class ABRViewController {
 				
 				/* pulisce l'area per la grafica */
 				
-				/* crea nodo radice */
+				/* crea nodo */
 				
 				
 				System.out.print(key);				
