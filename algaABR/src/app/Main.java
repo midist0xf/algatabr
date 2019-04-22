@@ -16,18 +16,11 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-<<<<<<< HEAD
 			this.primaryStage = primaryStage;
 			this.primaryStage.setTitle("AlgaT - ABR");
 			
 			changeScene("/view/menuview.fxml");
 			
-=======
-			Parent root = FXMLLoader.load(getClass().getResource("/view/menuview.fxml"));
-			primaryStage.setTitle("AlgaT - ABR");
-			primaryStage.setScene(new Scene(root, 700, 500));
-			primaryStage.show();
->>>>>>> refs/remotes/origin/master
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
