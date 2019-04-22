@@ -11,7 +11,8 @@ public class MenuController extends Controller {
 	@FXML
 	public void handleOkClick() {
 		System.out.println(lessonsCBox.getValue());
-		this.mainApp.changeScene("/view/" + lessonsCBox.getValue()  + ".fxml");
+		//this.mainApp.changeScene("/view/" + lessonsCBox.getValue()  + ".fxml");
+		this.mainApp.changeScene("/view/lessonview.fxml");
 	}
 
 }

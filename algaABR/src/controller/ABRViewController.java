@@ -6,7 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextInputDialog;
 
-public class ABRViewController {
+public class ABRViewController extends Controller {
 	
 	public void handleRandomClick()  {
 		
