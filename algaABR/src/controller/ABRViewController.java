@@ -25,8 +25,14 @@ public class ABRViewController {
 		Optional<String> result = inputNodeDialog.showAndWait();
 		 
 		result.ifPresent(key -> {
-			/* check if is an integer */
+			/* controlla che il valore inserito sia un intero */
 			if (isStringInt(key)) {
+				
+				/* pulisce l'area per la grafica */
+				
+				/* crea nodo */
+				
+				
 				System.out.print(key);				
 			} else {
 				showAlert("L'input inserito non è un intero!");
