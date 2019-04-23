@@ -28,7 +28,7 @@
     <HBox alignment="TOP_LEFT" layoutX="0.0" layoutY="102.0" prefHeight="384.0" prefWidth="700.0">
       <children>
         <Pane fx:id="panePseudocode" prefHeight="200.0" prefWidth="200.0" />
-        <Pane fx:id="paneVisualization" prefHeight="384.0" prefWidth="305.0" />
+        <Pane fx:id="ABRView" prefHeight="384.0" prefWidth="305.0" />
         <Pane fx:id="paneQuestions" prefHeight="200.0" prefWidth="200.0" />
       </children>
     </HBox>

@@ -20,7 +20,8 @@ public class Main extends Application {
 			this.primaryStage = primaryStage;
 			this.primaryStage.setTitle("AlgaT - ABR");
 			
-			gotoLesson("Lezione 1");
+			//gotoLesson("Lezione 1");
+			changeScene("/view/ControlBarView.fxml");
 			
 		} catch(Exception e) {
 			e.printStackTrace();
