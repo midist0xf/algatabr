@@ -10,8 +10,9 @@ public class MenuController extends NavigationController {
 	
 	@FXML
 	public void handleOkClick() {
-		if (!lessonsCBox.getValue().isEmpty())
+		if (lessonsCBox.getValue() != null) {
 			this.mainApp.gotoLesson(lessonsCBox.getValue());
+		}
 	}
 
 }
