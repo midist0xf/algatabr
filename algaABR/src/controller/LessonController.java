@@ -7,11 +7,12 @@ public class LessonController extends NavigationController {
 	
 	private int lessonNumber;
 	
-	@FXML 
-	private PseudocodeController pseudocodeController;
+	@FXML private PseudocodeController pseudocodeController;
+	@FXML private QuestionController questionController;
 	
 	public void initialize() {
 		pseudocodeController.lessonNumber = 2;
+		questionController.lessonNumber = 2;
 	}
 	
 	public void setLesson(String lessonName) {
