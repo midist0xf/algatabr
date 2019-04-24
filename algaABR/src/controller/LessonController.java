@@ -12,5 +12,7 @@ public class LessonController extends NavigationController {
 	public void setLesson(String lessonName) {
 		this.lessonNumber = Integer.valueOf(lessonName.substring(8));
 		questionController.loadQuestions(lessonNumber);
+		questionController.setMainApp(this.mainApp);
 	}
+	
 }

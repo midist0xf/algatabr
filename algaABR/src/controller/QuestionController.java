@@ -14,6 +14,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.text.Text;
@@ -33,7 +34,7 @@ import javafx.scene.text.Text;
  * 
  */
 
-public class QuestionController {
+public class QuestionController extends NavigationController{
 	
 	private String[][] questionAnswers;
 	private int currentQuestion = 0;
@@ -45,6 +46,43 @@ public class QuestionController {
 	
 	@FXML
 	public void handleAnswerConfirm() {
+		Alert result = new Alert(Alert.AlertType.INFORMATION);
+		String selectedAnswer = getSelectedAnswer();
+		
+		if (selectedAnswer == "") {
+			// Ramo nessuna risposta selezionata
+			result.setTitle("Attenzione");
+			result.setContentText("Nessuna risposta selezionata");
+			result.show();
+		} else if (selectedAnswer != questionAnswers[currentQuestion][1]) {
+			// Ramo risposta sbagliata
+			result.setTitle("Risposta errata");
+			result.setContentText("Riprova");
+			result.show();
+		} else {
+			// Ramo risposta giusta
+			
+			// controllo se esiste una domanda successiva
+			try {
+				currentQuestion++;
+				showQuestion();
+			} catch (IndexOutOfBoundsException e) {
+				result.setTitle("Complimenti");
+				result.setContentText("Hai completato la lezione");
+				result.show();
+				mainApp.gotoMenu();
+			}
+		}
+	}
+	
+	private String getSelectedAnswer() {
+		if (firstAnswerRadioB.isSelected())
+			return firstAnswerRadioB.getText();
+		if (secondAnswerRadioB.isSelected())
+			return secondAnswerRadioB.getText();
+		if (thirdAnswerRadioB.isSelected())
+			return thirdAnswerRadioB.getText();
+		return "";
 	}
 	
 	public void loadQuestions(int lessonNumber) {
@@ -90,6 +128,11 @@ public class QuestionController {
 		firstAnswerRadioB.setText(questionAnswers[this.currentQuestion][qPicker.get(0)]);
 		secondAnswerRadioB.setText(questionAnswers[this.currentQuestion][qPicker.get(1)]);	
 		thirdAnswerRadioB.setText(questionAnswers[this.currentQuestion][qPicker.get(2)]);
+		
+		// de seleziona i radiobox (utile quando si passa alla domanda successiva)
+		firstAnswerRadioB.setSelected(false);
+		secondAnswerRadioB.setSelected(false);
+		thirdAnswerRadioB.setSelected(false);
 	}
 	
 }
