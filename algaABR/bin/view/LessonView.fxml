@@ -1,30 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Pane?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.HBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LessonController">
-   <left>
-      <Pane prefHeight="400.0" prefWidth="260.0" BorderPane.alignment="CENTER">
-         <children>
-            <fx:include fx:id="pseudocode" source="PseudocodeView.fxml" />
-         </children>
-      </Pane>
-   </left>
-
-   <center>
-      <Pane prefHeight="500.0" prefWidth="700.0" BorderPane.alignment="CENTER">
-         <children>
-            <fx:include fx:id="control" source="ControlBarView.fxml" />
-         </children>
-      </Pane>
-   </center>
-
-   <right>
-      <Pane prefHeight="400.0" prefWidth="445.0" BorderPane.alignment="CENTER">
-         <children>
-            <fx:include fx:id="question" source="QuestionView.fxml" />
-         </children>
-      </Pane>
-   </right>
-</BorderPane>
+<HBox alignment="CENTER_LEFT" prefHeight="500.0" prefWidth="1060.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.LessonController">
+  <!-- TODO Add Nodes -->
+  <children>
+    <Pane prefHeight="200.0" prefWidth="260.0">
+      <children>
+        <fx:include fx:id="pseudocode" source="PseudocodeView.fxml" />
+      </children>
+    </Pane>
+    <Pane prefHeight="200.0" prefWidth="550.0">
+      <children>
+        <fx:include fx:id="control" source="ControlBarView.fxml" />
+      </children>
+    </Pane>
+    <Pane prefHeight="200.0" prefWidth="250.0">
+      <children>
+        <fx:include fx:id="question" source="QuestionView.fxml" />
+      </children>
+    </Pane>
+  </children>
+</HBox>

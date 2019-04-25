@@ -70,7 +70,7 @@ public class QuestionController extends NavigationController{
 			// Ramo risposta giusta
 			
 			// controllo se esiste una domanda successiva con trycatch
-			// nel caso non esistesse la funzinoa showQestion lancia 
+			// nel caso non esistesse la funzione showQuestion lancia 
 			// una eccezione outOfBounds
 			try {
 				currentQuestion++;
@@ -78,7 +78,7 @@ public class QuestionController extends NavigationController{
 
 				result.setTitle("Complimenti");
 				result.setHeaderText("Risposta corretta");
-				result.setContentText(questAnsExp[currentQuestion][2]);
+				result.setContentText(questAnsExp[currentQuestion-1][2]);
 				result.show();
 
 			} catch (IndexOutOfBoundsException e) {

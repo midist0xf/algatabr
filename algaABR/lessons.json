@@ -10,40 +10,40 @@
         "Risposta corretta perche inserendo un numero pari ne hai inserito uno pari",
         "perdi 3% di bodyfat",
         "risposta sbagliata, se si perdesse il 3% di bodyfat inserendo numeri pari tutti avrebbero il sixpack",
-        "ciao",
-        "risposta sbagliata, non si saluta chi non si conosce"
+        "niente",
+        "risposta sbagliata, se inserisci qualcosa succede qualcosa"
       ],
       "Perche si chiamano abr?": [
         "perche e' l' acronimo",
         "Risposta corretta abr e' l'acronimo",
-        "perdi 3% di bodyfat",
-        "risposta sbagliata, se si perdesse il 3% di bodyfat inserendo numeri pari tutti avrebbero il sixpack",
-        "ciao",
-        "risposta sbagliata, non si saluta chi non si conosce"
+        "perche suonava bene",
+        "risposta sbagliata, non e' vero",
+        "c'era poca fantasia all'epoca",
+        "no"
       ]
     }
   },
-  "Ciao": {
+  "Lezione AlberiBinari": {
     "Pseudocodice": {
       "insert(int a)": "int b = 10;\nforeach (el in set) {\ndo echo 'hello'\n}",
       "delete(int b)": "parent.leftmostchild.delete();\necho \"rimosso\""
     },
     "DomandeRiposteSpiegazioni": {
-      "Cosa succede se inserisco un numero pari?": [
-        "Hai inserito un numero pari",
-        "Risposta corretta perche inserendo un numero pari ne hai inserito uno pari",
-        "perdi 3% di bodyfat",
-        "risposta sbagliata, se si perdesse il 3% di bodyfat inserendo numeri pari tutti avrebbero il sixpack",
-        "ciao",
-        "risposta sbagliata, non si saluta chi non si conosce"
+      "P=NP?": [
+        "No",
+        "Risposta corretta perche' non e' possibile implementare la fortuna come codice",
+        "Si",
+        "risposta sbagliata, dimostralo se ci riesci",
+        "dipende",
+        "risposta sbagliata, siamo seri per favore"
       ],
-      "Perche si chiamano abr?": [
-        "perche e' l' acronimo",
-        "Risposta corretta abr e' l'acronimo",
-        "perdi 3% di bodyfat",
-        "risposta sbagliata, se si perdesse il 3% di bodyfat inserendo numeri pari tutti avrebbero il sixpack",
-        "ciao",
-        "risposta sbagliata, non si saluta chi non si conosce"
+      "Quanto e' difficile scrivere domande senza usare bestemmie?": [
+        "tantissimo",
+        "risposta giusta, sto quasi sudando per scrivere sta roba",
+        "poco",
+        "risposta sbagliata, riprova",
+        "zero",
+        "risposta sbagliata, e' piu facile laurearsi in corso con 110L"
       ]
     }
   }
