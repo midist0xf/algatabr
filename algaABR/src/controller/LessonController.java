@@ -3,6 +3,7 @@ package controller;
 import org.json.simple.JSONObject;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 
 public class LessonController extends NavigationController {
 	
@@ -15,11 +16,21 @@ public class LessonController extends NavigationController {
 		this.jsonRoot = jsonRoot;
 		
 		JSONObject selectedLesson = (JSONObject) jsonRoot.get(lessonName);
+		
+		showGreetingMessage(selectedLesson.get("DescrizioneLezione").toString());
 
 		questionController.loadQuestions((JSONObject) selectedLesson.get("DomandeRiposteSpiegazioni"));
 		questionController.setMainApp(this.mainApp);
 		
 		pseudocodeController.loadCodes((JSONObject) selectedLesson.get("Pseudocodice"));
+	}
+
+	private void showGreetingMessage(String message) {
+		Alert result = new Alert(Alert.AlertType.INFORMATION);
+		result.setTitle("Benvenuto");
+		result.setHeaderText("Scopo della lezione");
+		result.setContentText(message);
+		result.show();
 	}
 
 	

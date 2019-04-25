@@ -1,5 +1,7 @@
 {
-  "Nome Prima lezione": {
+  "RedBlack": {
+  	"DescrizioneLezione": "Ciao in questa lezione vedremo le operazioni base di un albero redblack",
+  	"AlgoritmoInterattivo": "RB",
     "Pseudocodice": {
       "insert(int a)": "int b = 10;\nforeach (el in set) {\ndo echo 'hello'\n}",
       "delete(int b)": "parent.leftmostchild.delete();\necho 'rimosso'"
@@ -24,6 +26,8 @@
     }
   },
   "Lezione AlberiBinari": {
+  	"DescrizioneLezione": "Ciao in questa lezione vedremo le operazioni base di un albero binario",
+  	"AlgoritmoInterattivo": "ABR",
     "Pseudocodice": {
       "insert(int a)": "int b = 10;\nforeach (el in set) {\ndo echo 'hello'\n}",
       "delete(int b)": "parent.leftmostchild.delete();\necho \"rimosso\""

@@ -78,7 +78,7 @@ public class QuestionController extends NavigationController{
 
 				result.setTitle("Complimenti");
 				result.setHeaderText("Risposta corretta");
-				result.setContentText(questAnsExp[currentQuestion-1][2]);
+				result.setContentText(questAnsExp[currentQuestion][2]);
 				result.show();
 
 			} catch (IndexOutOfBoundsException e) {
