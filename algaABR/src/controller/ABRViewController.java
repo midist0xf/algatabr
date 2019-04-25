@@ -26,7 +26,7 @@ public class ABRViewController extends NavigationController {
 	/* costanti per Circle */
 	private final static double R=20;
 	private final static double ROOTX=150;
-	private final static double ROOTY=30;
+	private final static double ROOTY=0;
 	/* costanti per Line */
 	private final static double OFFSX=20;
 	private final static double OFFSY=40;

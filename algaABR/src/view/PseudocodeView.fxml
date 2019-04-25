@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.Pane?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="528.0" prefWidth="260.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PseudocodeController">
-   <children>
-      <ComboBox fx:id="functionsCBox" layoutX="14.0" layoutY="137.0" onAction="#handleShowCode" prefHeight="27.0" prefWidth="235.0" promptText="Scegli una funzione" />
-      <TextArea fx:id="codeTextArea" editable="false" layoutX="14.0" layoutY="181.0" prefHeight="333.0" prefWidth="235.0" />
-   </children>
-</Pane>
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="260.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.PseudocodeController">
+  <children>
+    <ComboBox id="functionsCBox" layoutY="60.0" onAction="#handleShowCode" prefHeight="27.0" prefWidth="235.0" promptText="Scegli una funzione" AnchorPane.leftAnchor="13.0" />
+    <TextArea id="codeTextArea" editable="false" layoutY="103.0" prefHeight="360.0" prefWidth="235.0" text="Laurea in O(n^n) aslfaskdfafkadlad&#10;belll oUI design&#10;sdafdfa&#10;sd&#10;fa&#10;sa&#10;fd&#10;fd&#10;d&#10;&#10;d&#10;ddddd&#10;d&#10;fa&#10;sa&#10;fd&#10;fd&#10;d&#10;&#10;d&#10;ddddd&#10;d&#10;fa&#10;sa&#10;fd&#10;fd&#10;d&#10;&#10;d&#10;ddddd&#10;&#10;" AnchorPane.leftAnchor="13.0" />
+    <Text strikethrough="false" stroke="TRANSPARENT" strokeType="OUTSIDE" strokeWidth="0.0" text="Pseudocode" underline="false" AnchorPane.leftAnchor="28.08" AnchorPane.rightAnchor="1.92" AnchorPane.topAnchor="14.0">
+      <font>
+        <Font name="System Bold" size="30.0" />
+      </font>
+    </Text>
+  </children>
+</AnchorPane>
