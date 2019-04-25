@@ -28,15 +28,15 @@ import javafx.scene.text.Text;
  * modo:
  * 
  * [ 
- * 	[domanda1, rispostagiusta, rispostasbagliata, rispostasbagliata]
- * 	[domanda2, rispostagiusta, rispostasbagliata, rispostasbagliata]
+ * 	[domanda1, rispostagiusta, spiegazgiusta, rispostasbagliata, spiegazionesbagl, rispostasbagliata, spiegazionesbagl]
+ * 	[domanda2, rispostagiusta, spiegazgiusta, rispostasbagliata, spiegazionesbagl, rispostasbagliata, spiegazionesbagl]
  * ]
  * 
  */
 
 public class QuestionController extends NavigationController{
 	
-	private String[][] questionAnswers;
+	private String[][] questAnsExp;
 	private int currentQuestion = 0;
 	
 	@FXML Text questionText;
@@ -54,21 +54,37 @@ public class QuestionController extends NavigationController{
 			result.setTitle("Attenzione");
 			result.setContentText("Nessuna risposta selezionata");
 			result.show();
-		} else if (selectedAnswer != questionAnswers[currentQuestion][1]) {
+		} else if (selectedAnswer != questAnsExp[currentQuestion][1]) {
 			// Ramo risposta sbagliata
 			result.setTitle("Risposta errata");
-			result.setContentText("Riprova");
+			result.setHeaderText("Riprova");
+
+			// carica la spiegazione associata alla risposta errata
+			if (selectedAnswer == questAnsExp[currentQuestion][3])
+				result.setContentText(questAnsExp[currentQuestion][4]);
+			else
+				result.setContentText(questAnsExp[currentQuestion][6]);
+
 			result.show();
 		} else {
 			// Ramo risposta giusta
 			
-			// controllo se esiste una domanda successiva
+			// controllo se esiste una domanda successiva con trycatch
+			// nel caso non esistesse la funzinoa showQestion lancia 
+			// una eccezione outOfBounds
 			try {
 				currentQuestion++;
 				showQuestion();
+
+				result.setTitle("Complimenti");
+				result.setHeaderText("Risposta corretta");
+				result.setContentText(questAnsExp[currentQuestion][2]);
+				result.show();
+
 			} catch (IndexOutOfBoundsException e) {
 				result.setTitle("Complimenti");
-				result.setContentText("Hai completato la lezione");
+				result.setHeaderText("Hai completato la lezione");
+				result.setContentText(questAnsExp[currentQuestion-1][2]);
 				result.show();
 				mainApp.gotoMenu();
 			}
@@ -85,25 +101,23 @@ public class QuestionController extends NavigationController{
 		return "";
 	}
 	
-	public void loadQuestions(int lessonNumber) {
+	public void loadQuestions(JSONObject jLesson) {
 		try {
-			Object parser = new JSONParser().parse(new FileReader("./questions.json"));
-			JSONObject jo = (JSONObject) parser;
-			
-			JSONObject jLesson = (JSONObject) jo.get("Lesson" + lessonNumber);
-			
 			Set questions = jLesson.keySet();
-			questionAnswers = new String[questions.size()][4];
 
-			Iterator qIter = questions.iterator();
+			questAnsExp = new String[questions.size()][7]; // perche 7? guarda spiegazione all inizio
+
+			Iterator qIter = questions.iterator();	
+
 			for (int i = 0; qIter.hasNext(); i++) {
 				String current = (String) qIter.next();
 
-				questionAnswers[i][0] = current;
-				JSONArray answers = (JSONArray) jLesson.get(current);
+				questAnsExp[i][0] = current;
 
-				for (int j = 1; j < 4; j++) {
-					questionAnswers[i][j] = answers.get(j-1).toString();
+				JSONArray answersExplanations = (JSONArray) jLesson.get(current);
+
+				for (int j = 1; j < 7; j++) {
+					questAnsExp[i][j] = answersExplanations.get(j-1).toString();
 				}
 			}
 			
@@ -116,20 +130,21 @@ public class QuestionController extends NavigationController{
 	}
 
 	private void showQuestion() {
-		questionText.setText(questionAnswers[this.currentQuestion][0]);
+		questionText.setText(questAnsExp[this.currentQuestion][0]);
 		
-		// randomizza la posizione delle risposte
+		// randomizza la posizione delle risposte, carica in una lista
+		// carica in una lista gli _indici_ delle risposte
 		List<Integer> qPicker = new ArrayList<Integer>();
 		qPicker.add(1);
-		qPicker.add(2);
 		qPicker.add(3);
+		qPicker.add(5);
 		java.util.Collections.shuffle(qPicker);
 
-		firstAnswerRadioB.setText(questionAnswers[this.currentQuestion][qPicker.get(0)]);
-		secondAnswerRadioB.setText(questionAnswers[this.currentQuestion][qPicker.get(1)]);	
-		thirdAnswerRadioB.setText(questionAnswers[this.currentQuestion][qPicker.get(2)]);
+		firstAnswerRadioB.setText(questAnsExp[this.currentQuestion][qPicker.get(0)]);
+		secondAnswerRadioB.setText(questAnsExp[this.currentQuestion][qPicker.get(1)]);	
+		thirdAnswerRadioB.setText(questAnsExp[this.currentQuestion][qPicker.get(2)]);
 		
-		// de seleziona i radiobox (utile quando si passa alla domanda successiva)
+		// deseleziona tutti i radiobox (utile quando si passa alla domanda successiva)
 		firstAnswerRadioB.setSelected(false);
 		secondAnswerRadioB.setSelected(false);
 		thirdAnswerRadioB.setSelected(false);

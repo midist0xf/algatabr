@@ -1,7 +1,10 @@
 package app;
 
 
+import org.json.simple.JSONObject;
+
 import controller.LessonController;
+import controller.MenuController;
 import controller.NavigationController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -31,14 +34,14 @@ public class Main extends Application {
 		launch(args);
 	}
 	
-	public void gotoLesson(String lessonName) {
+	public void gotoLesson(String lessonName, JSONObject jsonRoot) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LessonView.fxml"));
 			Parent root = loader.load();
 			
 			LessonController controller = loader.getController();
 			controller.setMainApp(this);
-			controller.setLesson(lessonName);
+			controller.setLesson(lessonName, jsonRoot);
 			
 			this.primaryStage.setScene(new Scene(root, 700, 500));
 			this.primaryStage.show();
@@ -48,16 +51,13 @@ public class Main extends Application {
 	}
 
 	public void gotoMenu() {
-		changeScene("/view/MenuView.fxml");
-	}
-	
-	private void changeScene(String fxmlResource) {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlResource));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MenuView.fxml"));
 			Parent root = loader.load();
 			
-			NavigationController controller = loader.getController();
+			MenuController controller = loader.getController();
 			controller.setMainApp(this);
+			controller.loadCBoxLessons();
 			
 			this.primaryStage.setScene(new Scene(root, 700, 500));
 			this.primaryStage.show();
@@ -65,4 +65,5 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
+	
 }

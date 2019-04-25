@@ -1,0 +1,50 @@
+{
+  "Nome Prima lezione": {
+    "Pseudocodice": {
+      "insert(int a)": "int b = 10;\nforeach (el in set) {\ndo echo 'hello'\n}",
+      "delete(int b)": "parent.leftmostchild.delete();\necho 'rimosso'"
+    },
+    "DomandeRiposteSpiegazioni": {
+      "Cosa succede se inserisco un numero pari?": [
+        "Hai inserito un numero pari",
+        "Risposta corretta perche inserendo un numero pari ne hai inserito uno pari",
+        "perdi 3% di bodyfat",
+        "risposta sbagliata, se si perdesse il 3% di bodyfat inserendo numeri pari tutti avrebbero il sixpack",
+        "ciao",
+        "risposta sbagliata, non si saluta chi non si conosce"
+      ],
+      "Perche si chiamano abr?": [
+        "perche e' l' acronimo",
+        "Risposta corretta abr e' l'acronimo",
+        "perdi 3% di bodyfat",
+        "risposta sbagliata, se si perdesse il 3% di bodyfat inserendo numeri pari tutti avrebbero il sixpack",
+        "ciao",
+        "risposta sbagliata, non si saluta chi non si conosce"
+      ]
+    }
+  },
+  "Ciao": {
+    "Pseudocodice": {
+      "insert(int a)": "int b = 10;\nforeach (el in set) {\ndo echo 'hello'\n}",
+      "delete(int b)": "parent.leftmostchild.delete();\necho \"rimosso\""
+    },
+    "DomandeRiposteSpiegazioni": {
+      "Cosa succede se inserisco un numero pari?": [
+        "Hai inserito un numero pari",
+        "Risposta corretta perche inserendo un numero pari ne hai inserito uno pari",
+        "perdi 3% di bodyfat",
+        "risposta sbagliata, se si perdesse il 3% di bodyfat inserendo numeri pari tutti avrebbero il sixpack",
+        "ciao",
+        "risposta sbagliata, non si saluta chi non si conosce"
+      ],
+      "Perche si chiamano abr?": [
+        "perche e' l' acronimo",
+        "Risposta corretta abr e' l'acronimo",
+        "perdi 3% di bodyfat",
+        "risposta sbagliata, se si perdesse il 3% di bodyfat inserendo numeri pari tutti avrebbero il sixpack",
+        "ciao",
+        "risposta sbagliata, non si saluta chi non si conosce"
+      ]
+    }
+  }
+}
