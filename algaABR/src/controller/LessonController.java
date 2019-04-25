@@ -18,6 +18,8 @@ public class LessonController extends NavigationController {
 
 		questionController.loadQuestions((JSONObject) selectedLesson.get("DomandeRiposteSpiegazioni"));
 		questionController.setMainApp(this.mainApp);
+		
+		pseudocodeController.loadCodes((JSONObject) selectedLesson.get("Pseudocodice"));
 	}
 
 	
