@@ -74,25 +74,14 @@ public class ABRViewController extends NavigationController {
 			    	}else {
 			    		/* inserisce nella struttura dati */
 			    		abr.insertNode(keyInt, 0);
+			    		
 			    		/* salva riferimento all'ultimo nodo inserito */
 			    		p = abr.lookupNode(keyInt);
 			    		/* verifica che il nodo inserito non superi l'altezza massima stabilita */
 			    		if(abr.getNodeHeight(p) <= MAXH) 
 			    		{
-			    			ArrayList<Double> coord;
-			    			/* se il nodo è figlio sinistro del padre */
-				    		if(p.parent().left() == p) {
-				    			coord = getNodeEdgeCoordinates(p, 'l');				    			
-				    			/* il nodo viene disegnato nella view */
-				    			drawNode(coord.get(0), coord.get(1),R, key);
-				    			/* l'arco viene disegnato nella view */
-				    			drawLine(coord.get(2),coord.get(3),coord.get(4),coord.get(5));						    			
-	                        /* se il nodo è figlio destro del padre */
-				    		} else {
-				    			coord = getNodeEdgeCoordinates(p, 'r');				    			
-				    			drawNode(coord.get(0), coord.get(1),R, key);
-				    			drawLine(coord.get(2),coord.get(3),coord.get(4),coord.get(5));	
-				    		}
+			    			drawTree(abr);
+			    			
 			    			
 			    		} else {
 			    			abr = abr.removeNode(keyInt);
@@ -162,14 +151,12 @@ public class ABRViewController extends NavigationController {
 		/* verifica che l'input sia un intero */
 		result.ifPresent(key -> {
 			/* controlla che il valore inserito sia un intero */ 
-			if (isStringInt(key)) {
-				/* verifica che sia compreso tra -99 e 99 */
+			if (isStringInt(key) && abr != null) {				
 				Integer keyInt = Integer.parseInt(key);
-				ABR p;
-				if (keyInt >= -99 && keyInt <= 99) {
-					/* verifica che il nodo con quella chiave esista nell'albero */
-					ABR t = null;
-					t = abr.lookupNode(keyInt);
+				ABR t = abr.lookupNode(keyInt);
+				/* verifica che la chiave inserita sia compresa tra -99 e 99 */
+				/* e che sia presente nell'albero */
+				if (keyInt >= -99 && keyInt <= 99 && t != null) {
 					/* cerca lo stack pane che contiene il nodo con quella chiave */
 					for (Node n : ABRView.getChildren()) {
 						if (n instanceof StackPane) {
