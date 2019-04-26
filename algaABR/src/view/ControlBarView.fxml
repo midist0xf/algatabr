@@ -28,7 +28,7 @@
     <Button fx:id="max" font="$x1" layoutX="269.0" layoutY="87.0" mnemonicParsing="false" onAction="#handleMaxClick" prefHeight="27.0" prefWidth="81.0" text="max" />
     <Button fx:id="lookup" font="$x1" layoutX="29.0" layoutY="87.0" mnemonicParsing="false" onAction="#handleLookupClick" prefHeight="27.0" prefWidth="81.0" text="lookup" />
     <Button fx:id="run" font="$x1" layoutX="351.0" layoutY="87.0" mnemonicParsing="false" onAction="#handleRunClick" prefHeight="27.0" prefWidth="81.0" text="run" />
-    <Button id="run" font="$x1" layoutX="453.0" layoutY="62.0" mnemonicParsing="false" onAction="#handleRunClick" prefHeight="27.0" prefWidth="69.0" text="clear" />
+    <Button fx:id="clear" font="$x1" layoutX="453.0" layoutY="62.0" mnemonicParsing="false" onAction="#handleClearClick" prefHeight="27.0" prefWidth="69.0" text="clear" />
     <HBox alignment="CENTER" layoutX="3.0" layoutY="145.0" prefHeight="355.0" prefWidth="547.0">
       <children>
         <Pane fx:id="ABRView" prefHeight="384.0" prefWidth="305.0" />

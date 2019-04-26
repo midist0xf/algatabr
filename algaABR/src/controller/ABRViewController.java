@@ -35,7 +35,6 @@ public class ABRViewController extends NavigationController {
 	
 	/* costante che definisce l'altezza massima dell'albero */
 	private final static int MAXH=4;
-
 	
 	/* modello */
 	private ABR abr = null;
@@ -61,7 +60,6 @@ public class ABRViewController extends NavigationController {
 				
 				/* controlla che l'intero sia compreso tra -99 e 99 */
 				Integer keyInt = Integer.parseInt(key);
-				ABR p;
 				if (keyInt >= -99 && keyInt <= 99) {					
 							
 			    	/* se l'albero(modello) è null disegna root */
@@ -76,12 +74,11 @@ public class ABRViewController extends NavigationController {
 			    		abr.insertNode(keyInt, 0);
 			    		
 			    		/* salva riferimento all'ultimo nodo inserito */
-			    		p = abr.lookupNode(keyInt);
+						ABR p = abr.lookupNode(keyInt);
 			    		/* verifica che il nodo inserito non superi l'altezza massima stabilita */
 			    		if(abr.getNodeHeight(p) <= MAXH) 
 			    		{
-			    			drawTree(abr);
-			    			
+			    			drawTree(abr,0);			    			
 			    			
 			    		} else {
 			    			abr = abr.removeNode(keyInt);
@@ -102,47 +99,7 @@ public class ABRViewController extends NavigationController {
 		
 	}
 	
-	/* Dato un nodo e la sua posizione (dx/sx) rispetto al padre 
-	 * restituisce le coordinate per rappresentare il nodo ed
-	 * il rispettivo arco. Le coordinate sono nel formato
-	 * [cx,cy,sx,sy,ex,ey] dove cx,cy sono le coordinate per 
-	 * aggiungere lo stackpane che contiene un Circle (nodo) 
-	 * ed un Text (key) e sx,sy,ex,ey sono le coordinate per 
-	 * aggiungere l'arco
-	 */
-	private ArrayList<Double> getNodeEdgeCoordinates(ABR p, char side) {
-		
-		ArrayList<Double> coord = new ArrayList<Double>();
-		double cx, cy, sx, sy, ex, ey;
-		/* il nodo è figlio sinistro del padre */
-		if (side == 'l') {
-			cx = p.parent().getX()-40;
-			cy = p.parent().getY()+50;
-			p.setX(cx);
-			p.setY(cy);
-		    sx = p.parent().getX()+OFFSX;
-			sy = p.parent().getY()+OFFSY;
-			ex = cx + OFFEX;
-			ey = cy + OFFEY;
-		
-		}else {
-			/* il nodo è figlio destro del padre */
-			cx = p.parent().getX()+40; 
-			cy = p.parent().getY()+50;
-			p.setX(cx);
-			p.setY(cy);			
-			sx = p.parent().getX()+OFFSX;
-			sy = p.parent().getY()+OFFSY;
-			ex = cx + OFFEX;
-			ey = cy + OFFEY;
-		}		
-		coord.add(cx); coord.add(cy); 
-		coord.add(sx); coord.add(sy);
-		coord.add(ex); coord.add(ey);
-		
-		return coord;
-		
-	}
+	
 	public void handleRemoveClick() {
 		
 		Optional<String> result;
@@ -150,40 +107,48 @@ public class ABRViewController extends NavigationController {
 		
 		/* verifica che l'input sia un intero */
 		result.ifPresent(key -> {
-			/* controlla che il valore inserito sia un intero */ 
-			if (isStringInt(key) && abr != null) {				
-				Integer keyInt = Integer.parseInt(key);
-				ABR t = abr.lookupNode(keyInt);
-				/* verifica che la chiave inserita sia compresa tra -99 e 99 */
-				/* e che sia presente nell'albero */
-				if (keyInt >= -99 && keyInt <= 99 && t != null) {
-					/* cerca lo stack pane che contiene il nodo con quella chiave */
-					for (Node n : ABRView.getChildren()) {
-						if (n instanceof StackPane) {
-							ObservableList<Node> i = ((StackPane)n).getChildren();
-							if (i.get(1) instanceof Text) {
-								Text txt = (Text)i.get(1);
-								if(txt.getText().equals(key)) {
-									Circle c = (Circle)i.get(0);
-									c.setFill(Color.RED);
-									/* animazione dissolvenza del nodo */
-									FadeTransition ft = nodeRemoveTransition(c,n, keyInt);
-								    ft.play();									
-								}								
+			/* controlla che l'albero non sia vuoto */
+			if(abr != null) {
+				/* verifica che il valore inserito sia un intero */
+				if (isStringInt(key)  ) {				
+					Integer keyInt = Integer.parseInt(key);
+					ABR t = abr.lookupNode(keyInt);
+					/* verifica che la chiave inserita sia compresa tra -99 e 99 */
+					/* e che sia presente nell'albero */
+					if (keyInt >= -99 && keyInt <= 99 && t != null) {
+						/* cerca lo stack pane che contiene il nodo con quella chiave */
+						for (Node n : ABRView.getChildren()) {
+							if (n instanceof StackPane) {
+								ObservableList<Node> i = ((StackPane)n).getChildren();
+								if (i.get(1) instanceof Text) {
+									Text txt = (Text)i.get(1);
+									if(txt.getText().equals(key)) {
+										Circle c = (Circle)i.get(0);
+										c.setFill(Color.RED);
+										/* animazione dissolvenza del nodo */
+										FadeTransition ft = nodeRemoveTransition(c,n, keyInt);
+									    ft.play();									
+									}								
+								}
+							
+								System.out.println("true");
 							}
-						
-							System.out.println("true");
 						}
+					
+					} else {
+						showAlert("Scegli un intero tra -99 e 99");						
 					}
-				
+					
 				} else {
-					showAlert("Scegli un intero tra -99 e 99");						
+					showAlert("L'input inserito non è un intero!");
+					
 				}
 				
-			} else {
-				showAlert("L'input inserito non è un intero!");
-				
+			} else { 
+				showAlert("L'albero è vuoto!");
 			}
+			  
+			
 		});		
 		
 	}
@@ -208,32 +173,79 @@ public class ABRViewController extends NavigationController {
 		
 	}
 	
-	private FadeTransition nodeRemoveTransition(Circle c, Node n, Integer key) {
-		FadeTransition ft = new FadeTransition(Duration.millis(3000), c);
-	    ft.setFromValue(1.0);
-	    ft.setToValue(0.0);
-	    ft.setCycleCount(1);
-	     
-	    ft.setOnFinished(new EventHandler<ActionEvent>() {
-	    	@Override
-	        public void handle(ActionEvent actionEvent) {
-	    		/* il nodo viene rimosso dalla view */
-	    		ABRView.getChildren().remove(n);
-	    		/* il nodo viene eliminato dall'albero */
-	    		abr = abr.removeNode(key);
-	    		/* aggiorna le coordinate */
-	    		restoreCoordinates(abr);
-	    		ABRView.getChildren().clear();
-	    		/* si visualizza l'albero con la nuova struttura */
-	    		drawTree(abr);	
-	    	}
-	    });
-		
-		return ft;
+	public void handleClearClick() {
+		abr = null;
+		ABRView.getChildren().clear();
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	/* Dato un nodo e la sua posizione (dx/sx) rispetto al padre 
+	 * restituisce le coordinate per rappresentare il nodo ed
+	 * il rispettivo arco. Le coordinate sono nel formato
+	 * [cx,cy,sx,sy,ex,ey] dove cx,cy sono le coordinate per 
+	 * aggiungere lo stackpane che contiene un Circle (nodo) 
+	 * ed un Text (key) e sx,sy,ex,ey sono le coordinate per 
+	 * aggiungere l'arco
+	 */
+	private ArrayList<Double> getNodeEdgeCoordinates(ABR p, char side) {
+		
+		ArrayList<Double> coord = new ArrayList<Double>();
+		double cx, cy, sx, sy, ex, ey;
+		/* il nodo è figlio sinistro del padre */
+		if (side == 'l') {			
+			
+			cx = p.parent().getX()-30;
+			cy = p.parent().getY()+50;
+			
+			sx = p.parent().getX()+OFFSX;
+			sy = p.parent().getY()+OFFSY;
+			ex = cx + OFFEX;
+			ey = cy + OFFEY;
+			
+			/* il nodo p è al livello 1 */
+			if (p.parent().parent() == null) {
+			   cx-=120; cy+=30; ex-=120; ey+=30;
+			}
+			p.setX(cx);
+			p.setY(cy);
+		   
+		
+		}else {
+			/* il nodo è figlio destro del padre */
+			cx = p.parent().getX()+30; 
+			cy = p.parent().getY()+50;
+			
+			sx = p.parent().getX()+OFFSX;
+			sy = p.parent().getY()+OFFSY;
+			ex = cx + OFFEX;
+			ey = cy + OFFEY;
+			/* il nodo p è al livello 1 */
+			if (p.parent().parent() == null) {
+			   cx+=120; cy+=30; ex+=120; ey+=30;
+			}
+			p.setX(cx);
+			p.setY(cy);			
+			
+		}		
+		coord.add(cx); coord.add(cy); 
+		coord.add(sx); coord.add(sy);
+		coord.add(ex); coord.add(ey);
+		
+		return coord;
+		
+	}
+	
+	
+	
 	/* ristabilisce ricorsivamente le nuove coordinate dei nodi */
-	private void restoreCoordinates(ABR t) {
+	private void restoreCoordinates(ABR t/*, int height*/) {
 		
 		if (t != null) {
 			// nodo root 
@@ -255,7 +267,7 @@ public class ABRViewController extends NavigationController {
 	}
 		
 	
-	private void drawTree(ABR t) {
+	private void drawTree(ABR t, int height) {
 		
 		if(t != null) {
 			// nodo root 
@@ -264,17 +276,15 @@ public class ABRViewController extends NavigationController {
 			}else {
 				ArrayList<Double> coord;
 				if(t.parent().left() == t) {
-	    			coord = getNodeEdgeCoordinates(t, 'l');				    			
-	    			drawNode(coord.get(0), coord.get(1),R, t.key().toString());
-	    			drawLine(coord.get(2),coord.get(3),coord.get(4),coord.get(5));				
-				}else {
-					coord = getNodeEdgeCoordinates(t, 'r');				    			
-	    			drawNode(coord.get(0), coord.get(1),R, t.key().toString());
-	    			drawLine(coord.get(2),coord.get(3),coord.get(4),coord.get(5));				
-				}				
+	    			coord = getNodeEdgeCoordinates(t, 'l');		
+	    		}else {
+					coord = getNodeEdgeCoordinates(t, 'r');	 
+				}
+				drawNode(coord.get(0), coord.get(1),R, t.key().toString());
+    			drawLine(coord.get(2),coord.get(3),coord.get(4),coord.get(5));
 			}
-			drawTree(t.left());
-			drawTree(t.right());
+			drawTree(t.left(), height+1);
+			drawTree(t.right(), height+1);
 		}
 	}
 	
@@ -298,6 +308,30 @@ public class ABRViewController extends NavigationController {
 		Line line = new Line(sx,sy,ex,ey);
 		line.setStrokeWidth(2);
 		ABRView.getChildren().add(line);		
+	}
+	
+	private FadeTransition nodeRemoveTransition(Circle c, Node n, Integer key) {
+		FadeTransition ft = new FadeTransition(Duration.millis(3000), c);
+	    ft.setFromValue(1.0);
+	    ft.setToValue(0.0);
+	    ft.setCycleCount(1);
+	     
+	    ft.setOnFinished(new EventHandler<ActionEvent>() {
+	    	@Override
+	        public void handle(ActionEvent actionEvent) {
+	    		/* il nodo viene rimosso dalla view */
+	    		ABRView.getChildren().remove(n);
+	    		/* il nodo viene eliminato dall'albero */
+	    		abr = abr.removeNode(key);
+	    		/* aggiorna le coordinate */
+	    		restoreCoordinates(abr);
+	    		ABRView.getChildren().clear();
+	    		/* si visualizza l'albero con la nuova struttura */
+	    		drawTree(abr,0);	
+	    	}
+	    });
+		
+		return ft;
 	}
 	
 	/* I metodi che seguono svolgono funzioni ausiliarie */
