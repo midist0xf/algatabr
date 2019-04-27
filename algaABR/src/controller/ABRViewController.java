@@ -24,352 +24,280 @@ import model.ABR;
 
 public class ABRViewController extends NavigationController {
 	/* costanti per Circle */
-	private final static double R=20;
-	private final static double ROOTX=150;
-	private final static double ROOTY=0;
+	private final static double R = 20;
+	private final static double ROOTX = 150;
+	private final static double ROOTY = 0;
 	/* costanti per Line */
-	private final static double OFFSX=20;
-	private final static double OFFSY=40;
-	private final static double OFFEX=15;
-	private final static double OFFEY=2;
-	
+	private final static double OFFSX = 20;
+	private final static double OFFSY = 40;
+	private final static double OFFEX = 15;
+	private final static double OFFEY = 2;
+
 	/* costante che definisce l'altezza massima dell'albero */
-	private final static int MAXH=4;
-	
+	private final static int MAXH = 4;
+
 	/* modello */
 	private ABR abr = null;
-	
+
 	@FXML
 	private Pane ABRView;
-	
-	public void handleRandomClick()  {
-		
+
+	public void handleRandomClick() {
+
 	}
+
 	public void handleStepClick() {
-	
+
 	}
+
 	@FXML
 	public void handleInsertClick() {
-		
+
+		/* mostra dialog per inserimento chiave da inserire nell'albero */
 		Optional<String> result;
-		result = showDialog("Inserisci la chiave:", "Valore chiave:");	
-		 
+		result = showDialog("Inserisci la chiave:", "Valore chiave:");
+
 		result.ifPresent(key -> {
-			/* controlla che il valore inserito sia un intero */ 
+			/* controlla che il valore inserito sia un intero */
 			if (isStringInt(key)) {
-				
+
 				/* controlla che l'intero sia compreso tra -99 e 99 */
 				Integer keyInt = Integer.parseInt(key);
-				if (keyInt >= -99 && keyInt <= 99) {					
-							
-			    	/* se l'albero(modello) è null disegna root */
-			    	/* rootx 150 rooty 30 */
-			    	if (abr == null) {
-			    		abr = new ABR(keyInt, 0);
-			    		abr.setX(ROOTX); abr.setY(ROOTY);
-			    		drawNode(ROOTX,ROOTY,R, key);	
-					 
-			    	}else {
-			    		/* inserisce nella struttura dati */
-			    		abr.insertNode(keyInt, 0);
-			    		
-			    		/* salva riferimento all'ultimo nodo inserito */
-						ABR p = abr.lookupNode(keyInt);
-			    		/* verifica che il nodo inserito non superi l'altezza massima stabilita */
-			    		if(abr.getNodeHeight(p) <= MAXH) 
-			    		{
-			    			drawTree(abr,0);			    			
-			    			
-			    		} else {
-			    			abr = abr.removeNode(keyInt);
-			    			showAlert("Hai superato l'altezza massima consentita ("+MAXH+")");
+				if (keyInt >= -99 && keyInt <= 99) {
 
-			    		}			    		
-			    	}				       
-				    
-				} else {
-					showAlert("Scegli un intero tra -99 e 99");						
-				}										
-			} else 	{
-				showAlert("L'input inserito non è un intero!");
-			}
-		    
+					/* se l'albero(modello) è null disegna root */
+					if (abr == null) {
+						abr = new ABR(keyInt, 0);
+						abr.setX(ROOTX);
+						abr.setY(ROOTY);
+						drawNode(ROOTX, ROOTY, R, key);
+
+					} else {
+						/* inserisce nella struttura dati */
+						abr.insertNode(keyInt, 0);
+						/* salva riferimento all'ultimo nodo inserito */
+						ABR p = abr.lookupNode(keyInt);
+						/* memorizza coordinate posizione nodo relativamente al padre
+						 * , all'altezza nell'albero e alla larghezza della view */
+						double cx, cy;
+						if (p.parent().left() == p) {
+							cx = p.parent().getX() - (ABRView.getWidth() / Math.pow(2, abr.getNodeHeight(p)));
+							cy = p.parent().getY() + 50;
+						} else {
+							cx = p.parent().getX() + (ABRView.getWidth() / Math.pow(2, abr.getNodeHeight(p)));
+							cy = p.parent().getY() + 50;
+						}
+						p.setX(cx);
+						p.setY(cy);
+
+						/* verifica che il nodo inserito non superi l'altezza massima stabilita */
+						if (abr.getNodeHeight(p) <= MAXH) {
+							drawTree(abr);
+						} else {
+							abr = abr.removeNode(keyInt);
+							showAlert("Hai superato l'altezza massima consentita (" + MAXH + ")");
+						}
+					}
+				} else {showAlert("Scegli un intero tra -99 e 99");}
+			} else {showAlert("L'input inserito non è un intero!");}
+
 		});
-		
-		
+
 	}
-	
-	
+
+	private void drawTree(ABR t) {
+
+		if (t != null) {
+			double sx, sy, ex, ey;
+
+			drawNode(t.getX(), t.getY(), R, t.key().toString());
+			if (t.parent() != null) {
+				sx = t.parent().getX() + OFFSX;
+				sy = t.parent().getY() + OFFSY;
+				ex = t.getX() + OFFEX;
+				ey = t.getY() + OFFEY;
+				drawLine(sx, sy, ex, ey);
+			}
+			drawTree(t.left());
+			drawTree(t.right());
+		}
+	}
+
 	public void handleRemoveClick() {
-		
+
 		Optional<String> result;
-		result = showDialog("Inserisci la chiave:", "Valore chiave:");	
-		
-		/* verifica che l'input sia un intero */
+		result = showDialog("Inserisci la chiave:", "Valore chiave:");
+
 		result.ifPresent(key -> {
 			/* controlla che l'albero non sia vuoto */
-			if(abr != null) {
+			if (abr != null) {
 				/* verifica che il valore inserito sia un intero */
-				if (isStringInt(key)  ) {				
+				if (isStringInt(key)) {
 					Integer keyInt = Integer.parseInt(key);
-					ABR t = abr.lookupNode(keyInt);
 					/* verifica che la chiave inserita sia compresa tra -99 e 99 */
-					/* e che sia presente nell'albero */
-					if (keyInt >= -99 && keyInt <= 99 && t != null) {
-						/* cerca lo stack pane che contiene il nodo con quella chiave */
-						for (Node n : ABRView.getChildren()) {
-							if (n instanceof StackPane) {
-								ObservableList<Node> i = ((StackPane)n).getChildren();
-								if (i.get(1) instanceof Text) {
-									Text txt = (Text)i.get(1);
-									if(txt.getText().equals(key)) {
-										Circle c = (Circle)i.get(0);
-										c.setFill(Color.RED);
-										/* animazione dissolvenza del nodo */
-										FadeTransition ft = nodeRemoveTransition(c,n, keyInt);
-									    ft.play();									
-									}								
-								}
-							
-								System.out.println("true");
+					if (keyInt >= -99 && keyInt <= 99) {
+						/* verifica che la chiave sia presente nell'albero */
+						if (abr.lookupNode(keyInt) != null) {
+							Circle c = searchNode(key);
+							if (c != null) {
+								c.setFill(Color.RED);
+								/* animazione dissolvenza del nodo */
+								FadeTransition ft = nodeRemoveTransition(c, keyInt);
+								ft.play();
 							}
-						}
-					
-					} else {
-						showAlert("Scegli un intero tra -99 e 99");						
-					}
-					
-				} else {
-					showAlert("L'input inserito non è un intero!");
-					
-				}
-				
-			} else { 
-				showAlert("L'albero è vuoto!");
-			}
-			  
-			
-		});		
-		
+						} else { showAlert("La chiave non è presente nell'albero!");}
+					} else {showAlert("Scegli un intero tra -99 e 99");}
+				} else {showAlert("L'input inserito non è un intero!");}
+			} else {showAlert("L'albero è vuoto!");}
+		});
 	}
+
 	public void handleSuccessorClick() {
-		
+
 	}
+
 	public void handlePredecessorClick() {
-		
+
 	}
+
 	public void handleMinClick() {
-		
+
 	}
+
 	public void handleMaxClick() {
-		
+
 	}
-	
+
 	public void handleLookupClick() {
-		
+
 	}
-	
+
 	public void handleRunClick() {
-		
+
 	}
-	
+
 	public void handleClearClick() {
 		abr = null;
 		ABRView.getChildren().clear();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/* Dato un nodo e la sua posizione (dx/sx) rispetto al padre 
-	 * restituisce le coordinate per rappresentare il nodo ed
-	 * il rispettivo arco. Le coordinate sono nel formato
-	 * [cx,cy,sx,sy,ex,ey] dove cx,cy sono le coordinate per 
-	 * aggiungere lo stackpane che contiene un Circle (nodo) 
-	 * ed un Text (key) e sx,sy,ex,ey sono le coordinate per 
-	 * aggiungere l'arco
-	 */
-	private ArrayList<Double> getNodeEdgeCoordinates(ABR p, char side) {
-		
-		ArrayList<Double> coord = new ArrayList<Double>();
-		double cx, cy, sx, sy, ex, ey;
-		/* il nodo è figlio sinistro del padre */
-		if (side == 'l') {			
-			
-			cx = p.parent().getX()-30;
-			cy = p.parent().getY()+50;
-			
-			sx = p.parent().getX()+OFFSX;
-			sy = p.parent().getY()+OFFSY;
-			ex = cx + OFFEX;
-			ey = cy + OFFEY;
-			
-			/* il nodo p è al livello 1 */
-			if (p.parent().parent() == null) {
-			   cx-=120; cy+=30; ex-=120; ey+=30;
+
+	private Circle searchNode(String key) {
+		Circle c = null;
+		/* cerca lo stack pane che contiene il nodo con quella chiave */
+		for (Node n : ABRView.getChildren()) {
+			if (n instanceof StackPane) {
+				ObservableList<Node> i = ((StackPane) n).getChildren();
+				if (i.get(1) instanceof Text) {
+					Text txt = (Text) i.get(1);
+					if (txt.getText().equals(key)) {
+						c = (Circle) i.get(0);
+
+					}
+				}
 			}
-			p.setX(cx);
-			p.setY(cy);
-		   
-		
-		}else {
-			/* il nodo è figlio destro del padre */
-			cx = p.parent().getX()+30; 
-			cy = p.parent().getY()+50;
-			
-			sx = p.parent().getX()+OFFSX;
-			sy = p.parent().getY()+OFFSY;
-			ex = cx + OFFEX;
-			ey = cy + OFFEY;
-			/* il nodo p è al livello 1 */
-			if (p.parent().parent() == null) {
-			   cx+=120; cy+=30; ex+=120; ey+=30;
-			}
-			p.setX(cx);
-			p.setY(cy);			
-			
-		}		
-		coord.add(cx); coord.add(cy); 
-		coord.add(sx); coord.add(sy);
-		coord.add(ex); coord.add(ey);
-		
-		return coord;
-		
+		}
+		return c;
 	}
-	
-	
-	
+
 	/* ristabilisce ricorsivamente le nuove coordinate dei nodi */
-	private void restoreCoordinates(ABR t/*, int height*/) {
-		
+	private void restoreCoordinates(ABR t/* , int height */) {
+
 		if (t != null) {
-			// nodo root 
+			// nodo root
 			if (t.parent() == null) {
 				t.setX(ROOTX);
 				t.setY(ROOTY);
 			} else {
-				if(t.parent().left() == t) {
-					t.setX(t.parent().getX()-40);
-					t.setY(t.parent().getY()+40);				
-				}else {
-					t.setX(t.parent().getX()+40);
-					t.setY(t.parent().getY()+40);					
-				}				
+				if (t.parent().left() == t) {
+					t.setX(t.parent().getX() - (ABRView.getWidth() / Math.pow(2, abr.getNodeHeight(t))));
+					t.setY(t.parent().getY() + 50);
+				} else {
+					t.setX(t.parent().getX() + (ABRView.getWidth() / Math.pow(2, abr.getNodeHeight(t))));
+					t.setY(t.parent().getY() + 50);
+				}
 			}
 			restoreCoordinates(t.left());
-			restoreCoordinates(t.right());				
+			restoreCoordinates(t.right());
 		}
 	}
-		
-	
-	private void drawTree(ABR t, int height) {
-		
-		if(t != null) {
-			// nodo root 
-			if(t.parent() == null) {
-				drawNode(ROOTX, ROOTY, R, t.key().toString());
-			}else {
-				ArrayList<Double> coord;
-				if(t.parent().left() == t) {
-	    			coord = getNodeEdgeCoordinates(t, 'l');		
-	    		}else {
-					coord = getNodeEdgeCoordinates(t, 'r');	 
-				}
-				drawNode(coord.get(0), coord.get(1),R, t.key().toString());
-    			drawLine(coord.get(2),coord.get(3),coord.get(4),coord.get(5));
-			}
-			drawTree(t.left(), height+1);
-			drawTree(t.right(), height+1);
-		}
-	}
-	
+
 	private void drawNode(double x, double y, double radius, String key) {
-		
-		Text text = new Text (key);
+
+		Text text = new Text(key);
 		text.setFill(Color.WHITE);
-		Circle rootCircle = new Circle(20);	
-		
-		StackPane stack = new StackPane();	
+		Circle rootCircle = new Circle(20);
+
+		StackPane stack = new StackPane();
 		stack.setAlignment(Pos.CENTER);
 		stack.getChildren().addAll(rootCircle, text);
 		stack.setLayoutX(x);
 		stack.setLayoutY(y);
-					
-	    ABRView.getChildren().add(stack);	
-		
+
+		ABRView.getChildren().add(stack);
+
 	}
-	
+
 	private void drawLine(double sx, double sy, double ex, double ey) {
-		Line line = new Line(sx,sy,ex,ey);
+		Line line = new Line(sx, sy, ex, ey);
 		line.setStrokeWidth(2);
-		ABRView.getChildren().add(line);		
+		ABRView.getChildren().add(line);
 	}
-	
-	private FadeTransition nodeRemoveTransition(Circle c, Node n, Integer key) {
+
+	private FadeTransition nodeRemoveTransition(Circle c, Integer key) {
 		FadeTransition ft = new FadeTransition(Duration.millis(3000), c);
-	    ft.setFromValue(1.0);
-	    ft.setToValue(0.0);
-	    ft.setCycleCount(1);
-	     
-	    ft.setOnFinished(new EventHandler<ActionEvent>() {
-	    	@Override
-	        public void handle(ActionEvent actionEvent) {
-	    		/* il nodo viene rimosso dalla view */
-	    		ABRView.getChildren().remove(n);
-	    		/* il nodo viene eliminato dall'albero */
-	    		abr = abr.removeNode(key);
-	    		/* aggiorna le coordinate */
-	    		restoreCoordinates(abr);
-	    		ABRView.getChildren().clear();
-	    		/* si visualizza l'albero con la nuova struttura */
-	    		drawTree(abr,0);	
-	    	}
-	    });
-		
+		ft.setFromValue(1.0);
+		ft.setToValue(0.0);
+		ft.setCycleCount(1);
+
+		ft.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				/* il nodo viene rimosso dalla view */
+				ABRView.getChildren().remove(c.getParent());
+				/* il nodo viene eliminato dall'albero */
+				abr = abr.removeNode(key);
+				/* aggiorna le coordinate */
+				restoreCoordinates(abr);
+				ABRView.getChildren().clear();
+				/* si visualizza l'albero con la nuova struttura */
+				drawTree(abr);
+			}
+		});
+
 		return ft;
 	}
-	
+
 	/* I metodi che seguono svolgono funzioni ausiliarie */
 	/* TODO: probabilmente da rendere static e inserire in una classe Utility */
 	private void showAlert(String s) {
 		Alert alert = new Alert(AlertType.ERROR);
-		 
+
 		alert.setTitle("Error alert");
-	 	alert.setHeaderText(null);
+		alert.setHeaderText(null);
 		alert.setContentText(s);
-		 
-		alert.showAndWait();		
+
+		alert.showAndWait();
 	}
-	
+
 	private Optional<String> showDialog(String header, String content) {
-		
+
 		TextInputDialog inputNodeDialog = new TextInputDialog();
-		
+
 		inputNodeDialog.setTitle("AlgaT - ABR");
 		inputNodeDialog.setHeaderText(header);
 		inputNodeDialog.setContentText(content);
-		 
+
 		Optional<String> result = inputNodeDialog.showAndWait();
-		return result;		
+		return result;
 	}
-	
-	
-	
-	private boolean isStringInt(String s)
-	{
-	    try
-	    {
-	        Integer.parseInt(s);
-	        return true;
-	    } catch (NumberFormatException ex)
-	    {
-	        return false;
-	    }
+
+	private boolean isStringInt(String s) {
+		try {
+			Integer.parseInt(s);
+			return true;
+		} catch (NumberFormatException ex) {
+			return false;
+		}
 	}
 
 }
