@@ -31,8 +31,6 @@ public class PseudocodeController {
 
 		Text t = new Text(functionsHTable.get(functionsCBox.getValue()));
 		codeTextFlow.getChildren().add(t);
-		
-		highlightLine(3);
 	}
 
 	public void loadCodes(JSONObject jFunctions) {
