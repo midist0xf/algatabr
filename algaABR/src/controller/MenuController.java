@@ -20,7 +20,7 @@ public class MenuController extends NavigationController {
 	// delle lezioni nel combobox
 	public void loadCBoxLessons() {
 		try {
-			Object parser = new JSONParser().parse(new FileReader("./lessons.json"));
+			Object parser = new JSONParser().parse(new FileReader("../lessons.json"));
 			this.jsonRoot = (JSONObject) parser;
 			
 			Set lessons = jsonRoot.keySet();

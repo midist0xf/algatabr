@@ -9,7 +9,7 @@ public class LessonController extends NavigationController {
 	
 	@FXML private PseudocodeController pseudocodeController;
 	@FXML private QuestionController questionController;
-	@FXML private ABRViewController abrController; // TODO: aggiungere controllo dinamico se abr o rb
+	@FXML private ABRViewController controlController; // TODO: aggiungere controllo dinamico se abr o rb
 
 	public void setLesson(String lessonName, JSONObject jsonRoot) {
 		JSONObject selectedLesson = (JSONObject) jsonRoot.get(lessonName);
@@ -21,7 +21,8 @@ public class LessonController extends NavigationController {
 		
 		pseudocodeController.loadCodes((JSONObject) selectedLesson.get("Pseudocodice"));
 		
-		abrController.setLessonController(this);
+		controlController.setLessonController(this);
+		
 	}
 
 	private void showGreetingMessage(String message) {
