@@ -1,6 +1,8 @@
 package controller;
 
+import java.awt.List;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Optional;
 
 import javafx.animation.FadeTransition;
@@ -12,6 +14,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -22,7 +25,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import model.ABR;
 
-public class ABRViewController extends NavigationController {
+public class ABRViewController {
 	/* costanti per Circle */
 	private final static double R = 20;
 	private final static double ROOTX = 150;
@@ -39,19 +42,34 @@ public class ABRViewController extends NavigationController {
 	/* modello */
 	private ABR abr = null;
 
+	/* buttons */
+	@FXML private Button randomButton;
+	@FXML private Button insertButton;
+	@FXML private Button successorButton;
+	@FXML private Button predecessorButton;
+	@FXML private Button minButton;
+	@FXML private Button stepButton;
+	@FXML private Button clearButton;
+	@FXML private Button lookupButton;
+	@FXML private Button removeButton;
+	@FXML private Button maxButton;
+	@FXML private Button runButton;
+	
+	/* lista steps 
+	 * < <nome metodo corrente> <numero riga da evidenziare> <valore nodo da evidenziare> <valore nodo in cui cambiare grafica> >
+	 * */
+	private java.util.List<java.util.List<String>> steps = new ArrayList<java.util.List<String>>();
+	
+	/* lesson controller per comunicare con gli altri controllers*/
+	private LessonController lessonController;
+	
 	@FXML
 	private Pane ABRView;
 
-	public void handleRandomClick() {
-
-	}
-
-	public void handleStepClick() {
-
-	}
-
 	@FXML
 	public void handleInsertClick() {
+
+		lockButtons(true);
 
 		/* mostra dialog per inserimento chiave da inserire nell'albero */
 		Optional<String> result;
@@ -71,10 +89,10 @@ public class ABRViewController extends NavigationController {
 						abr.setX(ROOTX);
 						abr.setY(ROOTY);
 						drawNode(ROOTX, ROOTY, R, key);
-
+						lockButtons(false);
 					} else {
 						/* inserisce nella struttura dati */
-						abr.insertNode(keyInt, 0);
+						abr.insertNode(keyInt, 0, steps);
 						/* salva riferimento all'ultimo nodo inserito */
 						ABR p = abr.lookupNode(keyInt);
 						/* memorizza coordinate posizione nodo relativamente al padre
@@ -92,7 +110,7 @@ public class ABRViewController extends NavigationController {
 
 						/* verifica che il nodo inserito non superi l'altezza massima stabilita */
 						if (abr.getNodeHeight(p) <= MAXH) {
-							drawTree(abr);
+							//drawTree(abr);
 						} else {
 							abr = abr.removeNode(keyInt);
 							showAlert("Hai superato l'altezza massima consentita (" + MAXH + ")");
@@ -100,9 +118,22 @@ public class ABRViewController extends NavigationController {
 					}
 				} else {showAlert("Scegli un intero tra -99 e 99");}
 			} else {showAlert("L'input inserito non è un intero!");}
-
 		});
+	}
 
+	private void lockButtons(boolean b) {
+		stepButton.setDisable(!b);
+		runButton.setDisable(!b);
+		
+		randomButton.setDisable(b);
+		insertButton.setDisable(b);
+		successorButton.setDisable(b);
+		predecessorButton.setDisable(b);
+		minButton.setDisable(b);
+		clearButton.setDisable(b);
+		lookupButton.setDisable(b);
+		removeButton.setDisable(b);
+		maxButton.setDisable(b);
 	}
 
 	private void drawTree(ABR t) {
@@ -172,8 +203,18 @@ public class ABRViewController extends NavigationController {
 
 	}
 
-	public void handleRunClick() {
+	public void handleRandomClick() {
 
+	}
+
+	// < <nome metodo> <numero riga> <valore nodo da evidenziare> <valore nodo in cui cambiare grafica> >
+	public void handleStepClick() {
+		java.util.List<String> step = steps.remove(0);
+
+		lessonController.loadMethod(step.get(0), step.get(1));
+	}
+
+	public void handleRunClick() {
 	}
 
 	public void handleClearClick() {
@@ -300,4 +341,7 @@ public class ABRViewController extends NavigationController {
 		}
 	}
 
+	public void setLessonController(LessonController lessonController) {
+		this.lessonController = lessonController;
+	}
 }

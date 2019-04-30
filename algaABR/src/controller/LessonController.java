@@ -7,14 +7,11 @@ import javafx.scene.control.Alert;
 
 public class LessonController extends NavigationController {
 	
-	private JSONObject jsonRoot;
-	
 	@FXML private PseudocodeController pseudocodeController;
 	@FXML private QuestionController questionController;
+	@FXML private ABRViewController abrController; // TODO: aggiungere controllo dinamico se abr o rb
 
 	public void setLesson(String lessonName, JSONObject jsonRoot) {
-		this.jsonRoot = jsonRoot;
-		
 		JSONObject selectedLesson = (JSONObject) jsonRoot.get(lessonName);
 		
 		showGreetingMessage(selectedLesson.get("DescrizioneLezione").toString());
@@ -23,6 +20,8 @@ public class LessonController extends NavigationController {
 		questionController.setMainApp(this.mainApp);
 		
 		pseudocodeController.loadCodes((JSONObject) selectedLesson.get("Pseudocodice"));
+		
+		abrController.setLessonController(this);
 	}
 
 	private void showGreetingMessage(String message) {
@@ -31,6 +30,10 @@ public class LessonController extends NavigationController {
 		result.setHeaderText("Scopo della lezione");
 		result.setContentText(message);
 		result.show();
+	}
+
+	public void loadMethod(String methodName, String lineNumber) {
+		pseudocodeController.showMethod(methodName, Integer.parseInt(lineNumber));
 	}
 
 	

@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class ABR {
 	
@@ -76,25 +78,56 @@ public class ABR {
 	
 	
 	
-	public void insertNode(Integer j, Integer v){
+	public void insertNode(Integer j, Integer v, List<List<String>> steps){
 		ABR p = null;
 		ABR u = this;
+		
+		addStep(steps, "insertNode", 0, this.value, 666);
 		
 		/* cerca posizione inserimento */
 		while(u != null && u.key != j) {
 			p = u;
-			if(j < u.key()){ u = u.left(); }
-			else { u = u.right(); }			
+			if(j < u.key()) {
+				u = u.left(); 
+				addStep(steps, "insertNode", 5, u.value, 666);
+			} else { 
+				u = u.right(); 
+				addStep(steps, "insertNode", 7, u.value, 666);
+			}			
 		}
 		if(u != null && u.key() == j) { /* la chiave è già presente */
+			addStep(steps, "insertNode", 10, u.value, 666);
 			u.value = v;
 		}else {
 			ABR n = new ABR(j, v); /* nodo creato e aggiunto */
+			addStep(steps, "insertNode", 12, u.value, 666);
 			link(p,n,j);			
+			addStep(steps, "insertNode", 13, 666, n.value);
 		}
 	}
 	
 	
+	private void addStep(List<List<String>> steps, String methodName, Integer codeLineToHighlight, Integer nodeValueToHighlight, Integer nodeValueToDraw) {
+		// creo uno step da aggiungere alla lista di tutti gli steps
+		List<String> step = new ArrayList<String>();
+		
+		step.add(methodName);
+		step.add(codeLineToHighlight.toString());
+		
+		if (nodeValueToHighlight >= -99 && nodeValueToHighlight <= 99)
+			step.add(nodeValueToHighlight.toString());
+		else
+			step.add("");
+			
+		if (nodeValueToDraw >= -99 && nodeValueToDraw <= 99)
+			step.add(nodeValueToDraw.toString());
+		else
+			step.add("");
+		
+		// aggiungo lo step in fondo alla lista
+		steps.add(step);
+	}
+
 	public ABR removeNode(Integer x) {
 
 		ABR u = this.lookupNode(x);

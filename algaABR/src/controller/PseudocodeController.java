@@ -58,10 +58,27 @@ public class PseudocodeController {
 			textSplit[i] = new Text(stringSplit[i] + "\n");
 		}
 		
-		textSplit[lineNumber].setFill(Color.CHOCOLATE);
-		textSplit[lineNumber].setFont(new Font("Times New Roman", 17));
-		
+		if (lineNumber < textSplit.length) {
+			textSplit[lineNumber].setFill(Color.CHOCOLATE);
+			textSplit[lineNumber].setFont(new Font("Times New Roman", 17));
+		}
+
 		codeTextFlow.getChildren().setAll(textSplit);
+	}
+
+	public void showMethod(String methodName, int lineNumber) {
+		// questo metodo viene chiamato da lessoncontroller che
+		// passa come valore solo il nome del metodo (insertNode),
+		// mentre qui serve la interfaccia completa (Void insertNode(...))
+		// quindi per caricare il codice giusto vediamo se il nome 
+		// del metodo e' contenuto in una interfaccia nella hashtable
+		for (String val : functionsHTable.keySet()) {
+			if (val.contains(methodName)) {
+				functionsCBox.setValue(val);
+				highlightLine(lineNumber);
+				break;
+			}
+		}
 	}
 	
 }

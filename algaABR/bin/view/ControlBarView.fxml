@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="500.0" prefWidth="550.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.ABRViewController">
+<AnchorPane prefHeight="500.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ABRViewController">
   <!-- TODO Add Nodes -->
   <children>
     <Text layoutX="179.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Controls" textAlignment="RIGHT" AnchorPane.topAnchor="14.0">
@@ -14,21 +15,21 @@
         <Font name="System Bold" size="30.0" />
       </font>
     </Text>
-    <Button fx:id="random" layoutX="29.0" layoutY="60.0" mnemonicParsing="false" onAction="#handleRandomClick" prefHeight="27.0" prefWidth="81.0" text="random">
+    <Button fx:id="randomButton" layoutX="41.0" layoutY="61.0" mnemonicParsing="false" onAction="#handleRandomClick" prefHeight="27.0" prefWidth="81.0" text="random">
       <font>
         <Font name="System Bold" size="13.0" fx:id="x1" />
       </font>
     </Button>
-    <Button fx:id="step" font="$x1" layoutX="350.0" layoutY="62.0" mnemonicParsing="false" onAction="#handleStepClick" prefHeight="27.0" prefWidth="81.0" text="step" />
-    <Button fx:id="insert" font="$x1" layoutX="110.0" layoutY="61.0" mnemonicParsing="false" onAction="#handleInsertClick" prefHeight="27.0" prefWidth="81.0" text="insert" />
-    <Button fx:id="remove" font="$x1" layoutX="110.0" layoutY="87.0" mnemonicParsing="false" onAction="#handleRemoveClick" prefHeight="27.0" prefWidth="81.0" text="remove" />
-    <Button fx:id="successor" font="$x1" layoutX="191.0" layoutY="61.0" mnemonicParsing="false" onAction="#handleSuccessorClick" prefHeight="27.0" prefWidth="81.0" text="succesor" />
-    <Button fx:id="predecessor" font="$x1" layoutX="191.0" layoutY="87.0" mnemonicParsing="false" onAction="#handlePredecessorClick" prefHeight="27.0" prefWidth="81.0" text="predecessor" />
-    <Button fx:id="min" font="$x1" layoutX="270.0" layoutY="61.0" mnemonicParsing="false" onAction="#handleMinClick" prefHeight="27.0" prefWidth="81.0" text="min" />
-    <Button fx:id="max" font="$x1" layoutX="269.0" layoutY="87.0" mnemonicParsing="false" onAction="#handleMaxClick" prefHeight="27.0" prefWidth="81.0" text="max" />
-    <Button fx:id="lookup" font="$x1" layoutX="29.0" layoutY="87.0" mnemonicParsing="false" onAction="#handleLookupClick" prefHeight="27.0" prefWidth="81.0" text="lookup" />
-    <Button fx:id="run" font="$x1" layoutX="351.0" layoutY="87.0" mnemonicParsing="false" onAction="#handleRunClick" prefHeight="27.0" prefWidth="81.0" text="run" />
-    <Button id="run" font="$x1" layoutX="453.0" layoutY="62.0" mnemonicParsing="false" onAction="#handleRunClick" prefHeight="27.0" prefWidth="69.0" text="clear" />
+    <Button fx:id="stepButton" disable="true" font="$x1" layoutX="374.0" layoutY="61.0" mnemonicParsing="false" onAction="#handleStepClick" prefHeight="27.0" prefWidth="81.0" text="step" />
+    <Button fx:id="insertButton" font="$x1" layoutX="122.0" layoutY="61.0" mnemonicParsing="false" onAction="#handleInsertClick" prefHeight="27.0" prefWidth="69.0" text="insert" />
+    <Button fx:id="removeButton" font="$x1" layoutX="122.0" layoutY="87.0" mnemonicParsing="false" onAction="#handleRemoveClick" prefHeight="27.0" prefWidth="69.0" text="remove" />
+    <Button fx:id="successorButton" font="$x1" layoutX="191.0" layoutY="61.0" mnemonicParsing="false" onAction="#handleSuccessorClick" prefHeight="27.0" prefWidth="105.0" text="successor" />
+    <Button fx:id="predecessorButton" font="$x1" layoutX="191.0" layoutY="87.0" mnemonicParsing="false" onAction="#handlePredecessorClick" prefHeight="27.0" prefWidth="105.0" text="predecessor" />
+    <Button fx:id="minButton" font="$x1" layoutX="296.0" layoutY="61.0" mnemonicParsing="false" onAction="#handleMinClick" prefHeight="27.0" prefWidth="56.0" text="min" />
+    <Button fx:id="maxButton" font="$x1" layoutX="296.0" layoutY="87.0" mnemonicParsing="false" onAction="#handleMaxClick" prefHeight="27.0" prefWidth="56.0" text="max" />
+    <Button fx:id="lookupButton" font="$x1" layoutX="41.0" layoutY="87.0" mnemonicParsing="false" onAction="#handleLookupClick" prefHeight="27.0" prefWidth="81.0" text="lookup" />
+    <Button fx:id="runButton" disable="true" font="$x1" layoutX="374.0" layoutY="87.0" mnemonicParsing="false" onAction="#handleRunClick" prefHeight="27.0" prefWidth="81.0" text="run" />
+    <Button fx:id="clearButton" font="$x1" layoutX="467.0" layoutY="61.0" mnemonicParsing="false" onAction="#handleClearClick" prefHeight="27.0" prefWidth="69.0" text="clear" />
     <HBox alignment="CENTER" layoutX="3.0" layoutY="145.0" prefHeight="355.0" prefWidth="547.0">
       <children>
         <Pane fx:id="ABRView" prefHeight="384.0" prefWidth="305.0" />
