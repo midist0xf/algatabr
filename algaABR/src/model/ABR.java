@@ -82,27 +82,27 @@ public class ABR {
 		ABR p = null;
 		ABR u = this;
 		
-		addStep(steps, "insertNode", 0, this.value, 666);
+		addStep(steps, "insertNode", 0, this.key, 666);
 		
 		/* cerca posizione inserimento */
 		while(u != null && u.key != j) {
 			p = u;
 			if(j < u.key()) {
 				u = u.left(); 
-				addStep(steps, "insertNode", 5, u.value, 666);
+				addStep(steps, "insertNode", 5, (u == null)? 666:u.key, 666);
 			} else { 
 				u = u.right(); 
-				addStep(steps, "insertNode", 7, u.value, 666);
+				addStep(steps, "insertNode", 7, (u == null)? 666:u.key, 666);
 			}			
 		}
 		if(u != null && u.key() == j) { /* la chiave è già presente */
-			addStep(steps, "insertNode", 10, u.value, 666);
+			addStep(steps, "insertNode", 10, u.key, 666);
 			u.value = v;
 		}else {
 			ABR n = new ABR(j, v); /* nodo creato e aggiunto */
-			addStep(steps, "insertNode", 12, u.value, 666);
+			addStep(steps, "insertNode", 12, (u == null)? 666:u.key, 666);
 			link(p,n,j);			
-			addStep(steps, "insertNode", 13, 666, n.value);
+			addStep(steps, "insertNode", 13, 666, n.key);
 		}
 	}
 	
