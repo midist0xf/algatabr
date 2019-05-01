@@ -5,7 +5,7 @@
     "Pseudocodice": {
       "Tree lookup(Tree t, Int j)": "while (t != null && t.key != j)\n\tif (j < t.key)\n\t\tt = t.left\n\telse\n\t\tt = t.right\nreturn t",
       "Void link(Tree p, Tree u, Int j)": "if (u != null)\n\tu.parent = p\nif (p != null)\n\tif (j < p.key)\n\t\tp.left = u\n\telse\n\t\tp.right = u",
-      "Void insertNode(Tree t, Int j, Int v)": "Tree p = null\nTree u = t\nwhile(u != null && u.key != j)\n\tp = u\n\tif (j < u.key)\n\tu = u.left\nelse\n\tu = u.right\n\nif (u != null && u.key == j)\n\tu.value = v\nelse\n\tTree n = new Tree(j, v)\n\tlink(p,n,j)",
+      "Void insertNode(Tree t, Int j, Int v)": "Tree p = null\nTree u = t\nwhile(u != null && u.key != j)\n\tp = u\n\tif (j < u.key)\n\t\tu = u.left\n\telse\n\t\tu = u.right\n\nif (u != null && u.key == j)\n\tu.value = v\nelse\n\tTree n = new Tree(j, v)\n\tlink(p,n,j)",
       "Tree removeNode(Int x, Tree r)": "Tree u = lookup(r,x)\nif (u != null)\n\tif(u.left != null && u.right != null)\n\t\tTree s = u.right\n\t\t\\while (s.left != null)\n\t\t\ts = s.left\n\t\tu.key = s.key\n\t\tu.value = s.value\n\t\tx = s.key\n\t\tu = s\n\n\t Tree t\n\t\tif ( u.left != null && u.right == null)\n\t\t\tt = u.left\n\t\telse\n\t\t\tt = u.right\n\n\t\tlink(u.parent, t, x)\n\t\tif (u.parent == null)\n\t\t\tif (t != null)\n\t\t\t\tt.parent = null\n\t\t\treturn t\nreturn r",
       "Tree min(Tree t)": "while (t.left != null)\n\tt = t.left\nreturn t",
       "Tree max(Tree t)": "while (t.right != null)\n\tt = t.right\nreturn t",

@@ -18,6 +18,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -80,6 +81,9 @@ public class ABRViewController {
 		/* mostra dialog per inserimento chiave da inserire nell'albero */
 		Optional<String> result;
 		result = showDialog("Inserisci la chiave:", "Valore chiave:");
+		
+		if (!result.isPresent())
+			handleRunClick();
 
 		result.ifPresent(key -> {
 			/* controlla che il valore inserito sia un intero */
@@ -110,10 +114,11 @@ public class ABRViewController {
 						} else {
 							abr = abr.removeNode(keyInt);
 							showAlert("Hai superato l'altezza massima consentita (" + MAXH + ")");
+							handleRunClick();
 						}
 					}
-				} else {showAlert("Scegli un intero tra -99 e 99");}
-			} else {showAlert("L'input inserito non è un intero!");}
+				} else {showAlert("Scegli un intero tra -99 e 99");handleRunClick();}
+			} else {showAlert("L'input inserito non è un intero!");handleRunClick();}
 		});
 	}
 
@@ -288,6 +293,8 @@ public class ABRViewController {
 	    	}
 	   }	    
 	    drawTree(abr);
+	    
+	    handleRunClick();
 	}
 
 	// < <nome metodo> <numero riga> <valore nodo da evidenziare> <valore nodo in cui cambiare grafica> >
@@ -301,12 +308,13 @@ public class ABRViewController {
 		if (step.get(2) != "") {
 			Circle c = searchNode(step.get(2));
 			
-			InnerShadow is = new InnerShadow();
-			is.setOffsetX(2.0f);
-			is.setOffsetY(2.0f);
-			is.setColor(Color.FLORALWHITE);
-			
-			c.setEffect(is);
+			if (c != null) {
+				InnerShadow is = new InnerShadow();
+				is.setColor(Color.YELLOW);
+				is.setHeight(50.0f);
+				
+				c.setEffect(is);
+			}
 		}
 		
 		// effettua disegni sui nodi
@@ -315,8 +323,10 @@ public class ABRViewController {
 		}
 		
 		// attiva i buttons se ho finito steps
-		if (steps.isEmpty())
+		if (steps.isEmpty()) {
 			lockButtons(false);
+			drawTree(abr);
+		}
 	}
 
 	public void handleRunClick() {

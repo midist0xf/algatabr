@@ -59,8 +59,8 @@ public class PseudocodeController {
 		}
 		
 		if (lineNumber < textSplit.length) {
-			textSplit[lineNumber].setFill(Color.CHOCOLATE);
-			textSplit[lineNumber].setFont(new Font("Times New Roman", 17));
+			textSplit[lineNumber].setFill(Color.DARKORANGE);
+			//textSplit[lineNumber].setFont(new Font("Times New Roman", 17));
 		}
 
 		codeTextFlow.getChildren().setAll(textSplit);
