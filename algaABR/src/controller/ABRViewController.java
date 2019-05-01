@@ -2,6 +2,8 @@ package controller;
 
 import java.awt.List;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Optional;
 
@@ -19,6 +21,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
@@ -69,7 +72,7 @@ public class ABRViewController {
 	@FXML
 	public void handleInsertClick() {
 
-		lockButtons(true);
+		//lockButtons(true);
 
 		/* mostra dialog per inserimento chiave da inserire nell'albero */
 		Optional<String> result;
@@ -88,7 +91,7 @@ public class ABRViewController {
 						abr = new ABR(keyInt, 0);
 						abr.setX(ROOTX);
 						abr.setY(ROOTY);
-						drawNode(ROOTX, ROOTY, R, key);
+						drawTree(abr);
 						lockButtons(false);
 					} else {
 						/* inserisce nella struttura dati */
@@ -97,20 +100,10 @@ public class ABRViewController {
 						ABR p = abr.lookupNode(keyInt);
 						/* memorizza coordinate posizione nodo relativamente al padre
 						 * , all'altezza nell'albero e alla larghezza della view */
-						double cx, cy;
-						if (p.parent().left() == p) {
-							cx = p.parent().getX() - (ABRView.getWidth() / Math.pow(2, abr.getNodeHeight(p)));
-							cy = p.parent().getY() + 50;
-						} else {
-							cx = p.parent().getX() + (ABRView.getWidth() / Math.pow(2, abr.getNodeHeight(p)));
-							cy = p.parent().getY() + 50;
-						}
-						p.setX(cx);
-						p.setY(cy);
-
+						saveNodeRelativeCoordinates(p);
 						/* verifica che il nodo inserito non superi l'altezza massima stabilita */
 						if (abr.getNodeHeight(p) <= MAXH) {
-							//drawTree(abr);
+							drawTree(abr);
 						} else {
 							abr = abr.removeNode(keyInt);
 							showAlert("Hai superato l'altezza massima consentita (" + MAXH + ")");
@@ -155,13 +148,13 @@ public class ABRViewController {
 	}
 
 	public void handleRemoveClick() {
-
-		Optional<String> result;
-		result = showDialog("Inserisci la chiave:", "Valore chiave:");
-
-		result.ifPresent(key -> {
-			/* controlla che l'albero non sia vuoto */
-			if (abr != null) {
+		
+		if (abr == null) {
+			showAlert("L'albero è vuoto!");			
+		}else {
+			Optional<String> result;
+			result = showDialog("Inserisci la chiave:", "Valore chiave:");
+			result.ifPresent(key -> {	
 				/* verifica che il valore inserito sia un intero */
 				if (isStringInt(key)) {
 					Integer keyInt = Integer.parseInt(key);
@@ -170,41 +163,128 @@ public class ABRViewController {
 						/* verifica che la chiave sia presente nell'albero */
 						if (abr.lookupNode(keyInt) != null) {
 							Circle c = searchNode(key);
-							if (c != null) {
-								c.setFill(Color.RED);
-								/* animazione dissolvenza del nodo */
-								FadeTransition ft = nodeRemoveTransition(c, keyInt);
-								ft.play();
-							}
-						} else { showAlert("La chiave non è presente nell'albero!");}
-					} else {showAlert("Scegli un intero tra -99 e 99");}
-				} else {showAlert("L'input inserito non è un intero!");}
-			} else {showAlert("L'albero è vuoto!");}
-		});
+							/* animazione dissolvenza del nodo */
+							FadeTransition ft = nodeRemoveTransition(c, keyInt, Color.RED);
+							ft.play();
+							} else { showAlert("La chiave non è presente nell'albero!");}
+						} else {showAlert("Scegli un intero tra -99 e 99");}
+					} else {showAlert("L'input inserito non è un intero!");}
+			});			
+		}			
 	}
 
 	public void handleSuccessorClick() {
-
+		
+		if (abr == null) {
+			showAlert("L'albero è vuoto!");			
+		}else {
+			Optional<String> result;
+			result = showDialog("Inserisci la chiave:", "Valore chiave:");
+			result.ifPresent(key -> {
+				if (isStringInt(key)) {
+					Integer keyInt = Integer.parseInt(key);
+					if (isInRange(keyInt, -99, 99)) {
+						ABR t = abr.lookupNode(keyInt);
+						if (t != null) {
+							t = t.successorNode();
+							if (t != null) {
+								Circle c = searchNode(t.key().toString());
+								FadeTransition ft = highlightNodeTransition(c, Color.GREEN);
+								ft.play();			
+								}
+							}else {showAlert("La chiave non è presente nell'albero!");}						
+						}else {showAlert("Scegli un intero tra -99 e 99");}
+					}else {showAlert("L'input inserito non è un intero!");}					
+			});			
+		}	
 	}
+	
 
 	public void handlePredecessorClick() {
-
+		
+		if (abr == null) {
+			showAlert("L'albero è vuoto!");			
+		}else {
+			Optional<String> result;
+			result = showDialog("Inserisci la chiave:", "Valore chiave:");
+			result.ifPresent(key -> {
+				if (isStringInt(key)) {
+					Integer keyInt = Integer.parseInt(key);
+					if (isInRange(keyInt, -99, 99)) {
+						ABR t = abr.lookupNode(keyInt);
+						if (t != null) {
+							t = t.predecessorNode();
+							if (t != null) {								
+								Circle c = searchNode(t.key().toString());
+								FadeTransition ft = highlightNodeTransition(c, Color.GREEN);
+								ft.play();				
+								}
+							}else {showAlert("La chiave non è presente nell'albero!");}						
+						}else {showAlert("Scegli un intero tra -99 e 99");}
+					}else {showAlert("L'input inserito non è un intero!");}						
+			});			
+		}
 	}
 
-	public void handleMinClick() {
 
+	public void handleMinClick() {
+		if (abr != null) {
+			ABR t = abr.min();
+			Circle c = searchNode(t.key().toString());
+			FadeTransition ft = highlightNodeTransition(c,Color.GREEN);
+			ft.play();
+		}
 	}
 
 	public void handleMaxClick() {
-
+		if (abr != null) {
+			ABR t = abr.max();
+			Circle c = searchNode(t.key().toString());
+			FadeTransition ft = highlightNodeTransition(c,Color.GREEN);
+			ft.play();			
+		}
 	}
 
 	public void handleLookupClick() {
-
-	}
+		if (abr == null) {
+			showAlert("L'albero è vuoto!");			
+		}else {
+			Optional<String> result;
+			result = showDialog("Inserisci la chiave:", "Valore chiave:");
+			result.ifPresent(key -> {		
+					if (isStringInt(key)) {
+						Integer keyInt = Integer.parseInt(key);
+						if(isInRange(keyInt, -99, 99)){
+							ABR t = abr.lookupNode(keyInt);
+							if (t != null) {
+								Circle c = searchNode(t.key().toString());
+								FadeTransition ft = highlightNodeTransition(c, Color.GREEN);
+								ft.play();													 
+							}else {showAlert("La chiave non è presente nell'albero!");}						
+						}else {showAlert("Scegli un intero tra -99 e 99");}
+					}else {showAlert("L'input inserito non è un intero!");}							
+			});			
+		}
+	}	
 
 	public void handleRandomClick() {
-
+		handleClearClick();
+		Integer[] arr = new Integer[99];
+	    for (int i = 0; i < arr.length; i++) {
+	        arr[i] = i;
+	    }
+	    Collections.shuffle(Arrays.asList(arr));
+	    abr = new ABR(arr[0], 0);
+	    abr.setX(ROOTX); abr.setY(ROOTY);
+	    for (int i = 1; i < 16; i++) {
+	    	abr.insertNode(arr[i], 0, steps);
+	    	ABR p = abr.lookupNode(arr[i]);
+	    	saveNodeRelativeCoordinates(p);
+	    	if(abr.getNodeHeight(p) > MAXH) {
+	    		abr.removeNode(arr[i]);
+	    	}
+	   }	    
+	    drawTree(abr);
 	}
 
 	// < <nome metodo> <numero riga> <valore nodo da evidenziare> <valore nodo in cui cambiare grafica> >
@@ -221,6 +301,27 @@ public class ABRViewController {
 		abr = null;
 		ABRView.getChildren().clear();
 	}
+	
+	
+	
+	
+	
+	
+	
+	private void saveNodeRelativeCoordinates(ABR p) {
+		double cx, cy;
+		if (p.parent().left() == p) {
+			cx = p.parent().getX() - (ABRView.getWidth() / Math.pow(2, abr.getNodeHeight(p)));
+			cy = p.parent().getY() + 50;
+		} else {
+			cx = p.parent().getX() + (ABRView.getWidth() / Math.pow(2, abr.getNodeHeight(p)));
+			cy = p.parent().getY() + 50;
+		}
+		p.setX(cx);
+		p.setY(cy);		
+	}
+	
+	
 
 	private Circle searchNode(String key) {
 		Circle c = null;
@@ -275,7 +376,6 @@ public class ABRViewController {
 		stack.setLayoutY(y);
 
 		ABRView.getChildren().add(stack);
-
 	}
 
 	private void drawLine(double sx, double sy, double ex, double ey) {
@@ -284,11 +384,12 @@ public class ABRViewController {
 		ABRView.getChildren().add(line);
 	}
 
-	private FadeTransition nodeRemoveTransition(Circle c, Integer key) {
+	private FadeTransition nodeRemoveTransition(Circle c, Integer key, Paint color) {
+		c.setFill(color);
 		FadeTransition ft = new FadeTransition(Duration.millis(3000), c);
 		ft.setFromValue(1.0);
 		ft.setToValue(0.0);
-		ft.setCycleCount(1);
+		ft.setCycleCount(1);	c.setFill(color);
 
 		ft.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
@@ -306,6 +407,16 @@ public class ABRViewController {
 		});
 
 		return ft;
+	}
+	
+	private FadeTransition highlightNodeTransition(Circle c, Paint color) {
+		c.setFill(color);
+		FadeTransition ft = new FadeTransition(Duration.millis(3000), c);
+		ft.setFromValue(0.1);
+		ft.setToValue(1.0);
+		ft.setCycleCount(1);
+		
+		return ft;		
 	}
 
 	/* I metodi che seguono svolgono funzioni ausiliarie */
@@ -339,6 +450,10 @@ public class ABRViewController {
 		} catch (NumberFormatException ex) {
 			return false;
 		}
+	}
+	
+	private boolean isInRange(int value, int a, int b) {
+		return (value >= a && value <= b);
 	}
 
 	public void setLessonController(LessonController lessonController) {

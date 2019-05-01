@@ -82,7 +82,7 @@ public class ABR {
 		ABR p = null;
 		ABR u = this;
 		
-		addStep(steps, "insertNode", 0, this.value, 666);
+		//addStep(steps, "insertNode", 0, this.value, 666);
 		
 		/* cerca posizione inserimento */
 		while(u != null && u.key != j) {
@@ -193,9 +193,6 @@ public class ABR {
 	
 	public ABR successorNode(){
 		ABR t = this;
-		if(t == null) {
-			return t;
-		}
 		if(t.right() != null) {
 			return t.right().min();
 		}
@@ -209,19 +206,16 @@ public class ABR {
 	
 	public ABR predecessorNode(){
 		ABR t = this;
-		if( t == null) {
-			return t;
-		}
+
 		if(t.left != null) {
-			return t.max();
+			return t.left().max();
 		}
 		ABR par = t.parent;
 		while(par != null && t == par.left ) {
 			t = par;
 			par = t.parent;
 		}
-		return par;
-		
+		return par;		
 	}	
 
 }
