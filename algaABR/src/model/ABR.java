@@ -5,6 +5,8 @@ import java.util.List;
 
 public class ABR {
 	
+	public static ArrayList<ArrayList<String>> steps = new ArrayList<ArrayList<String>>();
+	
 	private Integer value;
 	private Integer key;
 	private ABR parent;
@@ -21,6 +23,7 @@ public class ABR {
 		left = null;
 		
 	}
+
 
 	public void setX(double x) {
 		cx=x;
@@ -78,46 +81,46 @@ public class ABR {
 	
 	
 	
-	public void insertNode(Integer j, Integer v, List<List<String>> steps){
+	public void insertNode(Integer j, Integer v, ArrayList<ArrayList<String>> steps){
 		ABR p = null;
 		ABR u = this;
 		
-		addStep(steps, "insertNode", 0, u.key, 666);
-		addStep(steps, "insertNode", 1, u.key, 666);
+		addStep(ABR.steps, "insertNode", 0, u.key, 666);
+		addStep(ABR.steps, "insertNode", 1, u.key, 666);
 		
 		/* cerca posizione inserimento */
 		while(u != null && u.key != j) {
-			addStep(steps, "insertNode", 2, u.key, 666);
-			addStep(steps, "insertNode", 3, u.key, 666);
+			addStep(ABR.steps, "insertNode", 2, u.key, 666);
+			addStep(ABR.steps, "insertNode", 3, u.key, 666);
 			p = u;
-			addStep(steps, "insertNode", 4, u.key, 666);
+			addStep(ABR.steps, "insertNode", 4, u.key, 666);
 			if(j < u.key()) {
 				u = u.left(); 
-				addStep(steps, "insertNode", 5, (u == null)? 666:u.key, 666);
+				addStep(ABR.steps, "insertNode", 5, (u == null)? 666:u.key, 666);
 			} else { 
-				addStep(steps, "insertNode", 6, u.key, 666);
+				addStep(ABR.steps, "insertNode", 6, u.key, 666);
 				u = u.right(); 
-				addStep(steps, "insertNode", 7, (u == null)? 666:u.key, 666);
+				addStep(ABR.steps, "insertNode", 7, (u == null)? 666:u.key, 666);
 			}			
 		}
 
-		addStep(steps, "insertNode", 9, 666, 666);
+		addStep(ABR.steps, "insertNode", 9, 666, 666);
 		if(u != null && u.key() == j) { /* la chiave è già presente */
-			addStep(steps, "insertNode", 10, u.key, 666);
+			addStep(ABR.steps, "insertNode", 10, u.key, 666);
 			u.value = v;
 		}else {
-			addStep(steps, "insertNode", 11, 666, 666);
+			addStep(ABR.steps, "insertNode", 11, 666, 666);
 			ABR n = new ABR(j, v); /* nodo creato e aggiunto */
-			addStep(steps, "insertNode", 12, (u == null)? 666:u.key, 666);
+			addStep(ABR.steps, "insertNode", 12, (u == null)? 666:u.key, 666);
 			link(p,n,j);			
-			addStep(steps, "insertNode", 13, 666, n.key);
+			addStep(ABR.steps, "insertNode", 13, 666, n.key);
 		}
 	}
 	
 	
-	private void addStep(List<List<String>> steps, String methodName, Integer codeLineToHighlight, Integer nodeValueToHighlight, Integer nodeValueToDraw) {
+	private void addStep(ArrayList<ArrayList<String>> steps, String methodName, Integer codeLineToHighlight, Integer nodeValueToHighlight, Integer nodeValueToDraw) {
 		// creo uno step da aggiungere alla lista di tutti gli steps
-		List<String> step = new ArrayList<String>();
+		ArrayList<String> step = new ArrayList<String>();
 		
 		step.add(methodName);
 		step.add(codeLineToHighlight.toString());
@@ -133,7 +136,7 @@ public class ABR {
 			step.add("");
 		
 		// aggiungo lo step in fondo alla lista
-		steps.add(step);
+		ABR.steps.add(step);
 	}
 
 	public ABR removeNode(Integer x) {
@@ -177,25 +180,40 @@ public class ABR {
 	public ABR lookupNode(Integer j){
 		ABR t = this;
 		while (t != null && t.key() != j) {
-			if (j < t.key() ) { t = t.left;} 
-			else { t = t.right; }			
+			addStep(ABR.steps, "lookupNode", 0, t.key, 666);
+			addStep(ABR.steps, "lookupNode", 1, t.key, 666);
+			if (j < t.key() ) {
+				t = t.left;
+				addStep(ABR.steps, "lookupNode", 2, t.key, 666);
+			} 
+			else {
+				t = t.right;
+				addStep(ABR.steps, "lookupNode", 4, t.key, 666);
+            }			
 		}
+		addStep(ABR.steps, "lookupNode", 5, t.key, 666);
 		return t;
 	}
 	
 	public ABR min(){
 		ABR t = this;
 		while (t.left() != null) {
-			t = t.left;
+			addStep(ABR.steps, "min", 0, t.key, 666);
+			t = t.left;		
+			addStep(ABR.steps, "min", 1, t.key, 666);
 		}
-		return t;
+		addStep(ABR.steps, "min", 2, 666, t.key);
+		return t;		
 	}
 	
 	public ABR max(){
 		ABR t = this;
 		while (t.right() != null) {
+			addStep(ABR.steps, "max", 0, t.key, 666);
 			t = t.right;
+			addStep(ABR.steps, "max", 1, t.key, 666);
 		}
+		addStep(ABR.steps, "max", 2, 666, t.key);
 		return t;
 	}
 	

@@ -102,7 +102,7 @@ public class ABRViewController {
 						lockButtons(false);
 					} else {
 						/* inserisce nella struttura dati */
-						abr.insertNode(keyInt, 0, steps);
+						abr.insertNode(keyInt, 0, ABR.steps);
 						/* salva riferimento all'ultimo nodo inserito */
 						ABR p = abr.lookupNode(keyInt);
 						/* memorizza coordinate posizione nodo relativamente al padre
@@ -237,19 +237,21 @@ public class ABRViewController {
 
 	public void handleMinClick() {
 		if (abr != null) {
+			lockButtons(true);
 			ABR t = abr.min();
-			Circle c = searchNode(t.key().toString());
+		/*	Circle c = searchNode(t.key().toString());
 			FadeTransition ft = highlightNodeTransition(c,Color.GREEN);
-			ft.play();
+			ft.play();*/
 		}
 	}
 
 	public void handleMaxClick() {
 		if (abr != null) {
+			lockButtons(true);
 			ABR t = abr.max();
-			Circle c = searchNode(t.key().toString());
+		/*	Circle c = searchNode(t.key().toString());
 			FadeTransition ft = highlightNodeTransition(c,Color.GREEN);
-			ft.play();			
+			ft.play();	*/		
 		}
 	}
 
@@ -257,6 +259,7 @@ public class ABRViewController {
 		if (abr == null) {
 			showAlert("L'albero è vuoto!");			
 		}else {
+			lockButtons(true);
 			Optional<String> result;
 			result = showDialog("Inserisci la chiave:", "Valore chiave:");
 			result.ifPresent(key -> {		
@@ -265,9 +268,9 @@ public class ABRViewController {
 						if(isInRange(keyInt, -99, 99)){
 							ABR t = abr.lookupNode(keyInt);
 							if (t != null) {
-								Circle c = searchNode(t.key().toString());
+								/*Circle c = searchNode(t.key().toString());
 								FadeTransition ft = highlightNodeTransition(c, Color.GREEN);
-								ft.play();													 
+								ft.play();	*/												 
 							}else {showAlert("La chiave non è presente nell'albero!");}						
 						}else {showAlert("Scegli un intero tra -99 e 99");}
 					}else {showAlert("L'input inserito non è un intero!");}							
@@ -285,7 +288,7 @@ public class ABRViewController {
 	    abr = new ABR(arr[0], 0);
 	    abr.setX(ROOTX); abr.setY(ROOTY);
 	    for (int i = 1; i < 16; i++) {
-	    	abr.insertNode(arr[i], 0, steps);
+	    	abr.insertNode(arr[i], 0, ABR.steps);
 	    	ABR p = abr.lookupNode(arr[i]);
 	    	saveNodeRelativeCoordinates(p);
 	    	if(abr.getNodeHeight(p) > MAXH) {
@@ -299,7 +302,8 @@ public class ABRViewController {
 
 	// < <nome metodo> <numero riga> <valore nodo da evidenziare> <valore nodo in cui cambiare grafica> >
 	public void handleStepClick() {
-		java.util.List<String> step = steps.remove(0);
+		//java.util.List<String> step = steps.remove(0);
+		ArrayList<String> step = ABR.steps.remove(0);
 
 		// mostra il metodo dello pseudocodice
 		lessonController.loadMethod(step.get(0), step.get(1));
@@ -323,14 +327,14 @@ public class ABRViewController {
 		}
 		
 		// attiva i buttons se ho finito steps
-		if (steps.isEmpty()) {
+		if (ABR.steps.isEmpty()) {
 			lockButtons(false);
 			drawTree(abr);
 		}
 	}
 
 	public void handleRunClick() {
-		steps.clear();
+		ABR.steps.clear();
 		drawTree(abr);
 		lockButtons(false);
 	}
