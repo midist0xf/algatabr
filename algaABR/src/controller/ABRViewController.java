@@ -18,10 +18,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Arc;
+import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
@@ -72,7 +75,7 @@ public class ABRViewController {
 	@FXML
 	public void handleInsertClick() {
 
-		//lockButtons(true);
+		lockButtons(true);
 
 		/* mostra dialog per inserimento chiave da inserire nell'albero */
 		Optional<String> result;
@@ -103,7 +106,7 @@ public class ABRViewController {
 						saveNodeRelativeCoordinates(p);
 						/* verifica che il nodo inserito non superi l'altezza massima stabilita */
 						if (abr.getNodeHeight(p) <= MAXH) {
-							drawTree(abr);
+							//drawTree(abr);
 						} else {
 							abr = abr.removeNode(keyInt);
 							showAlert("Hai superato l'altezza massima consentita (" + MAXH + ")");
@@ -291,10 +294,35 @@ public class ABRViewController {
 	public void handleStepClick() {
 		java.util.List<String> step = steps.remove(0);
 
+		// mostra il metodo dello pseudocodice
 		lessonController.loadMethod(step.get(0), step.get(1));
+		
+		// evidenzia un nodo se richiesto
+		if (step.get(2) != "") {
+			Circle c = searchNode(step.get(2));
+			
+			InnerShadow is = new InnerShadow();
+			is.setOffsetX(2.0f);
+			is.setOffsetY(2.0f);
+			is.setColor(Color.FLORALWHITE);
+			
+			c.setEffect(is);
+		}
+		
+		// effettua disegni sui nodi
+		if (step.get(3) != "") {
+			drawTree(abr);
+		}
+		
+		// attiva i buttons se ho finito steps
+		if (steps.isEmpty())
+			lockButtons(false);
 	}
 
 	public void handleRunClick() {
+		steps.clear();
+		drawTree(abr);
+		lockButtons(false);
 	}
 
 	public void handleClearClick() {

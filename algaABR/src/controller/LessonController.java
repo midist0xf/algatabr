@@ -22,7 +22,6 @@ public class LessonController extends NavigationController {
 		pseudocodeController.loadCodes((JSONObject) selectedLesson.get("Pseudocodice"));
 		
 		controlController.setLessonController(this);
-		
 	}
 
 	private void showGreetingMessage(String message) {

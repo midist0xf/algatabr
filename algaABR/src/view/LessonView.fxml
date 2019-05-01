@@ -6,7 +6,9 @@
 <?import javafx.scene.layout.HBox?>
 
 <HBox alignment="CENTER_LEFT" prefHeight="500.0" prefWidth="1060.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.LessonController">
-  <!-- TODO Add Nodes -->
+  <!-- NB Quando si vogliono usare i controller nella classe lesson, chiamali nome+"controller" 
+  	   per esempio questionController
+  -->
   <children>
     <Pane prefHeight="200.0" prefWidth="260.0">
       <children>
