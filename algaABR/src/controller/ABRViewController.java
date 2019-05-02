@@ -1,8 +1,12 @@
 package controller;
 
 import java.awt.List;
+import java.awt.Rectangle;
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Optional;
@@ -49,6 +53,9 @@ public class ABRViewController {
 	/* modello */
 	private ABR abr = null;
 
+	/* serve per lo step button, memorizza i cerchi disegnati*/
+	ArrayList<Circle> drawnCircles = new ArrayList<Circle>();
+
 	/* buttons */
 	@FXML private Button randomButton;
 	@FXML private Button insertButton;
@@ -61,11 +68,6 @@ public class ABRViewController {
 	@FXML private Button removeButton;
 	@FXML private Button maxButton;
 	@FXML private Button runButton;
-	
-	/* lista steps 
-	 * < <nome metodo corrente> <numero riga da evidenziare> <valore nodo da evidenziare> <valore nodo in cui cambiare grafica> >
-	 * */
-	private java.util.List<java.util.List<String>> steps = new ArrayList<java.util.List<String>>();
 	
 	/* lesson controller per comunicare con gli altri controllers*/
 	private LessonController lessonController;
@@ -157,11 +159,18 @@ public class ABRViewController {
 
 	public void handleRemoveClick() {
 		
+		lockButtons(true);
+
 		if (abr == null) {
 			showAlert("L'albero è vuoto!");			
+			lockButtons(false);
 		}else {
 			Optional<String> result;
 			result = showDialog("Inserisci la chiave:", "Valore chiave:");
+	
+			if (!result.isPresent())
+				handleRunClick();
+		
 			result.ifPresent(key -> {	
 				/* verifica che il valore inserito sia un intero */
 				if (isStringInt(key)) {
@@ -169,14 +178,20 @@ public class ABRViewController {
 					/* verifica che la chiave inserita sia compresa tra -99 e 99 */
 					if (keyInt >= -99 && keyInt <= 99) {
 						/* verifica che la chiave sia presente nell'albero */
-						if (abr.lookupNode(keyInt) != null) {
-							Circle c = searchNode(key);
-							/* animazione dissolvenza del nodo */
+						if (abr.lookupNodeNoStep(keyInt) != null) {
+
+							/* il nodo viene eliminato dall'albero */
+							abr = abr.removeNode(keyInt);
+							/* aggiorna le coordinate */
+							restoreCoordinates(abr);
+
+							/*Circle c = searchNode(key);
+							// animazione dissolvenza del nodo
 							FadeTransition ft = nodeRemoveTransition(c, keyInt, Color.RED);
-							ft.play();
-							} else { showAlert("La chiave non è presente nell'albero!");}
-						} else {showAlert("Scegli un intero tra -99 e 99");}
-					} else {showAlert("L'input inserito non è un intero!");}
+							ft.play();*/
+							} else { showAlert("La chiave non è presente nell'albero!");handleRunClick();}
+						} else {showAlert("Scegli un intero tra -99 e 99");handleRunClick();}
+					} else {showAlert("L'input inserito non è un intero!");handleRunClick();}
 			});			
 		}			
 	}
@@ -189,6 +204,10 @@ public class ABRViewController {
 			lockButtons(true);
 			Optional<String> result;
 			result = showDialog("Inserisci la chiave:", "Valore chiave:");
+
+			if (!result.isPresent())
+				handleRunClick();
+
 			result.ifPresent(key -> {
 				if (isStringInt(key)) {
 					Integer keyInt = Integer.parseInt(key);
@@ -201,9 +220,9 @@ public class ABRViewController {
 								FadeTransition ft = highlightNodeTransition(c, Color.GREEN);
 								ft.play();*/			
 								}
-							}else {showAlert("La chiave non è presente nell'albero!");}						
-						}else {showAlert("Scegli un intero tra -99 e 99");}
-					}else {showAlert("L'input inserito non è un intero!");}					
+							}else {showAlert("La chiave non è presente nell'albero!");handleRunClick();}
+						}else {showAlert("Scegli un intero tra -99 e 99");handleRunClick();}
+					}else {showAlert("L'input inserito non è un intero!");handleRunClick();}					
 			});			
 		}	
 	}
@@ -294,21 +313,26 @@ public class ABRViewController {
 	    abr = new ABR(arr[0], 0);
 	    abr.setX(ROOTX); abr.setY(ROOTY);
 	    for (int i = 1; i < 16; i++) {
-	    	abr.insertNode(arr[i], 0);
-	    	ABR p = abr.lookupNode(arr[i]);
+	    	int value = choose(arr[i], -arr[i]);
+	    	abr.insertNode(value, 0);
+	    	ABR p = abr.lookupNode(value);
 	    	saveNodeRelativeCoordinates(p);
 	    	if(abr.getNodeHeight(p) > MAXH) {
-	    		abr.removeNode(arr[i]);
+	    		abr.removeNode(value);
 	    	}
 	   }	    
 	    drawTree(abr);
 	    
-	    handleRunClick();
+		ABR.steps.clear();
+		lockButtons(false);
+	}
+
+	private int choose(int a, int b) {
+		if (Math.random() < 0.5) {return a;} else {return b;}
 	}
 
 	// < <nome metodo> <numero riga> <valore nodo da evidenziare> <valore nodo in cui cambiare grafica> >
 	public void handleStepClick() {
-		//java.util.List<String> step = steps.remove(0);
 		ArrayList<String> step = ABR.steps.remove(0);
 
 		// mostra il metodo dello pseudocodice
@@ -317,30 +341,61 @@ public class ABRViewController {
 		// evidenzia un nodo se richiesto
 		if (step.get(2) != "") {
 			Circle c = searchNode(step.get(2));
+			drawnCircles.add(c);
 			
 			if (c != null) {
 				InnerShadow is = new InnerShadow();
+				DropShadow ds = new DropShadow();
 				is.setColor(Color.YELLOW);
-				is.setHeight(50.0f);
+				ds.setColor(Color.YELLOW);
+				is.setHeight(19.0f);
 				
 				c.setEffect(is);
+				c.setEffect(ds);
 			}
 		}
 		
 		// effettua disegni sui nodi
 		if (step.get(3) != "") {
-			drawTree(abr);
+			if (step.get(0) != "removeNode") {
+				drawTree(abr);
+			} else {
+				handleClearClick();
+				ABRView.getChildren().clear();
+				
+				// se c'e' un albero serializzato in base64
+				if (step.get(3).length() >= 4) {
+					// deserializza l'albero da stampare
+					try {
+						byte b[] = Base64.getDecoder().decode(step.get(3));
+						
+						ByteArrayInputStream bi = new ByteArrayInputStream(b);
+						ObjectInputStream si = new ObjectInputStream(bi);
+						
+						drawTree((ABR) si.readObject());
+						si.close();
+					} catch (Exception e) {
+						drawTree(abr);
+						System.out.println(e);
+					}
+				}
+			}
 		}
 		
 		// attiva i buttons se ho finito steps
+		// inoltre de-colora tutti i circle usati
 		if (ABR.steps.isEmpty()) {
 			lockButtons(false);
-			//drawTree(abr);
+			
+			for (Circle circle : drawnCircles) {
+				circle.setEffect(null);
+			}
 		}
 	}
 
 	public void handleRunClick() {
 		ABR.steps.clear();
+		ABRView.getChildren().clear();
 		drawTree(abr);
 		lockButtons(false);
 	}
@@ -357,16 +412,18 @@ public class ABRViewController {
 	
 	
 	private void saveNodeRelativeCoordinates(ABR p) {
-		double cx, cy;
-		if (p.parent().left() == p) {
-			cx = p.parent().getX() - (ABRView.getWidth() / Math.pow(2, abr.getNodeHeight(p)));
-			cy = p.parent().getY() + 50;
-		} else {
-			cx = p.parent().getX() + (ABRView.getWidth() / Math.pow(2, abr.getNodeHeight(p)));
-			cy = p.parent().getY() + 50;
+		if (p.parent() != null) {
+			double cx, cy;
+			if (p.parent().left() == p) {
+				cx = p.parent().getX() - (ABRView.getWidth() / Math.pow(2, abr.getNodeHeight(p)));
+				cy = p.parent().getY() + 50;
+			} else {
+				cx = p.parent().getX() + (ABRView.getWidth() / Math.pow(2, abr.getNodeHeight(p)));
+				cy = p.parent().getY() + 50;
+			}
+			p.setX(cx);
+			p.setY(cy);		
 		}
-		p.setX(cx);
-		p.setY(cy);		
 	}
 	
 	

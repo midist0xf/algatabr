@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.File;
 import java.io.FileReader;
 import java.util.Iterator;
 import java.util.Set;
@@ -20,7 +21,15 @@ public class MenuController extends NavigationController {
 	// delle lezioni nel combobox
 	public void loadCBoxLessons() {
 		try {
-			Object parser = new JSONParser().parse(new FileReader("../lessons.json"));
+			File jsonConfig = new File("../lessons.json");
+			Object parser; 
+			
+			if (jsonConfig.exists() == false) {
+				parser = new JSONParser().parse(new FileReader("./lessons.json"));
+			} else {  
+				parser = new JSONParser().parse(new FileReader("../lessons.json"));
+			}
+				
 			this.jsonRoot = (JSONObject) parser;
 			
 			Set lessons = jsonRoot.keySet();
