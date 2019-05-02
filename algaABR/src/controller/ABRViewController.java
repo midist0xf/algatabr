@@ -102,9 +102,9 @@ public class ABRViewController {
 						lockButtons(false);
 					} else {
 						/* inserisce nella struttura dati */
-						abr.insertNode(keyInt, 0, ABR.steps);
+						abr.insertNode(keyInt, 0);
 						/* salva riferimento all'ultimo nodo inserito */
-						ABR p = abr.lookupNode(keyInt);
+						ABR p = abr.lookupNodeNoStep(keyInt);
 						/* memorizza coordinate posizione nodo relativamente al padre
 						 * , all'altezza nell'albero e alla larghezza della view */
 						saveNodeRelativeCoordinates(p);
@@ -186,19 +186,20 @@ public class ABRViewController {
 		if (abr == null) {
 			showAlert("L'albero è vuoto!");			
 		}else {
+			lockButtons(true);
 			Optional<String> result;
 			result = showDialog("Inserisci la chiave:", "Valore chiave:");
 			result.ifPresent(key -> {
 				if (isStringInt(key)) {
 					Integer keyInt = Integer.parseInt(key);
 					if (isInRange(keyInt, -99, 99)) {
-						ABR t = abr.lookupNode(keyInt);
+						ABR t = abr.lookupNodeNoStep(keyInt);
 						if (t != null) {
 							t = t.successorNode();
 							if (t != null) {
-								Circle c = searchNode(t.key().toString());
+							/*	Circle c = searchNode(t.key().toString());
 								FadeTransition ft = highlightNodeTransition(c, Color.GREEN);
-								ft.play();			
+								ft.play();*/			
 								}
 							}else {showAlert("La chiave non è presente nell'albero!");}						
 						}else {showAlert("Scegli un intero tra -99 e 99");}
@@ -213,19 +214,20 @@ public class ABRViewController {
 		if (abr == null) {
 			showAlert("L'albero è vuoto!");			
 		}else {
+			lockButtons(true);
 			Optional<String> result;
 			result = showDialog("Inserisci la chiave:", "Valore chiave:");
 			result.ifPresent(key -> {
 				if (isStringInt(key)) {
 					Integer keyInt = Integer.parseInt(key);
 					if (isInRange(keyInt, -99, 99)) {
-						ABR t = abr.lookupNode(keyInt);
+						ABR t = abr.lookupNodeNoStep(keyInt);
 						if (t != null) {
 							t = t.predecessorNode();
 							if (t != null) {								
-								Circle c = searchNode(t.key().toString());
+							/*	Circle c = searchNode(t.key().toString());
 								FadeTransition ft = highlightNodeTransition(c, Color.GREEN);
-								ft.play();				
+								ft.play();*/				
 								}
 							}else {showAlert("La chiave non è presente nell'albero!");}						
 						}else {showAlert("Scegli un intero tra -99 e 99");}
@@ -242,6 +244,8 @@ public class ABRViewController {
 		/*	Circle c = searchNode(t.key().toString());
 			FadeTransition ft = highlightNodeTransition(c,Color.GREEN);
 			ft.play();*/
+		} else {
+			showAlert("L'albero è vuoto!");
 		}
 	}
 
@@ -252,6 +256,8 @@ public class ABRViewController {
 		/*	Circle c = searchNode(t.key().toString());
 			FadeTransition ft = highlightNodeTransition(c,Color.GREEN);
 			ft.play();	*/		
+		} else {
+			showAlert("L'albero è vuoto!");	
 		}
 	}
 
@@ -288,7 +294,7 @@ public class ABRViewController {
 	    abr = new ABR(arr[0], 0);
 	    abr.setX(ROOTX); abr.setY(ROOTY);
 	    for (int i = 1; i < 16; i++) {
-	    	abr.insertNode(arr[i], 0, ABR.steps);
+	    	abr.insertNode(arr[i], 0);
 	    	ABR p = abr.lookupNode(arr[i]);
 	    	saveNodeRelativeCoordinates(p);
 	    	if(abr.getNodeHeight(p) > MAXH) {
@@ -329,7 +335,7 @@ public class ABRViewController {
 		// attiva i buttons se ho finito steps
 		if (ABR.steps.isEmpty()) {
 			lockButtons(false);
-			drawTree(abr);
+			//drawTree(abr);
 		}
 	}
 

@@ -81,7 +81,7 @@ public class ABR {
 	
 	
 	
-	public void insertNode(Integer j, Integer v, ArrayList<ArrayList<String>> steps){
+	public void insertNode(Integer j, Integer v){
 		ABR p = null;
 		ABR u = this;
 		
@@ -163,7 +163,8 @@ public class ABR {
 				t = u.left;
 			} else {
 				t = u.right;
-			}/* se t non ha figli la link viene invocata con link(u.parent,null,x)*/
+			}/* se t non ha figli la link viene invocata con 
+(u.parent,null,x)*/
 
 			link(u.parent, t, x);
             /* il nodo  da eliminare è root */
@@ -181,7 +182,7 @@ public class ABR {
 		ABR t = this;
 		while (t != null && t.key() != j) {
 			addStep(ABR.steps, "lookupNode", 0, t.key, 666);
-			addStep(ABR.steps, "lookupNode", 1, t.key, 666);
+			addStep(ABR.steps, "lookupNode", 1, 666, 666);
 			if (j < t.key() ) {
 				t = t.left;
 				addStep(ABR.steps, "lookupNode", 2, t.key, 666);
@@ -191,8 +192,21 @@ public class ABR {
 				addStep(ABR.steps, "lookupNode", 4, t.key, 666);
             }			
 		}
-		addStep(ABR.steps, "lookupNode", 5, t.key, 666);
+		addStep(ABR.steps, "lookupNode", 5, 666, 666);
 		return t;
+	}
+	
+	public ABR lookupNodeNoStep(Integer j) {
+		ABR t = this;
+		while (t != null && t.key() != j) {
+			if (j < t.key() ) {
+				t = t.left;
+			} 
+			else {
+				t = t.right;
+            }			
+		}
+		return t;		
 	}
 	
 	public ABR min(){
@@ -202,7 +216,7 @@ public class ABR {
 			t = t.left;		
 			addStep(ABR.steps, "min", 1, t.key, 666);
 		}
-		addStep(ABR.steps, "min", 2, 666, t.key);
+		addStep(ABR.steps, "min", 2,t.key, 666);
 		return t;		
 	}
 	
@@ -213,34 +227,52 @@ public class ABR {
 			t = t.right;
 			addStep(ABR.steps, "max", 1, t.key, 666);
 		}
-		addStep(ABR.steps, "max", 2, 666, t.key);
+		addStep(ABR.steps, "max", 2, t.key, 666);
 		return t;
 	}
 	
 	public ABR successorNode(){
 		ABR t = this;
+		addStep(ABR.steps, "successorNode", 0, t.key, 666);
 		if(t.right() != null) {
+			addStep(ABR.steps, "successorNode", 1,666, 666);
+			addStep(ABR.steps, "successorNode", 2, 666, 666);
 			return t.right().min();
 		}
 		ABR par = t.parent();
+		addStep(ABR.steps, "successorNode", 4, 666, 666);
+		addStep(ABR.steps, "successorNode", 5, 666, 666);
 		while(par != null && t == par.right) {
+			addStep(ABR.steps, "successorNode", 5, 666, 666);
 			t = par;
+			addStep(ABR.steps, "successorNode", 6, 666, 666);
 			par = par.parent;
+			addStep(ABR.steps, "successorNode", 7, (par == null)?666:par.key, 666);
 		}
+		addStep(ABR.steps, "successorNode", 8, (par == null)?666:par.key, 666);
 		return par;
 	}
 	
 	public ABR predecessorNode(){
 		ABR t = this;
-
+		addStep(ABR.steps, "predecessorNode", 0, t.key, 666);
+		addStep(ABR.steps, "predecessorNode", 1, 666, 666);
 		if(t.left != null) {
+			addStep(ABR.steps, "predecessorNode", 2, 666, 666);
 			return t.left().max();
 		}
 		ABR par = t.parent;
+		addStep(ABR.steps, "predecessorNode", 4, 666, 666);
+		addStep(ABR.steps, "predecessorNode", 5, 666, 666);
 		while(par != null && t == par.left ) {
+			addStep(ABR.steps, "predecessorNode", 5, 666, 666);
 			t = par;
+			addStep(ABR.steps, "predecessorNode", 6, 666, 666);
 			par = t.parent;
+			addStep(ABR.steps, "predecessorNode", 7,(par == null)?666:par.key, 666);
+
 		}
+		addStep(ABR.steps, "predecessorNode", 9,(par == null)?666:par.key, 666);
 		return par;		
 	}	
 
