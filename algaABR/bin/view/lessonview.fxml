@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.ABRViewController">
+<AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.LessonViewController">
   <!-- TODO Add Nodes -->
   <children>
     <Slider layoutX="519.0" layoutY="51.0" />
@@ -27,9 +27,9 @@
     <Text font="$x1" layoutX="519.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Animation Speed" />
     <HBox alignment="TOP_LEFT" layoutX="0.0" layoutY="102.0" prefHeight="384.0" prefWidth="700.0">
       <children>
-        <Pane fx:id="panePseudocode" prefHeight="200.0" prefWidth="200.0" />
-        <Pane fx:id="paneVisualization" prefHeight="384.0" prefWidth="305.0" />
-        <Pane fx:id="paneQuestions" prefHeight="200.0" prefWidth="200.0" />
+        <Pane fx:id="panePseudocode" prefHeight="384.0" prefWidth="212.0" />
+        <Pane fx:id="paneVisualization" prefHeight="384.0" prefWidth="300.0" />
+        <Pane fx:id="paneQuestions" prefHeight="384.0" prefWidth="181.0" />
       </children>
     </HBox>
   </children>

@@ -1,7 +1,11 @@
 package app;
 
 
-import controller.Controller;
+import org.json.simple.JSONObject;
+
+import controller.LessonController;
+import controller.MenuController;
+import controller.NavigationController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -19,7 +23,7 @@ public class Main extends Application {
 			this.primaryStage = primaryStage;
 			this.primaryStage.setTitle("AlgaT - ABR");
 			
-			changeScene("/view/menuview.fxml");
+			gotoMenu();
 			
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -30,18 +34,36 @@ public class Main extends Application {
 		launch(args);
 	}
 	
-	public void changeScene(String fxmlResource) {
+	public void gotoLesson(String lessonName, JSONObject jsonRoot) {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlResource));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LessonView.fxml"));
 			Parent root = loader.load();
 			
-			Controller controller = loader.getController();
+			LessonController controller = loader.getController();
 			controller.setMainApp(this);
+			controller.setLesson(lessonName, jsonRoot);
 			
-			this.primaryStage.setScene(new Scene(root, 700, 500));
+			this.primaryStage.setScene(new Scene(root, 1060, 500));
 			this.primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
+	public void gotoMenu() {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MenuView.fxml"));
+			Parent root = loader.load();
+			
+			MenuController controller = loader.getController();
+			controller.setMainApp(this);
+			controller.loadCBoxLessons();
+			
+			this.primaryStage.setScene(new Scene(root, 1060, 500));
+			this.primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 }
