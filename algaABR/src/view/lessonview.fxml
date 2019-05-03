@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.LessonViewController">
+  <!-- TODO Add Nodes -->
+  <children>
+    <Slider layoutX="519.0" layoutY="51.0" />
+    <Button fx:id="random" layoutX="29.0" layoutY="24.0" mnemonicParsing="false" onAction="#handleRandomClick" prefHeight="27.0" prefWidth="81.0" text="random">
+      <font>
+        <Font name="System Bold" size="13.0" fx:id="x1" />
+      </font>
+    </Button>
+    <Button fx:id="step" font="$x1" layoutX="350.0" layoutY="26.0" mnemonicParsing="false" onAction="#handleStepClick" prefHeight="27.0" prefWidth="81.0" text="step" />
+    <Button fx:id="insert" font="$x1" layoutX="110.0" layoutY="25.0" mnemonicParsing="false" onAction="#handleInsertClick" prefHeight="27.0" prefWidth="81.0" text="insert" />
+    <Button fx:id="remove" font="$x1" layoutX="110.0" layoutY="51.0" mnemonicParsing="false" onAction="#handleRemoveClick" prefHeight="27.0" prefWidth="81.0" text="remove" />
+    <Button fx:id="successor" font="$x1" layoutX="191.0" layoutY="25.0" mnemonicParsing="false" onAction="#handleSuccessorClick" prefHeight="27.0" prefWidth="81.0" text="succesor" />
+    <Button fx:id="predecessor" font="$x1" layoutX="191.0" layoutY="51.0" mnemonicParsing="false" onAction="#handlePredecessorClick" prefHeight="27.0" prefWidth="81.0" text="predecessor" />
+    <Button fx:id="min" font="$x1" layoutX="270.0" layoutY="25.0" mnemonicParsing="false" onAction="#handleMinClick" prefHeight="27.0" prefWidth="81.0" text="min" />
+    <Button fx:id="max" font="$x1" layoutX="269.0" layoutY="51.0" mnemonicParsing="false" onAction="#handleMaxClick" prefHeight="27.0" prefWidth="81.0" text="max" />
+    <Button fx:id="lookup" font="$x1" layoutX="29.0" layoutY="51.0" mnemonicParsing="false" onAction="#handleLookupClick" prefHeight="27.0" prefWidth="81.0" text="lookup" />
+    <Button fx:id="run" font="$x1" layoutX="351.0" layoutY="51.0" mnemonicParsing="false" onAction="#handleRunClick" prefHeight="27.0" prefWidth="81.0" text="run" />
+    <Text font="$x1" layoutX="519.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Animation Speed" />
+    <HBox alignment="TOP_LEFT" layoutX="0.0" layoutY="102.0" prefHeight="384.0" prefWidth="700.0">
+      <children>
+        <Pane fx:id="panePseudocode" prefHeight="384.0" prefWidth="212.0" />
+        <Pane fx:id="paneVisualization" prefHeight="384.0" prefWidth="300.0" />
+        <Pane fx:id="paneQuestions" prefHeight="384.0" prefWidth="181.0" />
+      </children>
+    </HBox>
+  </children>
+</AnchorPane>
