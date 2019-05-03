@@ -13,10 +13,12 @@ import java.util.Optional;
 
 import javafx.animation.FadeTransition;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -139,6 +141,7 @@ public class ABRViewController {
 		maxButton.setDisable(b);
 	}
 
+	
 	private void drawTree(ABR t) {
 
 		if (t != null) {
@@ -334,6 +337,7 @@ public class ABRViewController {
 	}
 
 	// < <nome metodo> <numero riga> <valore nodo da evidenziare> <valore nodo in cui cambiare grafica> >
+	@FXML
 	public void handleStepClick() {
 		ArrayList<String> step = ABR.steps.remove(0);
 
@@ -363,7 +367,7 @@ public class ABRViewController {
 				drawTree(abr);
 			} else {
 				// se c'e' un albero serializzato in base64
-				if (step.get(3).length() > 8) {
+				if (step.get(3).length() >= 9) {
 					// deserializza l'albero da stampare
 					try {
 						byte b[] = Base64.getDecoder().decode(step.get(3));
@@ -385,6 +389,7 @@ public class ABRViewController {
 						System.out.println(e);
 					}
 				} else {
+					ABRView.getChildren().clear();
 					drawTree(abr);
 				}
 			}
