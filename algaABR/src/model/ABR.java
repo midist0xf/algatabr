@@ -230,7 +230,11 @@ public class ABR implements Serializable {
 
 			link(u.parent, t, x);
 			addStep(ABR.steps, "removeNode", 17, 666, (ABR) null);
-			addStep(ABR.steps, "removeNode", 17, u.key, this.getRoot(t));
+			if (t == null) {
+				addStep(ABR.steps, "removeNode", 17, u.key, this.getRoot(u));
+			} else {
+				addStep(ABR.steps, "removeNode", 17, u.key, this.getRoot(t));
+			}
 			addStep(ABR.steps, "removeNode", 18, 666, 555);
             /* il nodo  da eliminare è root */
 			if (u.parent == null) { 

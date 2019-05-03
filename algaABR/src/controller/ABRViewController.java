@@ -248,10 +248,10 @@ public class ABRViewController {
 								FadeTransition ft = highlightNodeTransition(c, Color.GREEN);
 								ft.play();*/				
 								}
-							}else {showAlert("La chiave non è presente nell'albero!");}						
+							}else {showAlert("La chiave non è presente nell'albero!");}
 						}else {showAlert("Scegli un intero tra -99 e 99");}
-					}else {showAlert("L'input inserito non è un intero!");}						
-			});			
+					}else {showAlert("L'input inserito non è un intero!");}
+			});
 		}
 	}
 
@@ -265,6 +265,7 @@ public class ABRViewController {
 			ft.play();*/
 		} else {
 			showAlert("L'albero è vuoto!");
+			handleRunClick();
 		}
 	}
 
@@ -277,6 +278,7 @@ public class ABRViewController {
 			ft.play();	*/		
 		} else {
 			showAlert("L'albero è vuoto!");	
+			handleRunClick();
 		}
 	}
 
@@ -296,9 +298,9 @@ public class ABRViewController {
 								/*Circle c = searchNode(t.key().toString());
 								FadeTransition ft = highlightNodeTransition(c, Color.GREEN);
 								ft.play();	*/												 
-							}else {showAlert("La chiave non è presente nell'albero!");}						
-						}else {showAlert("Scegli un intero tra -99 e 99");}
-					}else {showAlert("L'input inserito non è un intero!");}							
+							}else {showAlert("La chiave non è presente nell'albero!");handleRunClick();}
+						}else {showAlert("Scegli un intero tra -99 e 99");handleRunClick();}
+					}else {showAlert("L'input inserito non è un intero!");handleRunClick();}
 			});			
 		}
 	}	
@@ -396,6 +398,7 @@ public class ABRViewController {
 			for (Circle circle : drawnCircles) {
 				circle.setEffect(null);
 			}
+			drawnCircles.clear();
 		}
 	}
 
@@ -411,12 +414,6 @@ public class ABRViewController {
 		ABRView.getChildren().clear();
 	}
 	
-	
-	
-	
-	
-	
-	
 	private void saveNodeRelativeCoordinates(ABR p) {
 		if (p.parent() != null) {
 			double cx, cy;
@@ -431,8 +428,6 @@ public class ABRViewController {
 			p.setY(cy);		
 		}
 	}
-	
-	
 
 	private Circle searchNode(String key) {
 		Circle c = null;
