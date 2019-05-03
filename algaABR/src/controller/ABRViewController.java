@@ -341,9 +341,9 @@ public class ABRViewController {
 		// evidenzia un nodo se richiesto
 		if (step.get(2) != "") {
 			Circle c = searchNode(step.get(2));
-			drawnCircles.add(c);
 			
-			if (c != null) {
+			if (c != null && drawnCircles.contains(c) == false) {
+				drawnCircles.add(c);
 				InnerShadow is = new InnerShadow();
 				DropShadow ds = new DropShadow();
 				is.setColor(Color.YELLOW);
@@ -360,9 +360,6 @@ public class ABRViewController {
 			if (step.get(0) != "removeNode") {
 				drawTree(abr);
 			} else {
-				handleClearClick();
-				ABRView.getChildren().clear();
-				
 				// se c'e' un albero serializzato in base64
 				if (step.get(3).length() >= 4) {
 					// deserializza l'albero da stampare
@@ -372,12 +369,21 @@ public class ABRViewController {
 						ByteArrayInputStream bi = new ByteArrayInputStream(b);
 						ObjectInputStream si = new ObjectInputStream(bi);
 						
-						drawTree((ABR) si.readObject());
+						ABR abtree =(ABR) si.readObject();
+
+						if (abtree != null) {
+							drawTree(abtree);
+						} else {
+							ABRView.getChildren().clear();
+						}
+
 						si.close();
 					} catch (Exception e) {
 						drawTree(abr);
 						System.out.println(e);
 					}
+				} else {
+					drawTree(abr);
 				}
 			}
 		}

@@ -176,7 +176,14 @@ public class ABR implements Serializable {
 		// aggiungo lo step in fondo alla lista
 		ABR.steps.add(step);
 	}
-
+	
+	public ABR getRoot(ABR t) {
+		while (t != null && t.parent != null) {
+			t = t.parent;
+		}
+		return t;
+	}
+	
 	public ABR removeNode(Integer x) {
 		ABR u = this.lookupNodeNoStep(x);
 		addStep(ABR.steps, "removeNode", 0, u.key, 666);
@@ -196,13 +203,15 @@ public class ABR implements Serializable {
 				u.key = s.key();     
 				u.value = s.value();
 				
-				addStep(ABR.steps, "removeNode", 6, 666, this);
+				addStep(ABR.steps, "removeNode", 6, 666, (ABR) null);
+				addStep(ABR.steps, "removeNode", 6, 666, this.getRoot(s));
+
 				addStep(ABR.steps, "removeNode", 7, 666, 666);
                 /* si memorizza la chiave da parte */
 				x = s.key();
 				addStep(ABR.steps, "removeNode", 8, 666, 666);
 				u = s;
-				addStep(ABR.steps, "removeNode", 9, 666, this);
+				addStep(ABR.steps, "removeNode", 9, 666, 666);
 			}
 
 			addStep(ABR.steps, "removeNode", 11, u.key, 666);
@@ -220,20 +229,24 @@ public class ABR implements Serializable {
 (u.parent,null,x)*/
 
 			link(u.parent, t, x);
-			addStep(ABR.steps, "removeNode", 17, u.key, this);
+			addStep(ABR.steps, "removeNode", 17, 666, (ABR) null);
+			addStep(ABR.steps, "removeNode", 17, u.key, this.getRoot(t));
 			addStep(ABR.steps, "removeNode", 18, 666, 555);
             /* il nodo  da eliminare è root */
 			if (u.parent == null) { 
 				addStep(ABR.steps, "removeNode", 19, (t == null)?666:t.key, 666);
 				if (t != null) { /* suo figlio diventa root */
 					t.parent = null; 
-					addStep(ABR.steps, "removeNode", 20, t.key, this);
+					addStep(ABR.steps, "removeNode", 20, 666, (ABR) null);
+					addStep(ABR.steps, "removeNode", 20, t.key, this.getRoot(t));
 				}
-				addStep(ABR.steps, "removeNode", 21, 666, this);
+				addStep(ABR.steps, "removeNode", 21, 666, (ABR) null);
+				addStep(ABR.steps, "removeNode", 21, 666, 69);
 				return t;
 			}
 		}
-		addStep(ABR.steps, "removeNode", 22, 666, u.key);
+		addStep(ABR.steps, "removeNode", 22, 666, (ABR) null);
+		addStep(ABR.steps, "removeNode", 22, 666, 69);
 		return this;
 	}
 	
