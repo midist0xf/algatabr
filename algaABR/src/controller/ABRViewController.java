@@ -363,7 +363,7 @@ public class ABRViewController {
 				drawTree(abr);
 			} else {
 				// se c'e' un albero serializzato in base64
-				if (step.get(3).length() >= 4) {
+				if (step.get(3).length() > 8) {
 					// deserializza l'albero da stampare
 					try {
 						byte b[] = Base64.getDecoder().decode(step.get(3));
