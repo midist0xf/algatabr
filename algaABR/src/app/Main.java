@@ -43,7 +43,7 @@ public class Main extends Application {
 			controller.setMainApp(this);
 			controller.setLesson(lessonName, jsonRoot);
 			
-			this.primaryStage.setScene(new Scene(root, 1060, 500));
+			this.primaryStage.setScene(new Scene(root, 1150, 500));
 			this.primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -59,7 +59,7 @@ public class Main extends Application {
 			controller.setMainApp(this);
 			controller.loadCBoxLessons();
 			
-			this.primaryStage.setScene(new Scene(root, 1060, 500));
+			this.primaryStage.setScene(new Scene(root, 1150, 500));
 			this.primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
