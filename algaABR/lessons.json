@@ -73,21 +73,45 @@
       "Tree predecessorNode(Tree t)": "if (t == null)\n\treturn t\n\nif (t.left != null)\n\treturn t.right.max\n\nTree p = t.parent\nwhile (p != null && t == p.left)\n\tt=p\n\tp = p.parent\n\nreturn p"
     },
     "DomandeRiposteSpiegazioni": {
-      "P=NP?": [
-        "No",
-        "Risposta corretta perche' non e' possibile implementare la fortuna come codice",
-        "Si",
-        "risposta sbagliata, dimostralo se ci riesci",
-        "dipende",
-        "risposta sbagliata, siamo seri per favore"
+      "Quale tra questi non è un vincolo che un Albero RB deve soddisfare?": [
+        "Solo Il primo figlio inserito in un nodo rosso è nero",
+        "Risposta corretta, perche' ogni nodo rosso\nha entrambi i figli neri",
+        "La radice è nera",
+        "Risposta sbagliata",
+        "Tutte le foglie sono nere",
+        "Risposta sbagliata"
       ],
-      "Quanto e' difficile scrivere domande senza usare bestemmie?": [
-        "tantissimo",
-        "risposta giusta, sto quasi sudando per scrivere sta roba",
-        "poco",
-        "risposta sbagliata, riprova",
-        "zero",
-        "risposta sbagliata, e' piu facile laurearsi in corso con 110L"
+      "Quale tra le seguenti è la definizione corretta di altezza nera?": [
+        "Numero di nodi neri lungo ogni percorso da un nodo u (escluso) ad una foglia",
+        "Risposta corretta",
+        "Numero di nodi neri lungo ogni percorso da un nodo u (incluso) ad una foglia",
+        "Risposta sbagliata, perchè u è escluso",
+        "Numero di nodi neri lungo ogni percorso da un nodo u (escluso) ad una foglia con padre nero",
+        "Risposta sbagliata, perchè il padre della\nfoglia può essere rosso"
+      ],
+      "Quale tra le seguenti operazioni richiedono di essere modificate rispetto agli ABR?": [
+        "insertNode, removeNode",
+        "Risposta corretta",
+        "min, max, lookupNode",
+        "Risposta sbagliata, perchè bisogna modificare\nsolamente insertNode e removeNode",
+        "successorNode, predecessorNode",
+        "Risposta sbagliata, perchè bisogna modificare\nsolamente insertNode e removeNode"
+      ],
+      "Qual è la complessità della procedura balanceInsert?": [
+        "O(h), dove h è l'altezza dell'albero",
+        "Risposta corretta",
+        "O(n)",
+        "Risposta sbagliata, perchè costa O(h) in\nquanto l'esecuzione di ognuno dei singoli\ncasi è O(1)",
+        "O(2^n)",
+        "Risposta sbagliata, perchè costa O(h) in\nquanto l'esecuzione di ognuno dei singoli\ncasi è O(1)"
+      ],
+      "Qual è la complessità della procedura removeNode?": [
+        "O(log n)",
+        "Risposta corretta",
+        "O(n)",
+        "Risposta sbagliata, perchè è possibile visitare al\nmassimo un numero O(log n) di casi, ognuno\ndei quali costa O(1)",
+        "O(2^n)",
+        "Risposta sbagliata, perchè è possibile visitare al\nmassimo un numero O(log n) di casi, ognuno\ndei quali costa O(1)"
       ]
     }
   }
