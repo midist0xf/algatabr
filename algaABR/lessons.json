@@ -13,21 +13,45 @@
       "Tree predecessorNode(Tree t)": "if (t == null)\n\treturn t\n\nif (t.left != null)\n\treturn t.right.max\n\nTree p = t.parent\nwhile (p != null && t == p.left)\n\tt = p\n\tp = p.parent\n\nreturn p"
     },
     "DomandeRiposteSpiegazioni": {
-      "Cosa succede se inserisco un numero pari?": [
-        "Hai inserito un numero pari",
-        "Risposta corretta perche inserendo un numero pari ne hai inserito uno pari",
-        "perdi 3% di bodyfat",
-        "risposta sbagliata, se si perdesse il 3% di bodyfat inserendo numeri pari tutti avrebbero il sixpack",
-        "niente",
-        "risposta sbagliata, se inserisci qualcosa succede qualcosa"
+      "Che proprietà verificano gli ABR?": [
+        "Le chiavi nel sottoalbero sx sono minori della chiave in u e le chiavi nel sottoalbero dx sono maggiori della chiave in u",
+        "Risposta corretta",
+        "Le chiavi nel sottoalbero dx sono minori della chiave in u e le chiavi nel sottoalbero sx sono maggiori della chiave in u",
+        "Risposta sbagliata, perchè è vero il viceversa",
+        "Le chiavi nel sottoalbero sx sono minori o uguali della chiave in u e le chiavi nel sottoalbero dx sono maggiori della chiave in u",
+        "Risposta sbagliata, perchè le chiavi contenute\nnel sottoalbero sx sono strettamente minori\ndella chiave contenuta in u"
       ],
-      "Perche si chiamano abr?": [
-        "perche e' l' acronimo",
-        "Risposta corretta abr e' l'acronimo",
-        "perche suonava bene",
-        "risposta sbagliata, non e' vero",
-        "c'era poca fantasia all'epoca",
-        "no"
+      "Quanto costa la procedura lookupNode?": [
+        "O(h), dove h è l'altezza dell'albero",
+        "Risposta corretta",
+        "O(1)",
+        "Risposta sbagliata, costa O(h), dove h è\nl'altezza dell'albero",
+        "O(n) dove n è il numero dei nodi",
+        "Risposta sbagliata, costa O(h), dove h è\nl'altezza dell'albero"
+      ],
+      "Quanti casi deve gestire la removeNode?": [
+        "Tre: u non ha figli, u ha un solo figlio, u ha due figli",
+        "Risposta corretta",
+        "Quattro: u non ha figli, u ha un solo figlio, u ha due figli diversi, u ha due figli uguali",
+        "Risposta sbagliata, perchè non è possibile\nche un nodo abbia due figli uguali",
+        "Due: u non ha figli, u ha un solo figlio",
+        "Risposta sbagliata, perchè manca il caso nel quale\nun nodo abbia due figli"
+      ],
+      "Salvato il minimo di T in u, si itera sul successore di u fino a quando questo non è null. Quanto costa questa procedura?": [
+        "O(n) in quanto tutti i nodi vengono visitati al massimo due volte",
+        "Risposta corretta",
+        "O(n) in quanto tutti i nodi vengono visitati al massimo una volta",
+        "Risposta sbagliata, perchè i nodi vengono visitati\nal massimo due volte, una volta per cercare\nil minimo e una volta per cercare il successore",
+        "O(n) in quanto tutti i nodi vengono visitati al massimo quattro volte",
+        "Risposta sbagliata, perchè i nodi vengono visitati\nal massimo due volte, una volta per cercare\nil minimo e una volta per cercare il successore"
+      ],
+      "Quale di queste caratteristiche di un ABR è vera?": [
+        "Il costo di lookupNode, insertNode e removeNode può essere O(n) nel caso pessimo",
+        "Risposta corretta, perchè l'albero può allungarsi\ninserendo e cancellando nodi",
+        "Il costo di lookupNode, insertNode e removeNode è sempre O(log n)",
+        "Risposta sbagliata, perchè questa implementazione\nnon è bilanciata",
+        "Il costo di lookupNode, insertNode e removeNode può essere O(2^n) in un caso particolare",
+        "Risposta sbagliata, perchè costano O(h)\ndove h è l'altezza dell'albero"
       ]
     }
   },
