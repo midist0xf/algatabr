@@ -26,7 +26,7 @@
     </RadioButton>
     <RadioButton fx:id="secondAnswerRadioB" layoutX="25.0" layoutY="240.0" mnemonicParsing="false" prefWidth="210.0" text="RadioButton" toggleGroup="$x1" />
     <RadioButton fx:id="thirdAnswerRadioB" layoutX="24.0" layoutY="340.0" mnemonicParsing="false" prefWidth="210.0" text="RadioButton" toggleGroup="$x1" />
-    <Button layoutX="83.0" layoutY="427.0" mnemonicParsing="false" onMouseClicked="#handleAnswerConfirm" text="Conferma" />
+    <Button layoutX="83.0" layoutY="447.0" mnemonicParsing="false" onMouseClicked="#handleAnswerConfirm" text="Conferma" />
     <Pane layoutX="23.0" layoutY="64.20800018310547">
       <children>
         <Text fx:id="questionText" layoutY="13.0" strokeType="OUTSIDE" strokeWidth="0.0" text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllpoooooooooooo" textAlignment="CENTER" wrappingWidth="214.20000076293945" />
