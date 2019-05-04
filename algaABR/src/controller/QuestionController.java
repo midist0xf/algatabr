@@ -140,6 +140,10 @@ public class QuestionController extends NavigationController{
 		qPicker.add(5);
 		java.util.Collections.shuffle(qPicker);
 
+		firstAnswerRadioB.setWrapText(true);		
+		secondAnswerRadioB.setWrapText(true);		
+		thirdAnswerRadioB.setWrapText(true);
+
 		firstAnswerRadioB.setText(questAnsExp[this.currentQuestion][qPicker.get(0)]);
 		secondAnswerRadioB.setText(questAnsExp[this.currentQuestion][qPicker.get(1)]);	
 		thirdAnswerRadioB.setText(questAnsExp[this.currentQuestion][qPicker.get(2)]);

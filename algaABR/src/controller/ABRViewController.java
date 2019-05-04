@@ -367,7 +367,7 @@ public class ABRViewController {
 				drawTree(abr);
 			} else {
 				// se c'e' un albero serializzato in base64
-				if (step.get(3).length() >= 9) {
+				if (step.get(3).length() >= 4) {
 					// deserializza l'albero da stampare
 					try {
 						byte b[] = Base64.getDecoder().decode(step.get(3));
@@ -378,9 +378,13 @@ public class ABRViewController {
 						ABR abtree =(ABR) si.readObject();
 
 						if (abtree != null) {
+							for (Node n : ABRView.getChildren()) {
+								n.toBack();
+							}
+							ABRView.getChildren().clear();
 							drawTree(abtree);
 						} else {
-							ABRView.getChildren().clear();
+							//ABRView.getChildren().clear();
 						}
 
 						si.close();
@@ -389,7 +393,6 @@ public class ABRViewController {
 						System.out.println(e);
 					}
 				} else {
-					ABRView.getChildren().clear();
 					drawTree(abr);
 				}
 			}
@@ -474,6 +477,7 @@ public class ABRViewController {
 		}
 	}
 
+	
 	private void drawNode(double x, double y, double radius, String key) {
 
 		Text text = new Text(key);
