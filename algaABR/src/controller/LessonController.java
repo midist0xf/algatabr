@@ -41,7 +41,13 @@ public class LessonController extends NavigationController {
 			break;
 
 		case "RB":
-			//datastructureController = (ABRViewController) datastructureController;
+			try {
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/RBView.fxml"));
+				dataStructurePane.getChildren().add(loader.load());
+				datastructureController = loader.getController();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			break;
 
 		default:
