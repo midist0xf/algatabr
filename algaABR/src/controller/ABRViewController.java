@@ -41,7 +41,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import model.ABR;
 
-public class ABRViewController {
+public class ABRViewController extends DataStuctureController {
 	/* costanti per Circle */
 	private final static double R = 20;
 	private final static double ROOTX = 150;
@@ -73,9 +73,6 @@ public class ABRViewController {
 	@FXML private Button removeButton;
 	@FXML private Button maxButton;
 	@FXML private Button runButton;
-	
-	/* lesson controller per comunicare con gli altri controllers*/
-	private LessonController lessonController;
 	
 	@FXML
 	private Pane ABRView;

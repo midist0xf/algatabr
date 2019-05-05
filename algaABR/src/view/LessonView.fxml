@@ -21,9 +21,8 @@
         <Insets right="30.0" />
       </HBox.margin>
     </Pane>
-    <Pane prefHeight="200.0" prefWidth="550.0">
+    <Pane fx:id="dataStructurePane" prefHeight="200.0" prefWidth="550.0">
       <children>
-        <fx:include fx:id="control" source="ControlBarView.fxml" />
       </children>
     </Pane>
     <Pane prefHeight="200.0" prefWidth="250.0">
