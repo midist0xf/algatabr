@@ -11,7 +11,10 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Optional;
 
+import org.omg.CORBA.PUBLIC_MEMBER;
+
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -378,13 +381,10 @@ public class ABRViewController {
 						ABR abtree =(ABR) si.readObject();
 
 						if (abtree != null) {
-							for (Node n : ABRView.getChildren()) {
-								n.toBack();
-							}
-							ABRView.getChildren().clear();
 							drawTree(abtree);
 						} else {
-							//ABRView.getChildren().clear();
+							ABRView.getChildren().clear();
+							stepButton.fire();
 						}
 
 						si.close();

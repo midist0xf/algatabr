@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 
-<HBox alignment="CENTER_LEFT" prefHeight="500.0" prefWidth="1150.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.LessonController">
+<HBox alignment="CENTER_LEFT" prefHeight="500.0" prefWidth="1150.0" styleClass="pane-bg-color" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LessonController">
   <!-- NB Quando si vogliono usare i controller nella classe lesson, chiamali nome+"controller" 
   	   per esempio questionController
   -->

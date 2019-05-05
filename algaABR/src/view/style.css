@@ -1,0 +1,15 @@
+.control-buttons {
+	-fx-background-color: #515D6D;
+	-fx-text-fill: white;
+	-fx-background-radius: 5em;
+}
+
+.method-buttons {
+	-fx-background-color: #EDA678;
+	-fx-text-fill: black;
+	-fx-background-radius: 5em;
+}
+
+.pane-bg-color {
+	-fx-background-color: #3D4956;
+}

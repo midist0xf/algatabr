@@ -43,7 +43,9 @@ public class Main extends Application {
 			controller.setMainApp(this);
 			controller.setLesson(lessonName, jsonRoot);
 			
-			this.primaryStage.setScene(new Scene(root, 1150, 500));
+			Scene scene = new Scene(root, 1150, 500);
+			scene.getStylesheets().add("/view/style.css");
+			this.primaryStage.setScene(scene);
 			this.primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -59,7 +61,9 @@ public class Main extends Application {
 			controller.setMainApp(this);
 			controller.loadCBoxLessons();
 			
-			this.primaryStage.setScene(new Scene(root, 1150, 500));
+			Scene scene = new Scene(root, 1150, 500);
+			scene.getStylesheets().add("/view/style.css");
+			this.primaryStage.setScene(scene);
 			this.primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();

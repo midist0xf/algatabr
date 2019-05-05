@@ -1,60 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.lang.String?>
-<?import javafx.collections.FXCollections?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.*?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" prefHeight="500.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.MenuController">
+<VBox alignment="CENTER" prefHeight="500.0" prefWidth="900.0" styleClass="pane-bg-color" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MenuController">
   <children>
-    <HBox alignment="CENTER" prefHeight="128.0" prefWidth="900.0">
-      <children>
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="AlgaT: ABR" textAlignment="CENTER" textOrigin="BASELINE" wrappingWidth="391.0000190138817">
-          <font>
-            <Font name="System Bold" size="50.0" />
-          </font>
-          <HBox.margin>
-            <Insets top="20.0" />
-          </HBox.margin>
-        </Text>
-      </children>
+    <HBox alignment="CENTER" prefHeight="300.0" prefWidth="900.0">
+         <children>
+            <ImageView fitHeight="178.0" fitWidth="440.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../Downloads/algatabr.png" />
+               </image>
+            </ImageView>
+         </children>
     </HBox>
-    <HBox alignment="TOP_CENTER" prefHeight="300.0" prefWidth="900.0">
+    <HBox alignment="TOP_CENTER" prefHeight="128.0" prefWidth="900.0">
       <children>
-        <AnchorPane prefHeight="600.0" prefWidth="300.0">
+        <AnchorPane prefHeight="100.0" prefWidth="300.0">
           <children>
-            <Circle layoutX="95.0" layoutY="151.0" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle layoutX="209.0" layoutY="151.0" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle layoutX="150.0" layoutY="59.0" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
-            <Text fill="WHITE" layoutX="126.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10">
-              <font>
-                <Font name="System Bold" size="34.0" fx:id="x1" />
-              </font>
-            </Text>
-            <Text fill="WHITE" font="$x1" layoutX="83.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5" textAlignment="CENTER" />
-            <Text fill="WHITE" font="$x1" layoutX="185.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="13" />
-            <Text layoutX="35.0" layoutY="240.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scegli una lezione" textAlignment="CENTER" wrappingWidth="229.4000244140625">
+            <Text layoutX="35.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scegli una lezione" textAlignment="CENTER" wrappingWidth="229.4000244140625">
               <font>
                 <Font size="18.0" />
               </font>
             </Text>
-            <ComboBox fx:id="lessonsCBox" layoutX="68.0" layoutY="248.0" prefHeight="27.0" prefWidth="130.0" promptText="Scegli una lezione" />
-            <Button layoutX="198.0" layoutY="248.0" mnemonicParsing="false" onMouseClicked="#handleOkClick" prefHeight="27.0" prefWidth="41.0" text="Ok" />
-            <Line endX="80.0" endY="56.0" layoutX="17.0" layoutY="60.0" startX="116.0" startY="28.0" strokeWidth="3.0" />
-            <Line endX="195.0" endY="56.0" layoutX="12.0" layoutY="60.0" startX="155.79998779296875" startY="28.0" strokeWidth="3.0" />
+            <ComboBox fx:id="lessonsCBox" layoutX="14.0" layoutY="79.0" prefHeight="27.0" prefWidth="215.0" promptText="Scegli una lezione" styleClass="method-buttons" stylesheets="@style.css" />
+            <Button layoutX="244.0" layoutY="79.0" mnemonicParsing="false" onMouseClicked="#handleOkClick" prefHeight="27.0" prefWidth="41.0" styleClass="method-buttons" stylesheets="@style.css" text="Ok" />
           </children>
         </AnchorPane>
       </children>
