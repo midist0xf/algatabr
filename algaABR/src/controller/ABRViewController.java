@@ -49,8 +49,8 @@ public class ABRViewController extends DataStuctureController {
 	/* costanti per Line */
 	private final static double OFFSX = 20;
 	private final static double OFFSY = 40;
-	private final static double OFFEX = 15;
-	private final static double OFFEY = 2;
+	private final static double OFFEX = 18;
+	private final static double OFFEY = 0;
 
 	/* costante che definisce l'altezza massima dell'albero */
 	private final static int MAXH = 4;

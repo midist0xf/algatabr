@@ -49,8 +49,8 @@ public class RBViewController extends DataStuctureController {
 	/* costanti per Line */
 	private final static double OFFSX = 20;
 	private final static double OFFSY = 40;
-	private final static double OFFEX = 15;
-	private final static double OFFEY = 2;
+	private final static double OFFEX = 18;
+	private final static double OFFEY = 0;
 
 	/* costante che definisce l'altezza massima dell'albero */
 	private final static int MAXH = 4;
@@ -120,6 +120,10 @@ public class RBViewController extends DataStuctureController {
 						/* inserisce nella struttura dati */
 						rb.insertNode(keyInt, 0);
 						/* salva riferimento all'ultimo nodo inserito */
+						
+						/* TODO: modificare insert o no? */
+						rb = rb.getRoot(rb);
+						
 						RB p = rb.lookupNodeNoStep(keyInt);
 						/*
 						 * memorizza coordinate posizione nodo relativamente al padre , all'altezza
@@ -376,6 +380,10 @@ public class RBViewController extends DataStuctureController {
 		for (int i = 1; i < 16; i++) {
 			int value = choose(arr[i], -arr[i]);
 			rb.insertNode(value, 0);
+			
+			/* TODO: modificare insert o no? */
+			rb = rb.getRoot(rb);
+			
 			RB p = rb.lookupNodeNoStep(value);
 			saveNodeRelativeCoordinates(p);
 			if (rb.getNodeHeight(p) > MAXH) {

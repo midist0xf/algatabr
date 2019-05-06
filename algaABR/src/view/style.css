@@ -13,3 +13,17 @@
 .pane-bg-color {
 	-fx-background-color: #3D4956;
 }
+
+.combo-box .combo-box-popup .list-view, .combo-box .combo-box-popup .list-cell {
+    -fx-background-color: #EDA678 ;
+    -fx-text-fill: black ;
+}
+
+.combo-box .combo-box-popup .list-cell:hover {
+    -fx-text-fill: white ;
+    -fx-background-color: #515D6D ;
+}
+
+#questionAnchor {
+	-fx-border-color: transparent transparent transparent #515D6D ;
+}
