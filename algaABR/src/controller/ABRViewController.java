@@ -32,23 +32,24 @@ import model.ABR;
 
 
 public class ABRViewController extends DataStuctureController {
-	/* costanti per Circle */
+	/* circle radius */
 	private final static double R = 20;
+	/* root node default coordinates */
 	private final static double ROOTX = 150;
 	private final static double ROOTY = 0;
-	/* costanti per Line */
+	/* start/end line points offsets */
 	private final static double OFFSX = 20;
 	private final static double OFFSY = 40;
 	private final static double OFFEX = 18;
 	private final static double OFFEY = 0;
 
-	/* costante che definisce l'altezza massima dell'albero */
+	/* maximum tree height */
 	private final static int MAXH = 4;
 
-	/* modello */
+	/* model */
 	private ABR abr = null;
 
-	/* serve per lo step button, memorizza i cerchi disegnati*/
+	/* store drawn circle, it's used by handleStepClick */
 	ArrayList<Circle> drawnCircles = new ArrayList<Circle>();
 
 	/* buttons */
