@@ -1,7 +1,13 @@
 .control-buttons {
 	-fx-background-color: #515D6D;
-	-fx-text-fill: white;
+	-fx-text-fill: #adadad;
 	-fx-background-radius: 5em;
+}
+
+.control-buttons:hover {
+	-fx-background-color: #243142;
+	-fx-text-fill: white;
+	
 }
 
 .method-buttons {
@@ -10,6 +16,10 @@
 	-fx-background-radius: 5em;
 }
 
+.method-buttons:hover{
+	-fx-background-color: #f78c47;
+	-fx-text-fill: white;	
+}
 .pane-bg-color {
 	-fx-background-color: #3D4956;
 }
