@@ -124,6 +124,7 @@ public class ABR implements Serializable {
 			link(p,n,j);			
 			addStep(ABR.steps, "insertNode", 13, 666, n.key);
 		}
+		addStep(ABR.steps, "insertNode", 13, j, 666);
 	}
 	
 	
@@ -268,7 +269,7 @@ public class ABR implements Serializable {
 				addStep(ABR.steps, "lookup", 4, t.key, 666);
             }			
 		}
-		addStep(ABR.steps, "lookup", 5, 666, 666);
+		addStep(ABR.steps, "lookup", 5, t.key, 666);
 		return t;
 	}
 	
@@ -361,7 +362,7 @@ public class ABR implements Serializable {
 
 			addStep(ABR.steps, "predecessorNode", 7, 666, 666);
 		}
-		addStep(ABR.steps, "predecessorNode", 11, 666, 666);
+		addStep(ABR.steps, "predecessorNode", 11, (par == null)?666:par.key, 666);
 		return par;		
 	}	
 
