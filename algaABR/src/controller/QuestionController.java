@@ -105,16 +105,19 @@ public class QuestionController extends NavigationController{
 	}
 	
 	/**
-	 * Given a json object which represents a lesson parses it and 
+	 * Given a json object, which represents a lesson, parses it and 
 	 * loads the questions within the dedicated data structure
 	 * @param jLesson
 	 */
 	public void loadQuestions(JSONObject jLesson) {
 		try {
+			// Get the list of questions associated with the lesson passed as argument
 			Set questions = jLesson.keySet();
 
-			questAnsExp = new String[questions.size()][7]; // perche 7? guarda spiegazione all inizio
+			// 7 because a record is [question1, correctanswer, explanationcorrectans, wronganswer, explanationwrongans, wronganswer, explanationwrongans]
+			questAnsExp = new String[questions.size()][7]; 
 
+			
 			Iterator qIter = questions.iterator();	
 
 			for (int i = 0; qIter.hasNext(); i++) {
