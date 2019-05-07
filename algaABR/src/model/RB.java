@@ -26,15 +26,15 @@ public class RB implements Serializable {
 		RED, BLACK;
 	}
 
-	public RB(Integer k, Integer v, Color c) {
+	public RB(Integer k, Integer v) {
 		key = k;
 		value = v;
 		parent = null;
 		right = null;
 		left = null;
-		color = c;
+		color = Color.BLACK;
 	}
-	
+
 	public Color getColor() {
 		return color;
 	}
@@ -84,66 +84,45 @@ public class RB implements Serializable {
 		return height;
 	}
 
-	public void link(RB p, RB u, Integer j) {
-		if (u != null) {
-			u.parent = p; /* aggiornamento padre del nodo che si vuole aggiungere */
-		}
-		if (p != null) {
-			if (j < p.key()) {
-				p.left = u;
-			} /* il nuovo nodo diventa figlio sinistro */
-			else {
-				p.right = u;
-			} /* il nuovo nodo diventa figlio destro */
-		}
-	}
-
-	public void rotateLeft(RB x) {
+	public void rotateLeft() {
+		RB x = this;
 		RB y = x.right;
 		RB p = x.parent;
 		x.right = y.left;
-
-		if (y.left != null) {
+		if (y.left != null)
 			y.left.parent = x;
-		}
-
 		y.left = x;
 		x.parent = y;
 		y.parent = p;
-
 		if (p != null) {
-			if (p.left == x) {
+			if (p.left == x)
 				p.left = y;
-			} else {
+			else
 				p.right = y;
-			}
 		}
+
 	}
 
-	public void rotateRight(RB x) {
+	public void rotateRight() {
+		RB x = this;
 		RB y = x.left;
 		RB p = x.parent;
 		x.left = y.right;
-
-		if (y.right != null) {
+		if (y.right != null)
 			y.right.parent = x;
-		}
-
 		y.right = x;
 		x.parent = y;
 		y.parent = p;
-
 		if (p != null) {
-			if (p.left == x) {
+			if (p.left == x)
 				p.left = y;
-			} else {
+			else
 				p.right = y;
-			}
 		}
 	}
 
-	private void balanceInsert(RB t) {
-		t.color = Color.RED;
+	private void balanceInsert() {
+		RB t = this;
 		while (t != null) {
 			RB p = t.parent;
 			RB n = (p != null) ? p.parent : null;
@@ -163,67 +142,72 @@ public class RB implements Serializable {
 			} else {
 				if (t == p.right && p == n.left) // case 4.a
 				{
-					rotateLeft(p);
+					p.rotateLeft();
 					t = p;
 				} else if (t == p.left && p == n.right) // case 4.b
 				{
-					rotateRight(p);
+					p.rotateRight();
 					t = p;
 				} else {
 					if (t == p.left && p == n.left) // case 5.a
-						rotateRight(n);
+						n.rotateRight();
 					else if (t == p.right && p == n.right)
-						rotateLeft(n);
+						n.rotateLeft();
 					p.color = Color.BLACK;
 					n.color = Color.RED;
 					t = null;
 				}
 			}
 		}
+
 	}
 
-	public void insertNode(Integer j, Integer v) {
-		RB p = null;
+	public RB insertNode(Integer x, Integer v) {
+		addStep(RB.steps, "insertNode", 0, this.key, 666);
+		addStep(RB.steps, "insertNode", 1, 666, 666);
+		
+		RB s = null;
 		RB u = this;
 
-		addStep(RB.steps, "insertNode", 0, u.key, 666);
-		addStep(RB.steps, "insertNode", 1, u.key, 666);
-
-		/* cerca posizione inserimento */
-		while (u != null && u.key != j) {
-			addStep(RB.steps, "insertNode", 2, u.key, 666);
-			addStep(RB.steps, "insertNode", 3, u.key, 666);
-			p = u;
-			addStep(RB.steps, "insertNode", 4, u.key, 666);
-			if (j < u.key()) {
-				u = u.left();
-				addStep(RB.steps, "insertNode", 5, (u == null) ? 666 : u.key, 666);
-			} else {
-				addStep(RB.steps, "insertNode", 6, u.key, 666);
-				u = u.right();
-				addStep(RB.steps, "insertNode", 7, (u == null) ? 666 : u.key, 666);
-			}
+		addStep(RB.steps, "insertNode", 2, 666, 666);
+		while (u != null && u.key != x) {
+			addStep(RB.steps, "insertNode", 3, 666, 666);
+			s = u;
+			u = (x.compareTo(u.key) < 0) ? u.left : u.right;
+			addStep(RB.steps, "insertNode", 4, (u != null)? u.key : 666, 666);
+			addStep(RB.steps, "insertNode", 2, 666, 666);
 		}
 
-		addStep(RB.steps, "insertNode", 9, 666, 666);
-		if (u != null && u.key() == j) { /* la chiave è già presente */
-			addStep(RB.steps, "insertNode", 10, u.key, 666);
+		addStep(RB.steps, "insertNode", 6, 666, 666);
+		if (u != null && u.key == x) {
+			addStep(RB.steps, "insertNode", 7, u.key, 666);
 			u.value = v;
 		} else {
-			addStep(RB.steps, "insertNode", 11, 666, 666);
-			RB n = new RB(j, v, Color.BLACK); /* nodo creato e aggiunto */
-			addStep(RB.steps, "insertNode", 12, (u == null) ? 666 : u.key, 666);
-			link(p, n, j);
-			addStep(RB.steps, "insertNode", 13, 666, n.key);
-			balanceInsert(n);
-			addStep(RB.steps, "insertNode", 14, 666, 666);
-			addStep(RB.steps, "insertNode", 14, 666, (RB) null);
-			addStep(RB.steps, "insertNode", 14, 666, n.getRoot(n));
+			addStep(RB.steps, "insertNode", 8, 666, 666);
+			addStep(RB.steps, "insertNode", 9, 666, 666);
+			addStep(RB.steps, "insertNode", 10, 666, 666);
+			RB n = new RB(x, v);
+			n.color = Color.RED;
+			s.link(n, x);
+
+			addStep(RB.steps, "insertNode", 10, 666, (RB) null);
+			addStep(RB.steps, "insertNode", 10, 666, n.getRoot(n));
+
+			n.balanceInsert();
 		}
+		// return the new root
+		u = this;
+		while (u.parent != null)
+			u = u.parent;
+
+		addStep(RB.steps, "insertNode", 11, 666, (RB) null);
+		addStep(RB.steps, "insertNode", 11, 666, u.key);
+
+		return u;
 	}
 
 	private void addStep(ArrayList<ArrayList<String>> steps, String methodName, Integer codeLineToHighlight,
-			Integer nodeValueToHighlight, RB abr) {
+			Integer nodeValueToHighlight, RB rb) {
 		// creo uno step da aggiungere alla lista di tutti gli steps
 		ArrayList<String> step = new ArrayList<String>();
 
@@ -235,12 +219,12 @@ public class RB implements Serializable {
 		else
 			step.add("");
 
-		// serializza l' abr in stringa
+		// serializza l' rb in stringa
 		try {
 			ByteArrayOutputStream bo = new ByteArrayOutputStream();
 			ObjectOutputStream so = new ObjectOutputStream(bo);
 
-			so.writeObject(abr);
+			so.writeObject(rb);
 			so.flush();
 			step.add(Base64.getEncoder().encodeToString(bo.toByteArray()));
 			so.close();
@@ -282,94 +266,121 @@ public class RB implements Serializable {
 	}
 
 	public RB removeNode(Integer x) {
-		RB u = this.lookupNodeNoStep(x);
-		addStep(RB.steps, "removeNode", 0, u.key, 666);
+		RB Tr = this;
+		RB u = Tr.lookupNodeNoStep(x);
+		
+		addStep(RB.steps, "removeNode", 0, (u != null)? u.key : 666, 666);
+		addStep(RB.steps, "removeNode", 1, 666, 666);
+		
 		if (u != null) {
-			addStep(RB.steps, "removeNode", 1, u.key, 666);
-			addStep(RB.steps, "removeNode", 2, 666, 666);
-			if (u.left != null && u.right != null) { /* il nodo ha due sottoalberi */
+			addStep(RB.steps, "removeNode", 2, u.key, 666);
+
+			if (u.left != null && u.right != null) {
 				RB s = u.right;
-				addStep(RB.steps, "removeNode", 3, (u.right == null) ? 666 : u.right.key, 666);
+				addStep(RB.steps, "removeNode", 3, (s != null)? s.key:666, 666);
+
 				addStep(RB.steps, "removeNode", 4, 666, 666);
-				while (s.left != null) { /* si cerca il successore */
-					addStep(RB.steps, "removeNode", 5, s.key, 666);
+				while (s.left != null) {
 					s = s.left;
-					addStep(RB.steps, "removeNode", 4, s.key, 666);
+					addStep(RB.steps, "removeNode", 5, (s != null)? s.key:666, 666);
+					addStep(RB.steps, "removeNode", 4, 666, 666);
 				}
-				/* il nodo da eliminare prende i valori del successore */
-				u.key = s.key();
-				u.value = s.value();
 
-				addStep(RB.steps, "removeNode", 6, 666, (RB) null);
-				addStep(RB.steps, "removeNode", 6, 666, this.getRoot(s));
+				addStep(RB.steps, "removeNode", 6, s.key, 666);
 
-				addStep(RB.steps, "removeNode", 7, 666, 666);
-				/* si memorizza la chiave da parte */
-				x = s.key();
-				addStep(RB.steps, "removeNode", 8, 666, 666);
+				u.key = s.key;
+
+	 			addStep(RB.steps, "removeNode", 7, 666, (RB) null);
+				addStep(RB.steps, "removeNode", 7, 666, u.getRoot(u));
+
+				u.value = s.value;
+				x = s.key;
 				u = s;
-				addStep(RB.steps, "removeNode", 9, 666, 666);
+
+				addStep(RB.steps, "removeNode", 8, 666, (RB) null);
+				addStep(RB.steps, "removeNode", 9, 666, u.getRoot(u));
 			}
 
-			addStep(RB.steps, "removeNode", 11, u.key, 666);
-			/* il nodo da eliminare ha un solo figlio */
+			addStep(RB.steps, "removeNode", 11, 666, 666);
 			RB t;
 			addStep(RB.steps, "removeNode", 12, 666, 666);
 			if (u.left != null && u.right == null) {
 				t = u.left;
-				addStep(RB.steps, "removeNode", 13, (t == null) ? 666 : t.key, 666);
+				addStep(RB.steps, "removeNode", 13, (t != null)? t.key:666, 666);
 			} else {
 				addStep(RB.steps, "removeNode", 14, 666, 666);
 				t = u.right;
-				addStep(RB.steps, "removeNode", 15, (t == null) ? 666 : t.key, 666);
-			} /*
-				 * se t non ha figli la link viene invocata con (u.parent,null,x)
-				 */
-
-			link(u.parent, t, x);
-			addStep(RB.steps, "removeNode", 17, 666, (RB) null);
-			if (t == null) {
-				addStep(RB.steps, "removeNode", 17, u.key, this.getRoot(u));
-				addStep(RB.steps, "removeNode", 18, u.key, 666);
-				if (u.color == Color.BLACK) {
-					addStep(RB.steps, "removeNode", 19, u.key, 666);
-					balanceDelete(this.getRoot(u), t);
-				}
-			} else {
-				addStep(RB.steps, "removeNode", 17, u.key, this.getRoot(t));
-				addStep(RB.steps, "removeNode", 18, u.key, 666);
-				if (u.color == Color.BLACK) {
-					addStep(RB.steps, "removeNode", 19, u.key, 666);
-					balanceDelete(this.getRoot(t), t);
-				}
+				addStep(RB.steps, "removeNode", 15, (t != null)? t.key:666, 666);
 			}
 
-			addStep(RB.steps, "removeNode", 20, 666, 555);
-			/* il nodo da eliminare è root */
+			addStep(RB.steps, "removeNode", 17, 666, 666);
 			if (u.parent == null) {
-				addStep(RB.steps, "removeNode", 21, (t == null) ? 666 : t.key, 666);
-				if (t != null) { /* suo figlio diventa root */
-					t.parent = null;
-					addStep(RB.steps, "removeNode", 22, 666, (RB) null);
-					addStep(RB.steps, "removeNode", 22, t.key, this.getRoot(t));
-				}
+				// Tr is the new root
+				addStep(RB.steps, "removeNode", 18, 666, 666);
+				addStep(RB.steps, "removeNode", 19, 666, 666);
 
-				addStep(RB.steps, "removeNode", 23, 666, t.key);
-				addStep(RB.steps, "removeNode", 24, 666, t.key);
+				Tr = t;
+				Tr.parent = null;
+			} else {
+				addStep(RB.steps, "removeNode", 20, 666, 666);
+				addStep(RB.steps, "removeNode", 21, 666, 666);
+				u.parent.link(t, x);
+				addStep(RB.steps, "removeNode", 21, 666, (RB) null);
+				addStep(RB.steps, "removeNode", 21, 666, Tr.getRoot(Tr));
+			}
 
-				addStep(RB.steps, "removeNode", 25, 666, (RB) null);
-				addStep(RB.steps, "removeNode", 25, 666, 69);
-				return t;
+			addStep(RB.steps, "removeNode", 22, 666, 666);
+
+			if (u.color == Color.BLACK) {
+				addStep(RB.steps, "removeNode", 23, 666, 666);
+				this.balanceDelete(t, u.parent);
+				addStep(RB.steps, "removeNode", 23, 666, (RB) null);
+				addStep(RB.steps, "removeNode", 23, 666, Tr.getRoot(Tr));
 			}
 		}
-		addStep(RB.steps, "removeNode", 26, 666, (RB) null);
-		addStep(RB.steps, "removeNode", 26, 666, 69);
-		return this;
+		// return the new root
+		while (Tr.parent != null)
+			Tr = Tr.parent;
+
+		addStep(RB.steps, "removeNode", 24, 666, (RB) null);
+		addStep(RB.steps, "removeNode", 24, 666, 69);
+
+		return Tr;
 	}
 
-	private void balanceDelete(RB T, RB t) {
-		while ((t != T) || (t.color == Color.BLACK)) {
-			RB p = t.parent;
+	public void checkTree() {
+		assert (this.color == Color.BLACK);
+		this.checkChildren();
+		blackHeight();
+	}
+
+	public void checkChildren() {
+		if (this.color == Color.RED) {
+			if (this.left != null)
+				assert (this.left.color == Color.BLACK);
+			if (this.right != null)
+				assert (this.right.color == Color.BLACK);
+		}
+		if (this.left != null)
+			this.left.checkChildren();
+		if (this.right != null)
+			this.right.checkChildren();
+	}
+
+	public int blackHeight() {
+		int s = (this.left != null) ? this.left.blackHeight() : 1;
+		int r = (this.right != null) ? this.right.blackHeight() : 1;
+		assert (s == r);
+		if (this.color == Color.BLACK)
+			s++;
+		return s;
+	}
+
+	private void balanceDelete(RB t, RB p) {
+		RB Tr = this;
+		while ((t == null) || (t != Tr && t.color == Color.BLACK)) {
+			if (t != null)
+				p = t.parent;
 			if (t == p.left) {
 				RB f = p.right;
 				RB ns = f.left;
@@ -378,27 +389,29 @@ public class RB implements Serializable {
 				{
 					p.color = Color.RED;
 					f.color = Color.BLACK;
-					rotateLeft(p);
+					p.rotateLeft();
 				} else {
 					Color ns_color = (ns != null) ? ns.color : Color.BLACK;
 					Color nd_color = (nd != null) ? nd.color : Color.BLACK;
-					if (ns_color == nd_color && nd_color == Color.BLACK) {
+					if (ns_color == nd_color && nd_color == Color.BLACK) // case 2
+					{
 						f.color = Color.RED;
 						t = p;
-					} else if (ns_color == Color.RED && nd_color == Color.BLACK) {
+					} else if (ns_color == Color.RED && nd_color == Color.BLACK) // case 3
+					{
 						ns.color = Color.BLACK;
 						f.color = Color.RED;
-						rotateRight(f);
+						f.rotateRight();
 					} else if (nd_color == Color.RED) // case4
 					{
 						f.color = p.color;
 						p.color = Color.BLACK;
 						nd.color = Color.BLACK;
-						rotateLeft(p);
+						p.rotateLeft();
 						// update root
-						while (T.parent != null)
-							T = T.parent;
-						t = T;
+						while (Tr.parent != null)
+							Tr = Tr.parent;
+						t = Tr;
 					}
 				}
 			} else {
@@ -409,36 +422,59 @@ public class RB implements Serializable {
 				{
 					p.color = Color.RED;
 					f.color = Color.BLACK;
-					rotateRight(p);
+					p.rotateRight();
 				} else {
 					Color ns_color = (ns != null) ? ns.color : Color.BLACK;
 					Color nd_color = (nd != null) ? nd.color : Color.BLACK;
-					if (ns_color == nd_color && nd_color == Color.BLACK) {
+					if (ns_color == nd_color && nd_color == Color.BLACK) // case 2
+					{
 						f.color = Color.RED;
 						t = p;
-					} else if (nd_color == Color.RED && ns_color == Color.BLACK) {
+					} else if (nd_color == Color.RED && ns_color == Color.BLACK) // case 3
+					{
 						nd.color = Color.BLACK;
 						f.color = Color.RED;
-						rotateLeft(f);
+						f.rotateLeft();
 					} else if (ns_color == Color.RED) // case4
 					{
 						f.color = p.color;
 						p.color = Color.BLACK;
 						ns.color = Color.BLACK;
-						rotateRight(p);
+						p.rotateRight();
 						// update root
-						while (T.parent != null)
-							T = T.parent;
-						t = T;
+						while (Tr.parent != null)
+							Tr = Tr.parent;
+						t = Tr;
 					}
 				}
 			}
 			// update root
-			while (T.parent != null)
-				T = T.parent;
+			while (Tr.parent != null)
+				Tr = Tr.parent;
 		}
 		if (t != null)
 			t.color = Color.BLACK;
+	}
+
+	private void link(RB u, Integer x) {
+		RB v = this;
+		addStep(RB.steps, "link", 0, (u != null)? u.key : 666, 666);
+		if (u != null) {
+			u.parent = v;
+			addStep(RB.steps, "link", 1, (u.parent != null)? u.parent.key : 666, 666);
+		}
+		addStep(RB.steps, "link", 2, (v != null)? v.key : 666, 666);
+		if (v != null) {
+			addStep(RB.steps, "link", 3, 666, 666);
+			if (x.compareTo(v.key) < 0) {
+				addStep(RB.steps, "link", 4, (u != null)? u.key : 666, 666);
+				v.left = u;
+			} else {
+				addStep(RB.steps, "link", 5, (u != null)? u.key : 666, 666);
+				addStep(RB.steps, "link", 6, (u != null)? u.key : 666, 666);
+				v.right = u;
+			}
+		}
 	}
 
 	public RB lookupNode(Integer j) {

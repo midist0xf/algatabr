@@ -110,7 +110,7 @@ public class RBViewController extends DataStuctureController {
 
 					/* se l'albero(modello) è null disegna root */
 					if (rb == null) {
-						rb = new RB(keyInt, 0, model.RB.Color.BLACK);
+						rb = new RB(keyInt, 0);
 						rb.setX(ROOTX);
 						rb.setY(ROOTY);
 						restoreCoordinates(rb);
@@ -374,7 +374,7 @@ public class RBViewController extends DataStuctureController {
 			arr[i] = i;
 		}
 		Collections.shuffle(Arrays.asList(arr));
-		rb = new RB(arr[0], 0, model.RB.Color.BLACK);
+		rb = new RB(arr[0], 0);
 		rb.setX(ROOTX);
 		rb.setY(ROOTY);
 		for (int i = 1; i < 16; i++) {
@@ -433,7 +433,7 @@ public class RBViewController extends DataStuctureController {
 
 		// effettua disegni sui nodi
 		if (step.get(3) != "") {
-			if (step.get(0) != "removeNode") {
+			if (step.get(0) != "removeNode" && step.get(0) != "insertNode") {
 				restoreCoordinates(rb);
 				drawTree(rb);
 			} else {
@@ -446,17 +446,17 @@ public class RBViewController extends DataStuctureController {
 						ByteArrayInputStream bi = new ByteArrayInputStream(b);
 						ObjectInputStream si = new ObjectInputStream(bi);
 
-						RB abtree = (RB) si.readObject();
+						RB rbtree = (RB) si.readObject();
+						si.close();
+						restoreCoordinates(rbtree);
 
-						if (abtree != null) {
-							restoreCoordinates(rb);
-							drawTree(abtree);
+						if (rbtree != null) {
+							drawTree(rbtree);
 						} else {
 							ABRView.getChildren().clear();
 							stepButton.fire();
 						}
 
-						si.close();
 					} catch (Exception e) {
 						restoreCoordinates(rb);
 						drawTree(rb);
