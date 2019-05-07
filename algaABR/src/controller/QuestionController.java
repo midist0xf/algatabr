@@ -1,21 +1,14 @@
 package controller;
 
-import java.io.FileInputStream;
-import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.text.Text;
 
@@ -41,7 +34,8 @@ public class QuestionController extends NavigationController{
 	
 	
 	/**
-	 * 
+	 * Checks if the answer chosen by the user is correct. 
+	 * If the answer is wrong shows the associated explanation. 
 	 */
 	@FXML
 	public void handleAnswerConfirm() {
@@ -105,9 +99,9 @@ public class QuestionController extends NavigationController{
 	}
 	
 	/**
-	 * Given a json object, which represents a lesson, parses it and 
-	 * loads the questions within the dedicated data structure
-	 * @param jLesson
+	 * Given a json object, which represents a lesson's questions/answers/explanations, 
+	 * loads the questions/answers/explanations within the dedicated data structure
+	 * @param jLesson JsonObject with  question/answers/explanations of the lesson 
 	 */
 	public void loadQuestions(JSONObject jLesson) {
 		try {
@@ -115,11 +109,11 @@ public class QuestionController extends NavigationController{
 			Set questions = jLesson.keySet();
 
 			// 7 because a record is [question1, correctanswer, explanationcorrectans, wronganswer, explanationwrongans, wronganswer, explanationwrongans]
-			questAnsExp = new String[questions.size()][7]; 
-
+			questAnsExp = new String[questions.size()][7];
 			
 			Iterator qIter = questions.iterator();	
-
+			
+			// For each question stores answers and explanations in the appropriated array 
 			for (int i = 0; qIter.hasNext(); i++) {
 				String current = (String) qIter.next();
 
@@ -141,13 +135,13 @@ public class QuestionController extends NavigationController{
 	}
 
 	/**
-	 * 
+	 * Shows the current question and the associated answers options
 	 */
 	private void showQuestion() {
 		questionText.setText(questAnsExp[this.currentQuestion][0]);
 		
-		// randomizes answers positions
-		// stores in a list the indexes of correct answers 
+		// Randomizes answers positions
+		// Stores the indexes of correct answers in a list 
 		List<Integer> qPicker = new ArrayList<Integer>();
 		qPicker.add(1);
 		qPicker.add(3);
@@ -158,11 +152,12 @@ public class QuestionController extends NavigationController{
 		secondAnswerRadioB.setWrapText(true);		
 		thirdAnswerRadioB.setWrapText(true);
 
+		// Sets the text for each radio button
 		firstAnswerRadioB.setText(questAnsExp[this.currentQuestion][qPicker.get(0)]);
 		secondAnswerRadioB.setText(questAnsExp[this.currentQuestion][qPicker.get(1)]);	
 		thirdAnswerRadioB.setText(questAnsExp[this.currentQuestion][qPicker.get(2)]);
 		
-		// unchecks radioboxes
+		// Unchecks radioboxes
 		firstAnswerRadioB.setSelected(false);
 		secondAnswerRadioB.setSelected(false);
 		thirdAnswerRadioB.setSelected(false);
