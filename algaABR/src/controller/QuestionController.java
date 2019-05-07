@@ -19,23 +19,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.text.Text;
 
-/*
- * Ci devono essere almeno 5 domande per lezione
- * per adesso facciamo che ogni domanda ha 3 risposte
- * 
- * la struttura dati che contiene le domande/risposte e'
- * un array di vettori di stringhe. e' organizzato in questo
- * modo:
- * 
- * [ 
- * 	[domanda1, rispostagiusta, spiegazgiusta, rispostasbagliata, spiegazionesbagl, rispostasbagliata, spiegazionesbagl]
- * 	[domanda2, rispostagiusta, spiegazgiusta, rispostasbagliata, spiegazionesbagl, rispostasbagliata, spiegazionesbagl]
- * ]
- * 
- */
+
 
 public class QuestionController extends NavigationController{
 	
+	/**
+	 * The data structure which contains questions and answers is an array of string arrays
+	 * and is filled as follows:
+	 * [ 
+	 * 	[question1, correctanswer, explanationcorrectans, wronganswer, explanationwrongans, wronganswer, explanationwrongans]
+	 * 	[question2, correctanswer, explanationcorrectans, wronganswer, explanationwrongans, wronganswer, explanationwrongans]
+	 * ]
+	 */
 	private String[][] questAnsExp;
 	private int currentQuestion = 0;
 	
@@ -44,22 +39,26 @@ public class QuestionController extends NavigationController{
 	@FXML RadioButton secondAnswerRadioB;
 	@FXML RadioButton thirdAnswerRadioB;
 	
+	
+	/**
+	 * 
+	 */
 	@FXML
 	public void handleAnswerConfirm() {
 		Alert result = new Alert(Alert.AlertType.INFORMATION);
 		String selectedAnswer = getSelectedAnswer();
 		
 		if (selectedAnswer == "") {
-			// Ramo nessuna risposta selezionata
+			// No answer selected
 			result.setTitle("Attenzione");
 			result.setContentText("Nessuna risposta selezionata");
 			result.show();
 		} else if (selectedAnswer != questAnsExp[currentQuestion][1]) {
-			// Ramo risposta sbagliata
+			// Wrong answer
 			result.setTitle("Risposta errata");
 			result.setHeaderText("Riprova");
 
-			// carica la spiegazione associata alla risposta errata
+			// Shows the explanation associated to the answer 
 			if (selectedAnswer == questAnsExp[currentQuestion][3])
 				result.setContentText(questAnsExp[currentQuestion][4]);
 			else
@@ -67,11 +66,10 @@ public class QuestionController extends NavigationController{
 
 			result.show();
 		} else {
-			// Ramo risposta giusta
+			// Correct answer 
 			
-			// controllo se esiste una domanda successiva con trycatch
-			// nel caso non esistesse la funzione showQuestion lancia 
-			// una eccezione outOfBounds
+			// Show next question if exists, throws an outOfBounds exception
+			// and shows the menu otherwise
 			try {
 				currentQuestion++;
 				showQuestion();
@@ -91,6 +89,11 @@ public class QuestionController extends NavigationController{
 		}
 	}
 	
+	/**
+	 * Gets the text of the answer selected by the user
+	 * @return a string with the text of the chosen answer 
+	 * if one of the radioboxes is selected, empty string otherwise
+	 */
 	private String getSelectedAnswer() {
 		if (firstAnswerRadioB.isSelected())
 			return firstAnswerRadioB.getText();
@@ -101,6 +104,11 @@ public class QuestionController extends NavigationController{
 		return "";
 	}
 	
+	/**
+	 * Given a json object which represents a lesson parses it and 
+	 * loads the questions within the dedicated data structure
+	 * @param jLesson
+	 */
 	public void loadQuestions(JSONObject jLesson) {
 		try {
 			Set questions = jLesson.keySet();
@@ -129,11 +137,14 @@ public class QuestionController extends NavigationController{
 		}
 	}
 
+	/**
+	 * 
+	 */
 	private void showQuestion() {
 		questionText.setText(questAnsExp[this.currentQuestion][0]);
 		
-		// randomizza la posizione delle risposte, carica in una lista
-		// carica in una lista gli _indici_ delle risposte
+		// randomizes answers positions
+		// stores in a list the indexes of correct answers 
 		List<Integer> qPicker = new ArrayList<Integer>();
 		qPicker.add(1);
 		qPicker.add(3);
@@ -148,7 +159,7 @@ public class QuestionController extends NavigationController{
 		secondAnswerRadioB.setText(questAnsExp[this.currentQuestion][qPicker.get(1)]);	
 		thirdAnswerRadioB.setText(questAnsExp[this.currentQuestion][qPicker.get(2)]);
 		
-		// deseleziona tutti i radiobox (utile quando si passa alla domanda successiva)
+		// unchecks radioboxes
 		firstAnswerRadioB.setSelected(false);
 		secondAnswerRadioB.setSelected(false);
 		thirdAnswerRadioB.setSelected(false);
