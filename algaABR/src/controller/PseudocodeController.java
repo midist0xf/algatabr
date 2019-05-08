@@ -1,20 +1,15 @@
 package controller;
 
-import java.awt.TextField;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 import org.json.simple.JSONObject;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -25,6 +20,9 @@ public class PseudocodeController {
 	
 	private Hashtable<String, String> functionsHTable = new Hashtable<String, String>();
 	
+	/**
+	 * Shows the pseudocode of a specific method
+	 */
 	@FXML
 	public void handleShowCode() {
 		codeTextFlow.getChildren().clear();
@@ -33,6 +31,12 @@ public class PseudocodeController {
 		codeTextFlow.getChildren().add(t);
 	}
 
+	/**
+	 * Stores <key,value> associations within an hashtable where 
+	 * key is the name of a method and value is its pseudocode.
+	 * Inserts names of methods in the combobox.
+	 * @param jFunctions jsonObject which contains methods names and pseudocodes 
+	 */
 	public void loadCodes(JSONObject jFunctions) {
 		try {
 			Set interfaces = jFunctions.keySet();
@@ -48,7 +52,11 @@ public class PseudocodeController {
 		}
 	}
 	
-	// NB le righe di codice sono numerate a partire da 0 
+	/**
+	 * Highlights a line of the pseudocode.
+	 * Line numbers start from 0.
+	 * @param lineNumber the line number to highlight
+	 */
 	public void highlightLine(int lineNumber) {
 		Pattern regex = Pattern.compile("\\n");
 		String[] stringSplit = regex.split(functionsHTable.get(functionsCBox.getValue()));
@@ -66,12 +74,14 @@ public class PseudocodeController {
 		codeTextFlow.getChildren().setAll(textSplit);
 	}
 
+	/**
+	 * Loads the appropriate method within the combobox and invokes
+	 * a procedure to higlight a specific line of the pseudocode associated
+	 * with that method.
+	 * @param methodName the name of the method
+	 * @param lineNumber the number of the line of the pseudocode to highlight
+	 */
 	public void showMethod(String methodName, int lineNumber) {
-		// questo metodo viene chiamato da lessoncontroller che
-		// passa come valore solo il nome del metodo (insertNode),
-		// mentre qui serve la interfaccia completa (Void insertNode(...))
-		// quindi per caricare il codice giusto vediamo se il nome 
-		// del metodo e' contenuto in una interfaccia nella hashtable
 		for (String val : functionsHTable.keySet()) {
 			if (val.contains(methodName)) {
 				functionsCBox.setValue(val);

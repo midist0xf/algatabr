@@ -16,9 +16,12 @@ public class MenuController extends NavigationController {
 	@FXML private ComboBox<String> lessonsCBox;
 	private JSONObject jsonRoot;
 	
-	// carica il file json in memoria, pronto per essere passato
-	// ai vari controller della lezione. Carica inoltre i nomi
-	// delle lezioni nel combobox
+	
+	/**
+	 * Loads the names of the lessons within the combobox.
+	 * Stores a reference to the json file which contains info about
+	 * the lesssons.
+	 */
 	public void loadCBoxLessons() {
 		try {
 			File jsonConfig = new File("../lessons.json");
@@ -42,6 +45,11 @@ public class MenuController extends NavigationController {
 		}
 	}
 	
+	/**
+	 * Handles the click on the ok button. 
+	 * Retrieves the value of the lesson chosen by the user and loads the 
+	 * appropriate content.
+	 */
 	@FXML
 	public void handleOkClick() {
 		if (lessonsCBox.getValue() != null) {

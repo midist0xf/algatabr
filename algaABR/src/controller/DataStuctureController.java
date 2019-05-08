@@ -2,7 +2,7 @@ package controller;
 
 public abstract class DataStuctureController {
 
-	/* lesson controller per comunicare con gli altri controllers*/
+	/* lesson controller to communicate with others controllers */
 	protected LessonController lessonController;
 
 	protected void setLessonController(LessonController lc) {

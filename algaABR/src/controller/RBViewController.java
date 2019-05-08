@@ -117,9 +117,7 @@ public class RBViewController extends DataStuctureController {
 						lockButtons(false);
 					} else {
 						/* inserts the node in the model */
-						rb.insertNode(keyInt, 0);						
-						/* TODO: modificare insert o no? */
-						rb = rb.getRoot(rb);
+						rb = rb.insertNode(keyInt, 0);						
 						/* get reference to the last inserted node */
 						RB p = rb.lookupNodeNoStep(keyInt);
 						/* stores node coordinates relatively to its parent and relatively to its height */
@@ -303,11 +301,7 @@ public class RBViewController extends DataStuctureController {
 		rb.setY(ROOTY);
 		for (int i = 1; i < 16; i++) {
 			int value = choose(arr[i], -arr[i]);
-			rb.insertNode(value, 0);
-			
-			/* TODO: modificare insert o no? */
-			rb = rb.getRoot(rb);
-			
+			rb = rb.insertNode(value, 0);			
 			RB p = rb.lookupNodeNoStep(value);
 			saveNodeRelativeCoordinates(p);
 			if (rb.getNodeHeight(p) > MAXH) {

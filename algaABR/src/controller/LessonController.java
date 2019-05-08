@@ -19,6 +19,14 @@ public class LessonController extends NavigationController {
 
 	private DataStuctureController datastructureController;
 
+	
+	/**
+	 * Communicates to the questionController and to the pseudocodeController
+	 * which questions and which pseudocode to show.
+	 * Loads the appropriate view accordingly to the lesson.
+	 * @param lessonName a string which identifies a single lesson
+	 * @param jsonRoot a json object which contains info on the lesson
+	 */
 	public void setLesson(String lessonName, JSONObject jsonRoot) {
 		JSONObject selectedLesson = (JSONObject) jsonRoot.get(lessonName);
 		
@@ -29,7 +37,7 @@ public class LessonController extends NavigationController {
 		
 		pseudocodeController.loadCodes((JSONObject) selectedLesson.get("Pseudocodice"));
 		
-		// Carica dinamicamente l' algoritmo/struttura dati interattiva 
+		// dynamically loads the algorithm/interactive data structure
 		switch (selectedLesson.get("AlgoritmoInterattivo").toString()) {
 		case "ABR":
 			try {
@@ -52,7 +60,7 @@ public class LessonController extends NavigationController {
 			break;
 
 		default:
-			// errore, controller not found
+			// controller not found
 			Alert result = new Alert(Alert.AlertType.ERROR);
 			result.setTitle("Errore");
 			result.setHeaderText("Controller non trovato");
@@ -65,6 +73,10 @@ public class LessonController extends NavigationController {
 		datastructureController.setLessonController(this);
 	}
 
+	/**
+	 * Shows an alert which describes the lesson.
+	 * @param message the description of the lesson to show in the alert
+	 */
 	private void showGreetingMessage(String message) {
 		Alert result = new Alert(Alert.AlertType.INFORMATION);
 		result.setTitle("Benvenuto");
@@ -75,6 +87,11 @@ public class LessonController extends NavigationController {
 		result.show();
 	}
 
+	/**
+	 * Communicates to the pseudocodeController which method to show and which line to highlight.
+	 * @param methodName the name of the method to show
+	 * @param lineNumber the number of the line of the pseudocode to highlight
+	 */
 	public void loadMethod(String methodName, String lineNumber) {
 		pseudocodeController.showMethod(methodName, Integer.parseInt(lineNumber));
 	}

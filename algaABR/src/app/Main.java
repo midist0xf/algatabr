@@ -34,6 +34,11 @@ public class Main extends Application {
 		launch(args);
 	}
 	
+	/**
+	 * This method loads the view of a specific lesson.
+	 * @param lessonName the name of the lesson to load
+	 * @param jsonRoot json object which contains info about the lesson
+	 */
 	public void gotoLesson(String lessonName, JSONObject jsonRoot) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LessonView.fxml"));
@@ -52,6 +57,9 @@ public class Main extends Application {
 		}
 	}
 
+	/**
+	 * This method loads the menu view.
+	 */
 	public void gotoMenu() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MenuView.fxml"));
