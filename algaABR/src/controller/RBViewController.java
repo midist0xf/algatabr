@@ -89,7 +89,6 @@ public class RBViewController extends DataStuctureController {
 	public void handleInsertClick() {
 
 		lockButtons(true);
-
 		
 		Optional<String> result;
 		result = showDialog("Inserisci la chiave:", "Valore chiave:");
