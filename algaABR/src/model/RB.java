@@ -192,7 +192,7 @@ public class RB implements Serializable {
 
 			addStep(RB.steps, "insertNode", 10, 666, (RB) null);
 			addStep(RB.steps, "insertNode", 10, 666, n.getRoot(n));
-
+			
 			n.balanceInsert();
 		}
 		// return the new root
@@ -202,6 +202,8 @@ public class RB implements Serializable {
 
 		addStep(RB.steps, "insertNode", 11, 666, (RB) null);
 		addStep(RB.steps, "insertNode", 11, 666, u.key);
+		addStep(RB.steps, "insertNode", 11, x, 666);
+
 
 		return u;
 	}
@@ -490,7 +492,7 @@ public class RB implements Serializable {
 				addStep(RB.steps, "lookup", 4, t.key, 666);
 			}
 		}
-		addStep(RB.steps, "lookup", 5, 666, 666);
+		addStep(RB.steps, "lookup", 5, t.key, 666);
 		return t;
 	}
 

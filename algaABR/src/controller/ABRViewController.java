@@ -75,9 +75,11 @@ public class ABRViewController extends DataStuctureController {
 	   */
 	@FXML
 	public void handleInsertClick() {
-
+		
 		lockButtons(true);
 		
+		insertButton.setStyle("-fx-background-color: #EDA678;\n-fx-text-fill: black;");
+		 
 		Optional<String> result;
 		result = showDialog("Inserisci la chiave:", "Valore chiave:");
 		
@@ -97,10 +99,10 @@ public class ABRViewController extends DataStuctureController {
 						abr = new ABR(keyInt, 0);
 						abr.setX(ROOTX);
 						abr.setY(ROOTY);
-						drawTree(abr);
+						drawTree(abr);						
 						lockButtons(false);
 					} else {
-						/* inserts in the model */
+						/* inserts the node in the model */
 						abr.insertNode(keyInt, 0);
 						/* get reference to the last inserted node */
 						ABR p = abr.lookupNodeNoStep(keyInt);
@@ -552,7 +554,7 @@ public class ABRViewController extends DataStuctureController {
 	 */
 	private Circle searchNode(String key) {
 		Circle c = null;
-		/* cerca lo stack pane che contiene il nodo con quella chiave */
+		/* searches the stack pane that contains the node which stores the key  */
 		for (Node n : ABRView.getChildren()) {
 			if (n instanceof StackPane) {
 				ObservableList<Node> i = ((StackPane) n).getChildren();
@@ -708,7 +710,7 @@ public class ABRViewController extends DataStuctureController {
 
 		TextInputDialog inputNodeDialog = new TextInputDialog();
 
-		inputNodeDialog.setTitle("AlgaT - ABR");
+		inputNodeDialog.setTitle("AlgaT");
 		inputNodeDialog.setHeaderText(header);
 		inputNodeDialog.setContentText(content);
 

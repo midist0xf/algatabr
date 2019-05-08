@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 
 public class LessonController extends NavigationController {
 	
@@ -69,6 +70,8 @@ public class LessonController extends NavigationController {
 		result.setTitle("Benvenuto");
 		result.setHeaderText("Scopo della lezione");
 		result.setContentText(message);
+		result.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+
 		result.show();
 	}
 
