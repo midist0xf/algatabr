@@ -9,7 +9,6 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.Optional;
 
-
 import javafx.animation.FadeTransition;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -90,8 +89,7 @@ public class RBViewController extends DataStuctureController {
 	public void handleInsertClick() {
 
 		lockButtons(true);
-		
-		insertButton.setStyle("-fx-background-color: #EDA678;\n-fx-text-fill: black;");
+
 		
 		Optional<String> result;
 		result = showDialog("Inserisci la chiave:", "Valore chiave:");
@@ -133,6 +131,7 @@ public class RBViewController extends DataStuctureController {
 					showAlert("Scegli un intero tra -99 e 99");redraw();}
 			} else {showAlert("L'input inserito non è un intero!");redraw();}
 		});
+
 	}
 
 	

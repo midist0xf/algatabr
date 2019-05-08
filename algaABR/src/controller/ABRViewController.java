@@ -31,6 +31,11 @@ import javafx.util.Duration;
 import model.ABR;
 
 
+
+
+import javafx.event.Event; 
+import javafx.scene.input.MouseButton; 
+import javafx.scene.input.MouseEvent;
 public class ABRViewController extends DataStuctureController {
 	/* circle radius */
 	private final static double R = 20;
@@ -76,10 +81,8 @@ public class ABRViewController extends DataStuctureController {
 	@FXML
 	public void handleInsertClick() {
 		
-		lockButtons(true);
-		
-		insertButton.setStyle("-fx-background-color: #EDA678;\n-fx-text-fill: black;");
-		 
+		lockButtons(true);		
+	
 		Optional<String> result;
 		result = showDialog("Inserisci la chiave:", "Valore chiave:");
 		
@@ -596,6 +599,7 @@ public class ABRViewController extends DataStuctureController {
 		lookupButton.setDisable(b);
 		removeButton.setDisable(b);
 		maxButton.setDisable(b);
+		
 	}	
 	
 	/**

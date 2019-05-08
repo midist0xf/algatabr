@@ -6,8 +6,7 @@
 
 .control-buttons:hover {
 	-fx-background-color: #243142;
-	-fx-text-fill: white;
-	
+	-fx-text-fill: white;	
 }
 
 .method-buttons {
