@@ -32,7 +32,7 @@ public class PseudocodeController {
 	}
 
 	/**
-	 * Stores <key,value> associations within an hashtable where 
+	 * Stores key, value associations within an hashtable where 
 	 * key is the name of a method and value is its pseudocode.
 	 * Inserts names of methods in the combobox.
 	 * @param jFunctions jsonObject which contains methods names and pseudocodes 

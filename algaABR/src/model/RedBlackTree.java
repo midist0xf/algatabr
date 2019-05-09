@@ -5,8 +5,7 @@ public class RedBlackTree {
 	private Node root;
 
 	private enum Color {
-		RED,
-		BLACK;
+		RED, BLACK;
 	}
 	
 	private class Node {
