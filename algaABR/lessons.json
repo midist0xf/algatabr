@@ -1,6 +1,62 @@
 {
-  "ABR": {
-    "DescrizioneLezione": "Ciao in questa lezione vedremo le operazioni base di un albero binario di ricerca",
+  "Lezione ABR - Quiz Pratico": {
+    "DescrizioneLezione": "In questa lezione vengono spiegate le operazioni base degli alberi binari tramite quiz pratici. Utilizza i controlli interattivi per aiutarti nel ragionare sulle risposte, se necessario.",
+    "AlgoritmoInterattivo": "ABR",
+    "Pseudocodice": {
+      "Tree lookup(Tree t, Int j)": "while (t != null && t.key != j)\n\tif (j < t.key)\n\t\tt = t.left\n\telse\n\t\tt = t.right\nreturn t",
+      "Void link(Tree p, Tree u, Int j)": "if (u != null)\n\tu.parent = p\nif (p != null)\n\tif (j < p.key)\n\t\tp.left = u\n\telse\n\t\tp.right = u",
+      "Void insertNode(Tree t, Int j, Int v)": "Tree p = null\nTree u = t\nwhile(u != null && u.key != j)\n\tp = u\n\tif (j < u.key)\n\t\tu = u.left\n\telse\n\t\tu = u.right\n\nif (u != null && u.key == j)\n\tu.value = v\nelse\n\tTree n = new Tree(j, v)\n\tlink(p,n,j)",
+      "Tree removeNode(Int x, Tree r)": "Tree u = lookup(r,x)\nif (u != null)\n   if(u.left != null && u.right != null)\n      Tree s = u.right\n      while (s.left != null)\n         s = s.left\n      u.key = s.key\n      u.value = s.value\n      x = s.key\n      u = s\n\n    Tree t\n    if (u.left != null && u.right == null)\n       t = u.left\n    else\n       t = u.right\n\n    link(u.parent, t, x)\n    if (u.parent == null)\n       if (t != null)\n          t.parent = null\n       return t\nreturn r",
+      "Tree min(Tree t)": "while (t.left != null)\n\tt = t.left\nreturn t",
+      "Tree max(Tree t)": "while (t.right != null)\n\tt = t.right\nreturn t",
+      "Tree successorNode(Tree t)": "if (t == null)\n\treturn t\n\nif (t.right != null)\n\treturn t.right.min\n\nTree p = t.parent\nwhile (p != null && t == p.right)\n\tt = p\n\tp = p.parent\n\nreturn p",
+      "Tree predecessorNode(Tree t)": "if (t == null)\n\treturn t\n\nif (t.left != null)\n\treturn t.right.max\n\nTree p = t.parent\nwhile (p != null && t == p.left)\n\tt = p\n\tp = p.parent\n\nreturn p"
+    },
+    "DomandeRiposteSpiegazioni": {
+      "Quanti alberi diversi e' possibile costruire usando 4 chiavi diverse?": [
+        "14",
+        "Risposta corretta",
+        "8",
+        "Risposta sbagliata, prova a pensare a tutti gli alberi possibili con la radice fissata, poi calcola in modo ricorsivo...",
+        "24",
+        "Risposta sbagliata, prova a pensare a tutti gli alberi possibili con la radice fissata, poi calcola in modo ricorsivo..."
+      ],
+      "Supponi di inserire,in ordine: 7 5 1 8 3 6 0 9 4 2. Qual'e' l'ordine di visita dei nodi usando l' algoritmo di  in-visita?": [
+        "0123456789",
+        "Risposta corretta",
+        "0132456789",
+        "Risposta sbagliata, ricorda che la in-ordine visita sx->padre->dx in modo ricorsivo",
+        "0243165987",
+        "Risposta sbagliata, ricorda che la in-ordine visita sx->padre->dx in modo ricorsivo"
+      ],
+      "Considerare l' albero la cui visita per livelli e': 10, 5 20, 4 15 30, 11.\nQual'e' il numero medio di confronti per cercare una chiave k presente nell albero?": [
+        "2.57",
+        "Risposta corretta, il calcolo del numero dei casi medi e' (1*1 + 2*2 + 3*3 + 4*1)/7",
+        "2.5",
+        "Risposta sbagliata, bisogna considerare il costo medio fra tutti i possibili casi",
+        "3.25",
+        "Risposta sbagliata, bisogna considerare il costo medio fra tutti i possibili casi"
+      ],
+      "Qual'e' l'altezza massima dell' albero in cui sono stati inseriti (in ordine) i valori 10 1 3 5 15 12 16": [
+        "3",
+        "Risposta corretta",
+        "4",
+        "Risposta sbagliata, prova a creare l'albero per capire la risposta corretta",
+        "5",
+        "Risposta sbagliata, prova a creare l'albero per capire la risposta corretta"
+      ],
+      "Dati un insieme di N interi ed un albero binario con nodi non etichettati, in quanti modi possiamo riempire l'albero con i valori dell' insieme per ottenere un albero binario di ricerca?": [
+        "1",
+        "Risposta corretta, il valore minore finira' nel nodo piu' a sx mentre il maggiore nel nodo a dx... e cosi' via ricorsivamente",
+        "N!",
+        "Risposta sbagliata, prova a costruire un insieme di valori e fissa una struttura ad albero, poi inserisci i valori usando i comandi interattivi",
+        "(1/(N+1) * N/2)",
+        "Risposta sbagliata, prova a costruire un insieme di valori e fissa una struttura ad albero, poi inserisci i valori usando i comandi interattivi"
+      ]
+    }
+  },
+  "Lezione ABR - Quiz Teorico": {
+    "DescrizioneLezione": "In questa lezione vengono spiegati gli aspetti teorici degli alberi binari tramite quiz sulla complessita delle operazioni. Utilizza i controlli interattivi per aiutarti nel ragionare sulle risposte, se necessario.",
     "AlgoritmoInterattivo": "ABR",
     "Pseudocodice": {
       "Tree lookup(Tree t, Int j)": "while (t != null && t.key != j)\n\tif (j < t.key)\n\t\tt = t.left\n\telse\n\t\tt = t.right\nreturn t",
@@ -51,12 +107,12 @@
         "Il costo di lookupNode, insertNode e removeNode è sempre O(log n)",
         "Risposta sbagliata, perchè questa implementazione\nnon è bilanciata",
         "Il costo di lookupNode, insertNode e removeNode può essere O(2^n) in un caso particolare",
-        "Risposta sbagliata, perchè costano O(h)\ndove h è l'altezza dell'albero"
+        "Risposta sbagliata, perchè questa implementazione\nnon è bilanciata"
       ]
     }
   },
-  "Lezione RedBlack": {
-    "DescrizioneLezione": "Ciao in questa lezione vedremo le operazioni base di un albero red black",
+  "Lezione RedBlack - Quiz Teorico": {
+    "DescrizioneLezione": "In questa lezione vengono spiegati gli aspetti teorici degli alberi binari tramite quiz sulla complessita delle operazioni. Utilizza i controlli interattivi per aiutarti nel ragionare sulle risposte, se necessario.",
     "AlgoritmoInterattivo": "RB",
     "Pseudocodice": {
       "Tree rotateLeft(Tree x)": "Tree y = x.right\nTree p = x.parent\nx.right = y.left\nif (y.left != null)\n\ty.left.parent = x\ny.left = x\nx.parent = y\ny.parent = p\nif (p != null)\n\tif (p.left == x)\n\t\tp.left = y\n\telse\n\t\tp.right = y\nreturn y",
@@ -111,6 +167,66 @@
         "O(n)",
         "Risposta sbagliata, perchè è possibile visitare al\nmassimo un numero O(log n) di casi, ognuno\ndei quali costa O(1)",
         "O(2^n)",
+        "Risposta sbagliata, perchè è possibile visitare al\nmassimo un numero O(log n) di casi, ognuno\ndei quali costa O(1)"
+      ]
+    }
+  },
+  "Lezione RedBlack - Quiz Pratico": {
+    "DescrizioneLezione": "In questa lezione vengono spiegate le operazioni base degli red black tramite quiz pratici. Utilizza i controlli interattivi per aiutarti nel ragionare sulle risposte, se necessario.",
+    "AlgoritmoInterattivo": "RB",
+    "Pseudocodice": {
+      "Tree rotateLeft(Tree x)": "Tree y = x.right\nTree p = x.parent\nx.right = y.left\nif (y.left != null)\n\ty.left.parent = x\ny.left = x\nx.parent = y\ny.parent = p\nif (p != null)\n\tif (p.left == x)\n\t\tp.left = y\n\telse\n\t\tp.right = y\nreturn y",
+      "Tree rotateRight(Tree x)": "Tree y = x.left\nTree p = x.parent\nx.left = y.right\nif (y.right != null)\n\ty.right.parent = x\ny.right = x\nx.parent = y\ny.parent = p\nif (p != null)\n\tif (p.right == x)\n\t\tp.right = y\n\telse\n\t\tp.left = y\nreturn y",
+      "Tree lookup(Tree t, Int j)": "while (t != null && t.key != j)\n\tif (j < t.key)\n\t\tt = t.left\n\telse\n\t\tt = t.right\nreturn t",
+      "Void link(Tree p, Tree u, Int j)": "if (u != null)\n\tu.parent = p\nif (p != null)\n\tif (j < p.key)\n\t\tp.left = u\n\telse\n\t\tp.right = u",
+      "Void insertNode(Tree t, Int j, Int v)": "Tree p = null\nTree u = t\nwhile(u != null && u.key != j)\n\tp = u\n\t(j < u.key)? u = u.left : u = u.right\n\nif (u != null && u.key == j)\n\tu.value = v\nelse\n\tTree n = new Tree(j, v)\n\tlink(p,n,j)\n\tbalanceInsert(n)",
+      "Void balanceInsert(Tree t)": "t.color = red\nwhile (t != null)\n\tTree p = t.parent\n\tTree n = (p != null)? p.parent : null\n\tTree z = (n == null)? null: (n.left == p)? n.right, n.left)\n\tif (p == null)\n\t\tt.color = black\n\t\tt = null\n\telse if (p.color == black)\n\t\tt = null\n\telse if (z.color == red)\n\t\tp.color = z.color = black\n\t\tn.color = red\n\t\tt = n\n\telse\n\t\tif (t == p.right && p == n.left)\n\t\t\trotateLeft(p)\n\t\t\tt = p\n\t\telse if (t == p.left && p == n.right)\n\t\t\trotateRight(p)\n\t\t\tt = p\n\t\telse\n\t\t\tif (t == p.left && p == n.left)\n\t\t\t\trotateRight(n)\n\t\t\telse if (p.right == t && p == n.right)\n\t\t\t\trotateLeft(n)\n\t\t\tp.color = black\n\t\t\tn.color = red\n\t\t\tt = null",
+      "Tree removeNode(Int x, Tree r)": "Tree u = lookup(r,x)\nif (u != null)\n  if(u.left != null && u.right != null)\n    Tree s = u.right\n    while (s.left != null)\n      s = s.left\n    u.key = s.key\n    u.value = s.value\n    x = s.key\n    u = s\n\n   Tree t\n   if ( u.left != null && u.right == null)\n     t = u.left\n   else\n     t = u.right\n\n  if (u.parent == null)\n    this = t\n    t.parent = null\n  else\n    link(u.parent, t, x)\n  if (u.color == black)\n    this.balanceDelete(t, u.parent)\nreturn this.getRoot",
+      "Void balanceDelete(Tree T, Tree t)": "while (t != T && t.color == black)\n\tTree p = t.parent\n\tif (t == p.left)\n\t\tTree f = p.right\n\t\tTree ns = f.left\n\t\tTree nd = f.right\n\t\tif (f.color == red)\n\t\t\tp.color = red\n\t\t\tf.color = black\n\t\t\trotateLeft(p)\n\t\telse\n\t\t\tif (ns.color == nd.color == black)\n\t\t\t\tf.color = red\n\t\t\t\tt = p\n\t\t\telse if (ns.color == red && nd.color == black)\n\t\t\t\tns.color = black\n\t\t\t\tf.color = red\n\t\t\t\trotateRight(f)\n\t\t\telse if (nd.color == red)\n\t\t\t\tf.color = p.color\n\t\t\t\tp.color = black\n\t\t\t\tnd.color\n\t\t\t\trotateLeft(p)\n\t\t\t\tt = T\n\telse\n\t\tif (f.color == red)\n\t\t\tp.color = red\n\t\t\tf.color = black\n\t\t\trotateRight(p)\n\t\telse\n\t\t\tif (ns.color == nd.color == black)\n\t\t\t\tf.color = red\n\t\t\t\tt = p\n\t\t\telse if (ns.color == red && nd.color == black)\n\t\t\t\tns.color = black\n\t\t\t\tf.color = red\n\t\t\t\trotateLeft(f)\n\t\t\telse if (nd.color == red)\n\t\t\t\tf.color = p.color\n\t\t\t\tp.color = black\n\t\t\t\tnd.color\n\t\t\t\trotateRight(p)\n\t\t\t\tt = T\nif (t != null)\n\tt.color = black",
+      "Tree min(Tree t)": "while (t.left != null)\n\tt = t.left\nreturn t",
+      "Tree max(Tree t)": "while (t.right != null)\n\tt = t.right\nreturn t",
+      "Tree successorNode(Tree t)": "if (t == null)\n\treturn t\n\nif (t.right != null)\n\treturn t.right.min\n\nTree p = t.parent\nwhile (p != null && t == p.right)\n\tt=p\n\tp = p.parent\n\nreturn p",
+      "Tree predecessorNode(Tree t)": "if (t == null)\n\treturn t\n\nif (t.left != null)\n\treturn t.right.max\n\nTree p = t.parent\nwhile (p != null && t == p.left)\n\tt=p\n\tp = p.parent\n\nreturn p"
+    },
+    "DomandeRiposteSpiegazioni": {
+      "Rimuovendo la radice in un albero red black, e' sempre necessario fare un bilanciamento?": [
+        "Dipende se il successore della radice e' rosso o nero",
+        "Risposta corretta",
+        "Si",
+        "Risposta sbagliata, prova a creare un albero con i comandi interattivi",
+        "No",
+        "Risposta sbagliata, prova a creare un albero con i comandi interattivi"
+      ],
+      "Nell' albero costruito con inserimenti 10 3 4 5 20 3 15, Qual'e' la chiave della radice?": [
+        "4",
+        "Risposta corretta",
+        "10",
+        "Risposta sbagliata, prova a creare tale albero, oppure guarda lo pseudocodice della insertNode",
+        "20",
+        "Risposta sbagliata, prova a creare tale albero, oppure guarda lo pseudocodice della insertNode"
+      ],
+      "Nell' albero costruito con inserimenti 16 9 10 11 26 9 21, Quanti nodi rossi sono presenti?": [
+        "2",
+        "Risposta corretta",
+        "3",
+        "Risposta sbagliata, prova a creare tale albero, oppure guarda lo pseudocodice della insertNode",
+        "4",
+        "Risposta sbagliata, prova a creare tale albero, oppure guarda lo pseudocodice della insertNode"
+      ],
+      "Qual'e' la altezza massima dell' albero costruito con inserimenti 1 2 3 4 5?": [
+        "2",
+        "Risposta corretta",
+        "4",
+        "Risposta sbagliata, prova a creare tale albero, oppure guarda lo pseudocodice della insertNode",
+        "3",
+        "Risposta sbagliata, prova a creare tale albero, oppure guarda lo pseudocodice della insertNode"
+      ],
+      "Dato l' albero Binario costruito con inserimenti 2 4 6 1 10 7, stimare la differenza di visite di nodi eseguendo lookup(7) rispetto all'albero red black equivalente": [
+        "L' albero Red Black esegue 2 visite mentre il Binario 5",
+        "Risposta corretta",
+        "Dato che entrambi gli alberi sono uguali, eseguono lo stesso numero di visite",
+        "Risposta sbagliata, gli alberi red black hanno il vantaggio di essere bilanciati",
+        "L' albero Red Black esegue solo 1 visita in meno del Binario",
         "Risposta sbagliata, perchè è possibile visitare al\nmassimo un numero O(log n) di casi, ognuno\ndei quali costa O(1)"
       ]
     }

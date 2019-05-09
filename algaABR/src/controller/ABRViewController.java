@@ -641,7 +641,7 @@ public class ABRViewController extends DataStuctureController {
 	 */
 	private FadeTransition nodeRemoveTransition(Circle c, Paint color) {
 		c.setFill(color);
-		FadeTransition ft = new FadeTransition(Duration.millis(3000), c);
+		FadeTransition ft = new FadeTransition(Duration.millis(500), c);
 		ft.setFromValue(1.0);
 		ft.setToValue(0.0);
 		ft.setCycleCount(1);
@@ -668,7 +668,7 @@ public class ABRViewController extends DataStuctureController {
 	 */
 	private FadeTransition highlightNodeTransition(Circle c, Paint color) {
 		c.setFill(color);
-		FadeTransition ft = new FadeTransition(Duration.millis(3000), c);
+		FadeTransition ft = new FadeTransition(Duration.millis(500), c);
 		ft.setFromValue(0.1);
 		ft.setToValue(1.0);
 		ft.setCycleCount(1);		
