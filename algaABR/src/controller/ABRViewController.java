@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Optional;
+import java.util.regex.Pattern;
+
 import javafx.animation.FadeTransition;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,12 +32,10 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import model.ABR;
 
-
-
-
-import javafx.event.Event; 
-import javafx.scene.input.MouseButton; 
+import javafx.event.Event;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+
 public class ABRViewController extends DataStuctureController {
 	/* circle radius */
 	private final static double R = 20;
@@ -58,34 +58,113 @@ public class ABRViewController extends DataStuctureController {
 	ArrayList<Circle> drawnCircles = new ArrayList<Circle>();
 
 	/* buttons */
-	@FXML private Button randomButton;
-	@FXML private Button insertButton;
-	@FXML private Button successorButton;
-	@FXML private Button predecessorButton;
-	@FXML private Button minButton;
-	@FXML private Button stepButton;
-	@FXML private Button clearButton;
-	@FXML private Button lookupButton;
-	@FXML private Button removeButton;
-	@FXML private Button maxButton;
-	@FXML private Button runButton;
-	
+	@FXML
+	private Button randomButton;
+	@FXML
+	private Button insertButton;
+	@FXML
+	private Button successorButton;
+	@FXML
+	private Button predecessorButton;
+	@FXML
+	private Button minButton;
+	@FXML
+	private Button stepButton;
+	@FXML
+	private Button clearButton;
+	@FXML
+	private Button lookupButton;
+	@FXML
+	private Button removeButton;
+	@FXML
+	private Button maxButton;
+	@FXML
+	private Button runButton;
+
 	@FXML
 	private Pane ABRView;
 
-	 /**
-	   * Handles user click on the insert button.
-	   * Through a dialog asks to the user the key value to insert in the ABR.
-	   * Validates the input and then modifies the ABR accordingly.
-	   */
+	@FXML
+	public void handleInitialSteps() {
+		if (!initialSteps.isEmpty()) {
+			// lock buttons
+			lockButtons(true);
+			runButton.setDisable(true);
+
+			// parse steps and execute them
+			Pattern regex = Pattern.compile(";");
+
+			for (String command : regex.split(initialSteps)) {
+				switch (command.substring(0, command.indexOf("("))) {
+				case "insertNode":
+					Integer firstPar = Integer
+							.valueOf(command.substring(command.indexOf("(") + 1, command.indexOf(",")));
+					Integer secondPar = Integer
+							.valueOf(command.substring(command.indexOf(",") + 1, command.indexOf(")")));
+
+					if (abr == null) {
+						abr = new ABR(firstPar, secondPar);
+						abr.setX(ROOTX);
+						abr.setY(ROOTY);
+					} else {
+						abr.insertNode(firstPar, secondPar);
+						ABR p = abr.lookupNodeNoStep(firstPar);
+						saveNodeRelativeCoordinates(p);
+					}
+
+					break;
+
+				case "min":
+					abr.min();
+					break;
+
+				case "max":
+					abr.max();
+					break;
+
+				case "random":
+					Integer[] arr = new Integer[99];
+					for (int i = 0; i < arr.length; i++) {
+						arr[i] = i;
+					}
+					Collections.shuffle(Arrays.asList(arr));
+					abr = new ABR(arr[0], 0);
+					abr.setX(ROOTX);
+					abr.setY(ROOTY);
+					for (int i = 1; i < Math.pow(2, MAXH); i++) {
+						int value = choose(arr[i], -arr[i]);
+						abr.insertNode(value, 0);
+						ABR p = abr.lookupNode(value);
+						saveNodeRelativeCoordinates(p);
+						if (abr.getNodeHeight(p) > MAXH) {
+							abr.removeNode(value);
+						}
+					}
+					ABR.steps.clear();
+					restoreCoordinates(abr);
+					drawTree(abr);
+					break;
+				}
+			}
+
+			// clear initial steps 
+			initialSteps = "";
+		}
+	}
+
+	/**
+	 * Handles user click on the insert button. Through a dialog asks to the user
+	 * the key value to insert in the ABR. Validates the input and then modifies the
+	 * ABR accordingly.
+	 */
 	@FXML
 	public void handleInsertClick() {
-		
-		lockButtons(true);		
-	
+
+		lockButtons(true);
+
 		Optional<String> result;
 		result = showDialog("Inserisci la chiave:", "Valore chiave:");
-		
+
 		if (!result.isPresent())
 			redraw();
 
@@ -95,80 +174,96 @@ public class ABRViewController extends DataStuctureController {
 
 				/* check if the integer is included between -99 and 99 */
 				Integer keyInt = Integer.parseInt(key);
-				if(isInRange(keyInt, -99, 99)){
+				if (isInRange(keyInt, -99, 99)) {
 
 					/* if the tree is empty draws root node */
 					if (abr == null) {
 						abr = new ABR(keyInt, 0);
 						abr.setX(ROOTX);
 						abr.setY(ROOTY);
-						drawTree(abr);						
+						drawTree(abr);
 						lockButtons(false);
 					} else {
 						/* inserts the node in the model */
 						abr.insertNode(keyInt, 0);
 						/* get reference to the last inserted node */
 						ABR p = abr.lookupNodeNoStep(keyInt);
-						/* stores node coordinates relatively to its parent and relatively to its height */
+						/*
+						 * stores node coordinates relatively to its parent and relatively to its height
+						 */
 						saveNodeRelativeCoordinates(p);
 						/* checks if the inserted node exceeds the chosen maximum height */
 						if (abr.getNodeHeight(p) > MAXH) {
-					    	abr = abr.removeNode(keyInt);
+							abr = abr.removeNode(keyInt);
 							showAlert("Hai superato l'altezza massima consentita (" + MAXH + ")");
 							redraw();
 						}
 					}
-				} else {showAlert("Scegli un intero tra -99 e 99");redraw();}
-			} else {showAlert("L'input inserito non è un intero!");redraw();}
+				} else {
+					showAlert("Scegli un intero tra -99 e 99");
+					redraw();
+				}
+			} else {
+				showAlert("L'input inserito non è un intero!");
+				redraw();
+			}
 		});
 	}
 
 	/**
-	   * Handles user click on the remove button.
-	   * Through a dialog asks to the user the key value to remove from the ABR.
-	   * Validates the input and then modifies the ABR accordingly.
-	   */	
+	 * Handles user click on the remove button. Through a dialog asks to the user
+	 * the key value to remove from the ABR. Validates the input and then modifies
+	 * the ABR accordingly.
+	 */
 	public void handleRemoveClick() {
-		
+
 		lockButtons(true);
 
 		if (abr == null) {
-			showAlert("L'albero è vuoto!");			
+			showAlert("L'albero è vuoto!");
 			lockButtons(false);
-		}else {
+		} else {
 			Optional<String> result;
 			result = showDialog("Inserisci la chiave:", "Valore chiave:");
-	
+
 			if (!result.isPresent())
 				redraw();
-		
-			result.ifPresent(key -> {	
+
+			result.ifPresent(key -> {
 				if (isStringInt(key)) {
 					Integer keyInt = Integer.parseInt(key);
-					if(isInRange(keyInt, -99, 99)){
+					if (isInRange(keyInt, -99, 99)) {
 						if (abr.lookupNodeNoStep(keyInt) != null) {
 							/* the node is removed from the tree */
 							abr = abr.removeNode(keyInt);
 							/* updates coordinates */
-							restoreCoordinates(abr);						
-							} else { showAlert("La chiave non è presente nell'albero!");redraw();}
-						} else {showAlert("Scegli un intero tra -99 e 99");redraw();}
-					} else {showAlert("L'input inserito non è un intero!");redraw();}
-			});			
-		}			
+							restoreCoordinates(abr);
+						} else {
+							showAlert("La chiave non è presente nell'albero!");
+							redraw();
+						}
+					} else {
+						showAlert("Scegli un intero tra -99 e 99");
+						redraw();
+					}
+				} else {
+					showAlert("L'input inserito non è un intero!");
+					redraw();
+				}
+			});
+		}
 	}
 
-
 	/**
-	   * Handles user click on the successor button.
-	   * Through a dialog asks to the user the key value of which he wants to know the successor. 
-	   * Validates the input and then invokes the method on the ARB model accordingly.
-	   */	
+	 * Handles user click on the successor button. Through a dialog asks to the user
+	 * the key value of which he wants to know the successor. Validates the input
+	 * and then invokes the method on the ARB model accordingly.
+	 */
 	public void handleSuccessorClick() {
-		
+
 		if (abr == null) {
-			showAlert("L'albero è vuoto!");			
-		}else {
+			showAlert("L'albero è vuoto!");
+		} else {
 			lockButtons(true);
 			Optional<String> result;
 			result = showDialog("Inserisci la chiave:", "Valore chiave:");
@@ -183,24 +278,32 @@ public class ABRViewController extends DataStuctureController {
 						ABR t = abr.lookupNodeNoStep(keyInt);
 						if (t != null) {
 							t = t.successorNode();
-						}else {showAlert("La chiave non è presente nell'albero!");redraw();}
-					}else {showAlert("Scegli un intero tra -99 e 99");redraw();}
-				}else {showAlert("L'input inserito non è un intero!");redraw();}					
-			});			
-		}	
+						} else {
+							showAlert("La chiave non è presente nell'albero!");
+							redraw();
+						}
+					} else {
+						showAlert("Scegli un intero tra -99 e 99");
+						redraw();
+					}
+				} else {
+					showAlert("L'input inserito non è un intero!");
+					redraw();
+				}
+			});
+		}
 	}
-	
-	
+
 	/**
-	   * Handles user click on the predecessor button.
-	   * Through a dialog asks to the user the key value of which he wants to know the predecessor. 
-	   * Validates the input and then invokes the method on the ARB model accordingly.
-	   */	
+	 * Handles user click on the predecessor button. Through a dialog asks to the
+	 * user the key value of which he wants to know the predecessor. Validates the
+	 * input and then invokes the method on the ARB model accordingly.
+	 */
 	public void handlePredecessorClick() {
-		
+
 		if (abr == null) {
-			showAlert("L'albero è vuoto!");			
-		}else {
+			showAlert("L'albero è vuoto!");
+		} else {
 			lockButtons(true);
 			Optional<String> result;
 			result = showDialog("Inserisci la chiave:", "Valore chiave:");
@@ -210,116 +313,132 @@ public class ABRViewController extends DataStuctureController {
 					if (isInRange(keyInt, -99, 99)) {
 						ABR t = abr.lookupNodeNoStep(keyInt);
 						if (t != null) {
-							t = t.predecessorNode();							
-						}else {showAlert("La chiave non è presente nell'albero!"); redraw();}
-					}else {showAlert("Scegli un intero tra -99 e 99"); redraw();}
-				}else {showAlert("L'input inserito non è un intero!");redraw();}
+							t = t.predecessorNode();
+						} else {
+							showAlert("La chiave non è presente nell'albero!");
+							redraw();
+						}
+					} else {
+						showAlert("Scegli un intero tra -99 e 99");
+						redraw();
+					}
+				} else {
+					showAlert("L'input inserito non è un intero!");
+					redraw();
+				}
 			});
 		}
 	}
 
 	/**
-	   * Handles user click on the min button.
-	   * Checks if the tree is null and invokes the min method on the ARB model.
-	   */	
+	 * Handles user click on the min button. Checks if the tree is null and invokes
+	 * the min method on the ARB model.
+	 */
 	public void handleMinClick() {
 		if (abr != null) {
 			lockButtons(true);
-			ABR t = abr.min();	
+			ABR t = abr.min();
 		} else {
-			showAlert("L'albero è vuoto!"); redraw();			
+			showAlert("L'albero è vuoto!");
+			redraw();
 		}
 	}
-	
+
 	/**
-	   * Handles user click on the max button.
-	   * Checks if the tree is null and invokes the max method on the ARB model.
-	   */
+	 * Handles user click on the max button. Checks if the tree is null and invokes
+	 * the max method on the ARB model.
+	 */
 	public void handleMaxClick() {
 		if (abr != null) {
 			lockButtons(true);
-			ABR t = abr.max();	
+			ABR t = abr.max();
 		} else {
-			showAlert("L'albero è vuoto!");	redraw();
+			showAlert("L'albero è vuoto!");
+			redraw();
 		}
 	}
 
 	/**
-	   * Handles user click on the lookup button.
-	   * Through a dialog asks to the user the key value of the node to look for.
-	   * Validates the input and then invokes the lookup method on the ARB model accordingly.
-	   */	
+	 * Handles user click on the lookup button. Through a dialog asks to the user
+	 * the key value of the node to look for. Validates the input and then invokes
+	 * the lookup method on the ARB model accordingly.
+	 */
 	public void handleLookupClick() {
 		if (abr == null) {
-			showAlert("L'albero è vuoto!");			
-		}else {
+			showAlert("L'albero è vuoto!");
+		} else {
 			lockButtons(true);
 			Optional<String> result;
 			result = showDialog("Inserisci la chiave:", "Valore chiave:");
-			result.ifPresent(key -> {		
-					if (isStringInt(key)) {
-						Integer keyInt = Integer.parseInt(key);
-						if(isInRange(keyInt, -99, 99)){
-							ABR t = abr.lookupNode(keyInt);
-							if (t == null) {
-								showAlert("La chiave non è presente nell'albero!"); redraw();																	 
-							}
-						}else {showAlert("Scegli un intero tra -99 e 99"); redraw();}
-					}else {showAlert("L'input inserito non è un intero!"); redraw();}
-			});			
+			result.ifPresent(key -> {
+				if (isStringInt(key)) {
+					Integer keyInt = Integer.parseInt(key);
+					if (isInRange(keyInt, -99, 99)) {
+						ABR t = abr.lookupNode(keyInt);
+						if (t == null) {
+							showAlert("La chiave non è presente nell'albero!");
+							redraw();
+						}
+					} else {
+						showAlert("Scegli un intero tra -99 e 99");
+						redraw();
+					}
+				} else {
+					showAlert("L'input inserito non è un intero!");
+					redraw();
+				}
+			});
 		}
-	}	
+	}
 
 	/**
-	   * Handles user click on the random button.
-	   * Generates 2^MAXH key values. Each values is included between -99 and 99.
-	   * Inserts the keys in the ABR model and then draws the tree.
-	   */
+	 * Handles user click on the random button. Generates 2^MAXH key values. Each
+	 * values is included between -99 and 99. Inserts the keys in the ABR model and
+	 * then draws the tree.
+	 */
 	public void handleRandomClick() {
 		handleClearClick();
 		Integer[] arr = new Integer[99];
-	    for (int i = 0; i < arr.length; i++) {
-	        arr[i] = i;
-	    }
-	    Collections.shuffle(Arrays.asList(arr));
-	    abr = new ABR(arr[0], 0);
-	    abr.setX(ROOTX); abr.setY(ROOTY);
-	    for (int i = 1; i < Math.pow(2, MAXH); i++) {
-	    	int value = choose(arr[i], -arr[i]);
-	    	abr.insertNode(value, 0);
-	    	ABR p = abr.lookupNode(value);
-	    	saveNodeRelativeCoordinates(p);
-	    	if(abr.getNodeHeight(p) > MAXH) {
-	    		abr.removeNode(value);
-	    	}
-	   }	    
-	    drawTree(abr);
-	    
+		for (int i = 0; i < arr.length; i++) {
+			arr[i] = i;
+		}
+		Collections.shuffle(Arrays.asList(arr));
+		abr = new ABR(arr[0], 0);
+		abr.setX(ROOTX);
+		abr.setY(ROOTY);
+		for (int i = 1; i < Math.pow(2, MAXH); i++) {
+			int value = choose(arr[i], -arr[i]);
+			abr.insertNode(value, 0);
+			ABR p = abr.lookupNode(value);
+			saveNodeRelativeCoordinates(p);
+			if (abr.getNodeHeight(p) > MAXH) {
+				abr.removeNode(value);
+			}
+		}
+		drawTree(abr);
+
 		ABR.steps.clear();
 		lockButtons(false);
 	}
 
-	
-
 	/**
-	   * Handles user click on the step button.
-	   * Removes the last element from the steps list. Each step is a 4-uple:
-	   * [ method name, line number, key of the node to highlight, key of the node to modify graphically ]
-	   * Highlights the line of pseudocode within the pseudocode view.
-	   * Possibly draws the updated ARB model.
-	   * Enables method buttons if the user executes the last step. 
-	   */
+	 * Handles user click on the step button. Removes the last element from the
+	 * steps list. Each step is a 4-uple: [ method name, line number, key of the
+	 * node to highlight, key of the node to modify graphically ] Highlights the
+	 * line of pseudocode within the pseudocode view. Possibly draws the updated ARB
+	 * model. Enables method buttons if the user executes the last step.
+	 */
 	@FXML
 	public void handleStepClick() {
 		ArrayList<String> step = ABR.steps.remove(0);
 
 		// highlights pseudocode line
 		lessonController.loadMethod(step.get(0), step.get(1));
-		
+
 		// highlights a node, if requested
 		if (step.get(2) != "") {
 			Circle c = searchNode(step.get(2));
-			
+
 			if (c != null && drawnCircles.contains(c) == false) {
 				drawnCircles.add(c);
 				InnerShadow is = new InnerShadow();
@@ -327,12 +446,12 @@ public class ABRViewController extends DataStuctureController {
 				is.setColor(Color.YELLOW);
 				ds.setColor(Color.YELLOW);
 				is.setHeight(19.0f);
-				
+
 				c.setEffect(is);
 				c.setEffect(ds);
 			}
 		}
-		
+
 		// draws nodes
 		if (step.get(3) != "") {
 			if (step.get(0) != "removeNode") {
@@ -343,11 +462,11 @@ public class ABRViewController extends DataStuctureController {
 					// deserialize the tree to print it
 					try {
 						byte b[] = Base64.getDecoder().decode(step.get(3));
-						
+
 						ByteArrayInputStream bi = new ByteArrayInputStream(b);
 						ObjectInputStream si = new ObjectInputStream(bi);
-						
-						ABR abtree =(ABR) si.readObject();
+
+						ABR abtree = (ABR) si.readObject();
 
 						if (abtree != null) {
 							drawTree(abtree);
@@ -366,12 +485,12 @@ public class ABRViewController extends DataStuctureController {
 				}
 			}
 		}
-		
+
 		// if there are not more steps enables method buttons
 		// and remove effects from circles.
 		if (ABR.steps.isEmpty()) {
 			lockButtons(false);
-			
+
 			for (Circle circle : drawnCircles) {
 				circle.setEffect(null);
 			}
@@ -380,60 +499,60 @@ public class ABRViewController extends DataStuctureController {
 	}
 
 	/**
-	   * Handles user click on the run button.
-	   * Check which method is currently saved in the steps list.
-	   * Based on that retrieves the last step of the method execution,
-	   * gets the key value and highlights the node accordingly.
-	   */
+	 * Handles user click on the run button. Check which method is currently saved
+	 * in the steps list. Based on that retrieves the last step of the method
+	 * execution, gets the key value and highlights the node accordingly.
+	 */
 	public void handleRunClick() {
 		if (ABR.steps != null) {
 			ArrayList<String> step;
-            String method = ABR.steps.get(0).get(0);
-            Circle c; FadeTransition ft;
-            
-			if ( method.equals("removeNode")) {
+			String method = ABR.steps.get(0).get(0);
+			Circle c;
+			FadeTransition ft;
+
+			if (method.equals("removeNode")) {
 				step = ABR.steps.get(1);
-				if(step.get(2) != "") {
+				if (step.get(2) != "") {
 					c = searchNode(step.get(2).toString());
 					ft = nodeRemoveTransition(c, Color.web("#EDA678"));
 					ft.play();
 				}
-			} else if(method.equals("insertNode")) {
-				step = ABR.steps.get(ABR.steps.size()-1);	
-				if(step.get(2) != "") {
+			} else if (method.equals("insertNode")) {
+				step = ABR.steps.get(ABR.steps.size() - 1);
+				if (step.get(2) != "") {
 					drawTree(abr);
 					c = searchNode(step.get(2).toString());
 					ft = highlightNodeTransition(c, Color.web("#EDA678"));
 					ft.play();
-				}								
+				}
 			} else {
-				step = ABR.steps.get(ABR.steps.size()-1);
+				step = ABR.steps.get(ABR.steps.size() - 1);
 				c = searchNode(step.get(2).toString());
 				ft = highlightNodeTransition(c, Color.web("#EDA678"));
-				ft.play();				
-			}			
-		}	
+				ft.play();
+			}
+		}
 	}
-	
+
 	/**
-	   * Handles user click on the clear button.
-	   * Clears the view and set the model to null.
-	   */
+	 * Handles user click on the clear button. Clears the view and set the model to
+	 * null.
+	 */
 	public void handleClearClick() {
 		abr = null;
 		ABRView.getChildren().clear();
 	}
-	
-	
+
 	/**
-	   * Creates a stack pane which contains a circle that represents
-	   * a node and a text which contains the key value as a string.
-	   * Adds the new created stack pane to the ABR view to make it visible.
-	   * @param x coordinate to adjust the position of the node
-	   * @param y coordinate to adjust the position of the node
-	   * @param radius the radius of the circle
-	   * @param key the key value of the node
-	   */	
+	 * Creates a stack pane which contains a circle that represents a node and a
+	 * text which contains the key value as a string. Adds the new created stack
+	 * pane to the ABR view to make it visible.
+	 * 
+	 * @param x      coordinate to adjust the position of the node
+	 * @param y      coordinate to adjust the position of the node
+	 * @param radius the radius of the circle
+	 * @param key    the key value of the node
+	 */
 	private void drawNode(double x, double y, double radius, String key) {
 
 		Text text = new Text(key);
@@ -450,26 +569,26 @@ public class ABRViewController extends DataStuctureController {
 	}
 
 	/**
-	   * Creates a new line and adds it to the ABR view to make it visible.
-	   * @param sx x coordinate of the start point of the line
-	   * @param sy y coordinate of the start point of the line
-	   * @param ex x coordinate of the end point of the line
-	   * @param ey y coordinate of the end point of the line
-	   */	
+	 * Creates a new line and adds it to the ABR view to make it visible.
+	 * 
+	 * @param sx x coordinate of the start point of the line
+	 * @param sy y coordinate of the start point of the line
+	 * @param ex x coordinate of the end point of the line
+	 * @param ey y coordinate of the end point of the line
+	 */
 	private void drawLine(double sx, double sy, double ex, double ey) {
 		Line line = new Line(sx, sy, ex, ey);
 		line.setStrokeWidth(2);
 		ABRView.getChildren().add(line);
 	}
-	
-	
+
 	/**
-	   * Recursively iterates on the ABR model.
-	   * Draws just a circle for the root node.
-	   * Draws also a line (edge) for nodes which have a parent.
-	   * Lines coordinates are computed accordingly to the parent position. 
-	   * @param t ABR model to draw on the ABR view 
-	   */		
+	 * Recursively iterates on the ABR model. Draws just a circle for the root node.
+	 * Draws also a line (edge) for nodes which have a parent. Lines coordinates are
+	 * computed accordingly to the parent position.
+	 * 
+	 * @param t ABR model to draw on the ABR view
+	 */
 	private void drawTree(ABR t) {
 
 		if (t != null) {
@@ -487,22 +606,22 @@ public class ABRViewController extends DataStuctureController {
 			drawTree(t.right());
 		}
 	}
-	
+
 	/**
-	   * Clears the steps list and the ABR view.
-	   * Draws the ABR tree accordingly to the current model.
-	   * Finally enables method buttons.
-	*/
+	 * Clears the steps list and the ABR view. Draws the ABR tree accordingly to the
+	 * current model. Finally enables method buttons.
+	 */
 	private void redraw() {
 		ABR.steps.clear();
 		ABRView.getChildren().clear();
 		drawTree(abr);
 		lockButtons(false);
 	}
-	
+
 	/**
-	 * Given a node computes its position coordinates relatively to the parent ones. 
+	 * Given a node computes its position coordinates relatively to the parent ones.
 	 * Then saves them within the node.
+	 * 
 	 * @param p the node of which to store coordinates
 	 */
 	private void saveNodeRelativeCoordinates(ABR p) {
@@ -516,16 +635,16 @@ public class ABRViewController extends DataStuctureController {
 				cy = p.parent().getY() + 50;
 			}
 			p.setX(cx);
-			p.setY(cy);		
+			p.setY(cy);
 		}
 	}
-	
+
 	/**
 	 * This method is used after ABR model structure is changed and it's invoked to
-	 * updates coordinates value foreach node. 
-	 * Recursively iterates on the ABR model.
-	 * Sets root default coordinates for root node.
-	 * Sets relatively coordinates for the others nodes.
+	 * updates coordinates value foreach node. Recursively iterates on the ABR
+	 * model. Sets root default coordinates for root node. Sets relatively
+	 * coordinates for the others nodes.
+	 * 
 	 * @param t ABR model on which to restore coordinates values
 	 */
 	private void restoreCoordinates(ABR t) {
@@ -537,10 +656,10 @@ public class ABRViewController extends DataStuctureController {
 				t.setY(ROOTY);
 			} else {
 				if (t.parent().left() == t) {
-					t.setX(t.parent().getX() - (ABRView.getWidth() / Math.pow(2, abr.getNodeHeight(t))));
+					t.setX(t.parent().getX() - (305.0 / Math.pow(2, abr.getNodeHeight(t))));
 					t.setY(t.parent().getY() + 50);
 				} else {
-					t.setX(t.parent().getX() + (ABRView.getWidth() / Math.pow(2, abr.getNodeHeight(t))));
+					t.setX(t.parent().getX() + (305.0 / Math.pow(2, abr.getNodeHeight(t))));
 					t.setY(t.parent().getY() + 50);
 				}
 			}
@@ -548,16 +667,17 @@ public class ABRViewController extends DataStuctureController {
 			restoreCoordinates(t.right());
 		}
 	}
-	
+
 	/**
 	 * Given a key value as a string returns the Circle element of the ABR view
 	 * which contains that value.
+	 * 
 	 * @param key the key value of the node to search
-	 * @return the circle element which contains the key 
+	 * @return the circle element which contains the key
 	 */
 	private Circle searchNode(String key) {
 		Circle c = null;
-		/* searches the stack pane that contains the node which stores the key  */
+		/* searches the stack pane that contains the node which stores the key */
 		for (Node n : ABRView.getChildren()) {
 			if (n instanceof StackPane) {
 				ObservableList<Node> i = ((StackPane) n).getChildren();
@@ -574,22 +694,28 @@ public class ABRViewController extends DataStuctureController {
 
 	/**
 	 * Randomly returns one of two values.
+	 * 
 	 * @param a first value
 	 * @param b second value
 	 * @return one of the two values
 	 */
 	private int choose(int a, int b) {
-		if (Math.random() < 0.5) {return a;} else {return b;}
+		if (Math.random() < 0.5) {
+			return a;
+		} else {
+			return b;
+		}
 	}
 
 	/**
 	 * Given a boolean parameter true(false), disables(enables) method buttons
+	 * 
 	 * @param b boolean value
 	 */
 	private void lockButtons(boolean b) {
 		stepButton.setDisable(!b);
 		runButton.setDisable(!b);
-		
+
 		randomButton.setDisable(b);
 		insertButton.setDisable(b);
 		successorButton.setDisable(b);
@@ -599,13 +725,14 @@ public class ABRViewController extends DataStuctureController {
 		lookupButton.setDisable(b);
 		removeButton.setDisable(b);
 		maxButton.setDisable(b);
-		
-	}	
-	
+
+	}
+
 	/**
-	 * Given a string check if this string represents an Integer value
-	 * and returns a boolean value accordingly.
-	 * @param s string to check 
+	 * Given a string check if this string represents an Integer value and returns a
+	 * boolean value accordingly.
+	 * 
+	 * @param s string to check
 	 * @return true if the string represents an Integer, false otherwise
 	 */
 	private boolean isStringInt(String s) {
@@ -616,12 +743,13 @@ public class ABRViewController extends DataStuctureController {
 			return false;
 		}
 	}
-	
+
 	/**
-	 * Verifies if a value is included within a range.	
+	 * Verifies if a value is included within a range.
+	 * 
 	 * @param value the value to check
-	 * @param a minimum bound
-	 * @param b maximum bound
+	 * @param a     minimum bound
+	 * @param b     maximum bound
 	 * @return true if the value is within the range, false otherwise
 	 */
 	private boolean isInRange(int value, int a, int b) {
@@ -630,16 +758,18 @@ public class ABRViewController extends DataStuctureController {
 
 	/**
 	 * Sets lessonController field
-	 * @param lessonController the reference to a LessonController object 
+	 * 
+	 * @param lessonController the reference to a LessonController object
 	 */
 	public void setLessonController(LessonController lessonController) {
 		this.lessonController = lessonController;
 	}
-	
+
 	/**
-	 * Creates a fade transition effect.
-	 * If the transition is played it progressively fades a specific node of the tree.  
-	 * @param c the circle element on which to apply the transition
+	 * Creates a fade transition effect. If the transition is played it
+	 * progressively fades a specific node of the tree.
+	 * 
+	 * @param c     the circle element on which to apply the transition
 	 * @param color the color to show during the transition
 	 * @return a fade transition object
 	 */
@@ -656,17 +786,18 @@ public class ABRViewController extends DataStuctureController {
 				ABR.steps.clear();
 				ABRView.getChildren().clear();
 				drawTree(abr);
-				lockButtons(false);	
+				lockButtons(false);
 			}
 		});
 
 		return ft;
 	}
-	
+
 	/**
-	 * Creates a fade transition effect.
-	 * If the transition is played it progressively highlights a specific node of the tree. 
-	 * @param c the circle element on which to apply the transition
+	 * Creates a fade transition effect. If the transition is played it
+	 * progressively highlights a specific node of the tree.
+	 * 
+	 * @param c     the circle element on which to apply the transition
 	 * @param color the color to show during the transition
 	 * @return a fade transition object
 	 */
@@ -675,8 +806,8 @@ public class ABRViewController extends DataStuctureController {
 		FadeTransition ft = new FadeTransition(Duration.millis(500), c);
 		ft.setFromValue(0.1);
 		ft.setToValue(1.0);
-		ft.setCycleCount(1);		
-		
+		ft.setCycleCount(1);
+
 		ft.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -686,12 +817,13 @@ public class ABRViewController extends DataStuctureController {
 				lockButtons(false);
 			}
 		});
-		
-		return ft;		
+
+		return ft;
 	}
 
 	/**
 	 * Creates an alert and shows it to the user.
+	 * 
 	 * @param s the message to show within the alert
 	 */
 	private void showAlert(String s) {
@@ -706,7 +838,8 @@ public class ABRViewController extends DataStuctureController {
 
 	/**
 	 * Create a dialog and shows it to the user.
-	 * @param header the header text of the dialog
+	 * 
+	 * @param header  the header text of the dialog
 	 * @param content the content text of the dialog
 	 * @return an Optional string value which stores the user's answer
 	 */
@@ -720,5 +853,5 @@ public class ABRViewController extends DataStuctureController {
 
 		Optional<String> result = inputNodeDialog.showAndWait();
 		return result;
-	}	
+	}
 }

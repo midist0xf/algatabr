@@ -1,7 +1,65 @@
 {
+  "Lezione ABR - Min/Max": {
+    "DescrizioneLezione": "In questa lezione vedrai come funzionano le funzioni di minimo e massimo negli alberi binari, premi il tasto step per avanzare nella lezione",
+    "AlgoritmoInterattivo": "ABR",
+    "Steps": "random();min();max();", 
+    "Pseudocodice": {
+      "Tree lookup(Tree t, Int j)": "while (t != null && t.key != j)\n\tif (j < t.key)\n\t\tt = t.left\n\telse\n\t\tt = t.right\nreturn t",
+      "Void link(Tree p, Tree u, Int j)": "if (u != null)\n\tu.parent = p\nif (p != null)\n\tif (j < p.key)\n\t\tp.left = u\n\telse\n\t\tp.right = u",
+      "Void insertNode(Tree t, Int j, Int v)": "Tree p = null\nTree u = t\nwhile(u != null && u.key != j)\n\tp = u\n\tif (j < u.key)\n\t\tu = u.left\n\telse\n\t\tu = u.right\n\nif (u != null && u.key == j)\n\tu.value = v\nelse\n\tTree n = new Tree(j, v)\n\tlink(p,n,j)",
+      "Tree removeNode(Int x, Tree r)": "Tree u = lookup(r,x)\nif (u != null)\n   if(u.left != null && u.right != null)\n      Tree s = u.right\n      while (s.left != null)\n         s = s.left\n      u.key = s.key\n      u.value = s.value\n      x = s.key\n      u = s\n\n    Tree t\n    if (u.left != null && u.right == null)\n       t = u.left\n    else\n       t = u.right\n\n    link(u.parent, t, x)\n    if (u.parent == null)\n       if (t != null)\n          t.parent = null\n       return t\nreturn r",
+      "Tree min(Tree t)": "while (t.left != null)\n\tt = t.left\nreturn t",
+      "Tree max(Tree t)": "while (t.right != null)\n\tt = t.right\nreturn t",
+      "Tree successorNode(Tree t)": "if (t == null)\n\treturn t\n\nif (t.right != null)\n\treturn t.right.min\n\nTree p = t.parent\nwhile (p != null && t == p.right)\n\tt = p\n\tp = p.parent\n\nreturn p",
+      "Tree predecessorNode(Tree t)": "if (t == null)\n\treturn t\n\nif (t.left != null)\n\treturn t.right.max\n\nTree p = t.parent\nwhile (p != null && t == p.left)\n\tt = p\n\tp = p.parent\n\nreturn p"
+    },
+    "DomandeRiposteSpiegazioni": {
+      "Quanti confronti possono fare al piu' le procedure min/max in alberi con 4 chiavi diverse?": [
+        "4",
+        "Risposta corretta",
+        "2",
+        "Risposta sbagliata",
+        "3",
+        "Risposta sbagliata"
+      ],
+      "Supponi di inserire,in ordine: 7 5 1 8 3 6 0 9 4 2, quale nodo restituisce la procedura max?": [
+        "9",
+        "Risposta corretta",
+        "2",
+        "Risposta sbagliata, costruisci l'albero e prova",
+        "4",
+        "Risposta sbagliata, costruisci l'albero e prova"
+      ],
+      "Supponi di inserire,in ordine: 7 5 1 8 3 6 0 9 4 2, quale nodo restituisce la procedura min?": [
+        "0",
+        "Risposta corretta",
+        "7",
+        "Risposta sbagliata, costruisci l'albero e prova",
+        "2",
+        "Risposta sbagliata, costruisci l'albero e prova"
+      ],
+      "Quale delle seguenti frasi e' vera?": [
+        "la complessita' di min/max dipende dalla altezza dell' albero",
+        "Risposta corretta",
+        "Non esiste la funzione min ricorsiva",
+        "Risposta sbagliata",
+        "La versione iterativa di min ha una complessita maggiore di quella ricorsiva",
+        "Risposta sbagliata, prova a creare l'albero per capire la risposta corretta"
+      ],
+      "La complessita' delle procedure min/max ...": [
+        "E' O(h) con h altezza dell' albero",
+        "Risposta corretta",
+        "dipende dal numero delle foglie maggiori/minori della radice",
+        "Risposta sbagliata",
+        "E' O(n^h) con n numero nodi ed h altezza dell' albero",
+        "Risposta sbagliata"
+      ]
+    }
+  },
   "Lezione ABR - Quiz Pratico": {
     "DescrizioneLezione": "In questa lezione vengono spiegate le operazioni base degli alberi binari tramite quiz pratici. Utilizza i controlli interattivi per aiutarti nel ragionare sulle risposte, se necessario.",
     "AlgoritmoInterattivo": "ABR",
+    "Steps": "", 
     "Pseudocodice": {
       "Tree lookup(Tree t, Int j)": "while (t != null && t.key != j)\n\tif (j < t.key)\n\t\tt = t.left\n\telse\n\t\tt = t.right\nreturn t",
       "Void link(Tree p, Tree u, Int j)": "if (u != null)\n\tu.parent = p\nif (p != null)\n\tif (j < p.key)\n\t\tp.left = u\n\telse\n\t\tp.right = u",
@@ -58,6 +116,7 @@
   "Lezione ABR - Quiz Teorico": {
     "DescrizioneLezione": "In questa lezione vengono spiegati gli aspetti teorici degli alberi binari tramite quiz sulla complessita delle operazioni. Utilizza i controlli interattivi per aiutarti nel ragionare sulle risposte, se necessario.",
     "AlgoritmoInterattivo": "ABR",
+    "Steps": "", 
     "Pseudocodice": {
       "Tree lookup(Tree t, Int j)": "while (t != null && t.key != j)\n\tif (j < t.key)\n\t\tt = t.left\n\telse\n\t\tt = t.right\nreturn t",
       "Void link(Tree p, Tree u, Int j)": "if (u != null)\n\tu.parent = p\nif (p != null)\n\tif (j < p.key)\n\t\tp.left = u\n\telse\n\t\tp.right = u",
@@ -111,9 +170,71 @@
       ]
     }
   },
+  "Lezione RedBlack - Min/Max": {
+    "DescrizioneLezione": "In questa lezione vengono mostrate le procedure min max negli alberi red black, premi step per avanzare nella lezione",
+    "AlgoritmoInterattivo": "RB",
+    "Steps": "random();min();max();", 
+    "Pseudocodice": {
+      "Tree rotateLeft(Tree x)": "Tree y = x.right\nTree p = x.parent\nx.right = y.left\nif (y.left != null)\n\ty.left.parent = x\ny.left = x\nx.parent = y\ny.parent = p\nif (p != null)\n\tif (p.left == x)\n\t\tp.left = y\n\telse\n\t\tp.right = y\nreturn y",
+      "Tree rotateRight(Tree x)": "Tree y = x.left\nTree p = x.parent\nx.left = y.right\nif (y.right != null)\n\ty.right.parent = x\ny.right = x\nx.parent = y\ny.parent = p\nif (p != null)\n\tif (p.right == x)\n\t\tp.right = y\n\telse\n\t\tp.left = y\nreturn y",
+      "Tree lookup(Tree t, Int j)": "while (t != null && t.key != j)\n\tif (j < t.key)\n\t\tt = t.left\n\telse\n\t\tt = t.right\nreturn t",
+      "Void link(Tree p, Tree u, Int j)": "if (u != null)\n\tu.parent = p\nif (p != null)\n\tif (j < p.key)\n\t\tp.left = u\n\telse\n\t\tp.right = u",
+      "Void insertNode(Tree t, Int j, Int v)": "Tree p = null\nTree u = t\nwhile(u != null && u.key != j)\n\tp = u\n\t(j < u.key)? u = u.left : u = u.right\n\nif (u != null && u.key == j)\n\tu.value = v\nelse\n\tTree n = new Tree(j, v)\n\tlink(p,n,j)\n\tbalanceInsert(n)",
+      "Void balanceInsert(Tree t)": "t.color = red\nwhile (t != null)\n\tTree p = t.parent\n\tTree n = (p != null)? p.parent : null\n\tTree z = (n == null)? null: (n.left == p)? n.right, n.left)\n\tif (p == null)\n\t\tt.color = black\n\t\tt = null\n\telse if (p.color == black)\n\t\tt = null\n\telse if (z.color == red)\n\t\tp.color = z.color = black\n\t\tn.color = red\n\t\tt = n\n\telse\n\t\tif (t == p.right && p == n.left)\n\t\t\trotateLeft(p)\n\t\t\tt = p\n\t\telse if (t == p.left && p == n.right)\n\t\t\trotateRight(p)\n\t\t\tt = p\n\t\telse\n\t\t\tif (t == p.left && p == n.left)\n\t\t\t\trotateRight(n)\n\t\t\telse if (p.right == t && p == n.right)\n\t\t\t\trotateLeft(n)\n\t\t\tp.color = black\n\t\t\tn.color = red\n\t\t\tt = null",
+      "Tree removeNode(Int x, Tree r)": "Tree u = lookup(r,x)\nif (u != null)\n  if(u.left != null && u.right != null)\n    Tree s = u.right\n    while (s.left != null)\n      s = s.left\n    u.key = s.key\n    u.value = s.value\n    x = s.key\n    u = s\n\n   Tree t\n   if ( u.left != null && u.right == null)\n     t = u.left\n   else\n     t = u.right\n\n  if (u.parent == null)\n    this = t\n    t.parent = null\n  else\n    link(u.parent, t, x)\n  if (u.color == black)\n    this.balanceDelete(t, u.parent)\nreturn this.getRoot",
+      "Void balanceDelete(Tree T, Tree t)": "while (t != T && t.color == black)\n\tTree p = t.parent\n\tif (t == p.left)\n\t\tTree f = p.right\n\t\tTree ns = f.left\n\t\tTree nd = f.right\n\t\tif (f.color == red)\n\t\t\tp.color = red\n\t\t\tf.color = black\n\t\t\trotateLeft(p)\n\t\telse\n\t\t\tif (ns.color == nd.color == black)\n\t\t\t\tf.color = red\n\t\t\t\tt = p\n\t\t\telse if (ns.color == red && nd.color == black)\n\t\t\t\tns.color = black\n\t\t\t\tf.color = red\n\t\t\t\trotateRight(f)\n\t\t\telse if (nd.color == red)\n\t\t\t\tf.color = p.color\n\t\t\t\tp.color = black\n\t\t\t\tnd.color\n\t\t\t\trotateLeft(p)\n\t\t\t\tt = T\n\telse\n\t\tif (f.color == red)\n\t\t\tp.color = red\n\t\t\tf.color = black\n\t\t\trotateRight(p)\n\t\telse\n\t\t\tif (ns.color == nd.color == black)\n\t\t\t\tf.color = red\n\t\t\t\tt = p\n\t\t\telse if (ns.color == red && nd.color == black)\n\t\t\t\tns.color = black\n\t\t\t\tf.color = red\n\t\t\t\trotateLeft(f)\n\t\t\telse if (nd.color == red)\n\t\t\t\tf.color = p.color\n\t\t\t\tp.color = black\n\t\t\t\tnd.color\n\t\t\t\trotateRight(p)\n\t\t\t\tt = T\nif (t != null)\n\tt.color = black",
+      "Tree min(Tree t)": "while (t.left != null)\n\tt = t.left\nreturn t",
+      "Tree max(Tree t)": "while (t.right != null)\n\tt = t.right\nreturn t",
+      "Tree successorNode(Tree t)": "if (t == null)\n\treturn t\n\nif (t.right != null)\n\treturn t.right.min\n\nTree p = t.parent\nwhile (p != null && t == p.right)\n\tt=p\n\tp = p.parent\n\nreturn p",
+      "Tree predecessorNode(Tree t)": "if (t == null)\n\treturn t\n\nif (t.left != null)\n\treturn t.right.max\n\nTree p = t.parent\nwhile (p != null && t == p.left)\n\tt=p\n\tp = p.parent\n\nreturn p"
+    },
+    "DomandeRiposteSpiegazioni": {
+      "Quanti confronti possono fare al piu' le procedure min/max in alberi red black con 4 chiavi diverse?": [
+        "3",
+        "Risposta corretta",
+        "2",
+        "Risposta sbagliata",
+        "4",
+        "Risposta sbagliata"
+      ],
+      "Supponi di inserire,in ordine: 7 5 1 8 3 6 0 9 4 2, quale nodo restituisce la procedura max?": [
+        "9",
+        "Risposta corretta",
+        "2",
+        "Risposta sbagliata, costruisci l'albero e prova",
+        "4",
+        "Risposta sbagliata, costruisci l'albero e prova"
+      ],
+      "Supponi di inserire,in ordine: 7 5 1 8 3 6 0 9 4 2, quale nodo restituisce la procedura min?": [
+        "0",
+        "Risposta corretta",
+        "7",
+        "Risposta sbagliata, costruisci l'albero e prova",
+        "2",
+        "Risposta sbagliata, costruisci l'albero e prova"
+      ],
+      "Quale delle seguenti frasi e' vera?": [
+        "la complessita' di min/max e' minore rispetto agli alberi binari non bilanciati",
+        "Risposta corretta",
+        "la complessita' di min/max e' uguale rispetto agli alberi binari non bilanciati",
+        "Risposta sbagliata",
+        "la complessita' di min/max e' superiore rispetto agli alberi binari non bilanciati",
+        "Risposta sbagliata, prova a creare l'albero per capire la risposta corretta"
+      ],
+      "La complessita' delle procedure min/max ...": [
+        "E' O(log(n))",
+        "Risposta corretta",
+        "E' O(n) nel caso pessimo",
+        "Risposta sbagliata",
+        "E' O(1)",
+        "Risposta sbagliata"
+      ]
+    }
+  },
   "Lezione RedBlack - Quiz Teorico": {
     "DescrizioneLezione": "In questa lezione vengono spiegati gli aspetti teorici degli alberi binari tramite quiz sulla complessita delle operazioni. Utilizza i controlli interattivi per aiutarti nel ragionare sulle risposte, se necessario.",
     "AlgoritmoInterattivo": "RB",
+    "Steps": "", 
     "Pseudocodice": {
       "Tree rotateLeft(Tree x)": "Tree y = x.right\nTree p = x.parent\nx.right = y.left\nif (y.left != null)\n\ty.left.parent = x\ny.left = x\nx.parent = y\ny.parent = p\nif (p != null)\n\tif (p.left == x)\n\t\tp.left = y\n\telse\n\t\tp.right = y\nreturn y",
       "Tree rotateRight(Tree x)": "Tree y = x.left\nTree p = x.parent\nx.left = y.right\nif (y.right != null)\n\ty.right.parent = x\ny.right = x\nx.parent = y\ny.parent = p\nif (p != null)\n\tif (p.right == x)\n\t\tp.right = y\n\telse\n\t\tp.left = y\nreturn y",
@@ -174,6 +295,7 @@
   "Lezione RedBlack - Quiz Pratico": {
     "DescrizioneLezione": "In questa lezione vengono spiegate le operazioni base degli red black tramite quiz pratici. Utilizza i controlli interattivi per aiutarti nel ragionare sulle risposte, se necessario.",
     "AlgoritmoInterattivo": "RB",
+    "Steps": "", 
     "Pseudocodice": {
       "Tree rotateLeft(Tree x)": "Tree y = x.right\nTree p = x.parent\nx.right = y.left\nif (y.left != null)\n\ty.left.parent = x\ny.left = x\nx.parent = y\ny.parent = p\nif (p != null)\n\tif (p.left == x)\n\t\tp.left = y\n\telse\n\t\tp.right = y\nreturn y",
       "Tree rotateRight(Tree x)": "Tree y = x.left\nTree p = x.parent\nx.left = y.right\nif (y.right != null)\n\ty.right.parent = x\ny.right = x\nx.parent = y\ny.parent = p\nif (p != null)\n\tif (p.right == x)\n\t\tp.right = y\n\telse\n\t\tp.left = y\nreturn y",

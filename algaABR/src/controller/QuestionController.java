@@ -47,7 +47,7 @@ public class QuestionController extends NavigationController{
 			result.setTitle("Attenzione");
 			result.setContentText("Nessuna risposta selezionata");
 			result.show();
-		} else if (selectedAnswer != questAnsExp[currentQuestion][1]) {
+		} else if (!selectedAnswer.equals(questAnsExp[currentQuestion][1])) {
 			// Wrong answer
 			result.setTitle("Risposta errata");
 			result.setHeaderText("Riprova");

@@ -41,9 +41,13 @@ public class LessonController extends NavigationController {
 		switch (selectedLesson.get("AlgoritmoInterattivo").toString()) {
 		case "ABR":
 			try {
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ControlBarView.fxml"));
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ABRView.fxml"));
 				dataStructurePane.getChildren().add(loader.load());
 				datastructureController = loader.getController();
+
+				ABRViewController a = (ABRViewController) datastructureController;
+				a.setInitialSteps(selectedLesson.get("Steps").toString());
+				a.handleInitialSteps();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -54,6 +58,10 @@ public class LessonController extends NavigationController {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/RBView.fxml"));
 				dataStructurePane.getChildren().add(loader.load());
 				datastructureController = loader.getController();
+
+				RBViewController a = (RBViewController) datastructureController;
+				a.setInitialSteps(selectedLesson.get("Steps").toString());
+				a.handleInitialSteps();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

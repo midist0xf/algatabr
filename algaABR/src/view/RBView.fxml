@@ -32,7 +32,7 @@
     <Button fx:id="clearButton" font="$x1" layoutX="474.0" layoutY="61.0" mnemonicParsing="false" onAction="#handleClearClick" prefHeight="27.0" prefWidth="69.0" styleClass="control-buttons" stylesheets="@style.css" text="clear" />
     <HBox alignment="CENTER" layoutX="3.0" layoutY="145.0" prefHeight="355.0" prefWidth="547.0">
       <children>
-        <Pane fx:id="ABRView" prefHeight="384.0" prefWidth="305.0" />
+        <Pane fx:id="RBView" prefHeight="384.0" prefWidth="305.0" />
       </children>
     </HBox>
   </children>

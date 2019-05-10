@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import javafx.animation.FadeTransition;
 import javafx.collections.ObservableList;
@@ -78,7 +79,7 @@ public class RBViewController extends DataStuctureController {
 	private Button runButton;
 
 	@FXML
-	private Pane ABRView;
+	private Pane RBView;
 
 	/**
 	   * Handles user click on the insert button.
@@ -367,7 +368,7 @@ public class RBViewController extends DataStuctureController {
 						if (rbtree != null) {
 							drawTree(rbtree);
 						} else {
-							ABRView.getChildren().clear();
+							RBView.getChildren().clear();
 							stepButton.fire();
 						}
 						
@@ -417,7 +418,7 @@ public class RBViewController extends DataStuctureController {
 			} else if(method.equals("insertNode")) {
 				step = RB.steps.get(RB.steps.size()-1);	
 				if(step.get(2) != "") {
-					ABRView.getChildren().clear();
+					RBView.getChildren().clear();
 					restoreCoordinates(rb);
 					drawTree(rb);
 					c = searchNode(step.get(2).toString());
@@ -440,7 +441,7 @@ public class RBViewController extends DataStuctureController {
 	   */
 	public void handleClearClick() {
 		rb = null;
-		ABRView.getChildren().clear();
+		RBView.getChildren().clear();
 	}
 
 	/**
@@ -474,7 +475,7 @@ public class RBViewController extends DataStuctureController {
 		stack.setLayoutX(x);
 		stack.setLayoutY(y);
 
-		ABRView.getChildren().add(stack);
+		RBView.getChildren().add(stack);
 	}
 
 	/**
@@ -487,7 +488,7 @@ public class RBViewController extends DataStuctureController {
 	private void drawLine(double sx, double sy, double ex, double ey) {
 		Line line = new Line(sx, sy, ex, ey);
 		line.setStrokeWidth(2);
-		ABRView.getChildren().add(line);
+		RBView.getChildren().add(line);
 	}
 	
 	/**
@@ -523,7 +524,7 @@ public class RBViewController extends DataStuctureController {
 	*/
 	private void redraw() {
 		RB.steps.clear();
-		ABRView.getChildren().clear();
+		RBView.getChildren().clear();
 		drawTree(rb);
 		lockButtons(false);
 	}
@@ -537,10 +538,10 @@ public class RBViewController extends DataStuctureController {
 		if (p.parent() != null) {
 			double cx, cy;
 			if (p.parent().left() == p) {
-				cx = p.parent().getX() - (ABRView.getWidth() / Math.pow(2, rb.getNodeHeight(p)));
+				cx = p.parent().getX() - (305.0 / Math.pow(2, rb.getNodeHeight(p)));
 				cy = p.parent().getY() + 50;
 			} else {
-				cx = p.parent().getX() + (ABRView.getWidth() / Math.pow(2, rb.getNodeHeight(p)));
+				cx = p.parent().getX() + (305.0 / Math.pow(2, rb.getNodeHeight(p)));
 				cy = p.parent().getY() + 50;
 			}
 			p.setX(cx);
@@ -565,10 +566,10 @@ public class RBViewController extends DataStuctureController {
 				t.setY(ROOTY);
 			} else {
 				if (t.parent().left() == t) {
-					t.setX(t.parent().getX() - (ABRView.getWidth() / Math.pow(2, rb.getNodeHeight(t))));
+					t.setX(t.parent().getX() - (305.0 / Math.pow(2, rb.getNodeHeight(t))));
 					t.setY(t.parent().getY() + 50);
 				} else {
-					t.setX(t.parent().getX() + (ABRView.getWidth() / Math.pow(2, rb.getNodeHeight(t))));
+					t.setX(t.parent().getX() + (305.0 / Math.pow(2, rb.getNodeHeight(t))));
 					t.setY(t.parent().getY() + 50);
 				}
 			}
@@ -586,7 +587,7 @@ public class RBViewController extends DataStuctureController {
 	private Circle searchNode(String key) {
 		Circle c = null;
 		/* searches the stack pane that contains the node which stores the key  */
-		for (Node n : ABRView.getChildren()) {
+		for (Node n : RBView.getChildren()) {
 			if (n instanceof StackPane) {
 				ObservableList<Node> i = ((StackPane) n).getChildren();
 				if (i.get(1) instanceof Text) {
@@ -682,7 +683,7 @@ public class RBViewController extends DataStuctureController {
 			@Override
 			public void handle(ActionEvent actionEvent) {
 				RB.steps.clear();
-				ABRView.getChildren().clear();
+				RBView.getChildren().clear();
 				drawTree(rb);
 				lockButtons(false);	
 			}
@@ -709,7 +710,7 @@ public class RBViewController extends DataStuctureController {
 			@Override
 			public void handle(ActionEvent actionEvent) {
 				RB.steps.clear();
-				ABRView.getChildren().clear();
+				RBView.getChildren().clear();
 				drawTree(rb);
 				lockButtons(false);
 			}
@@ -748,5 +749,58 @@ public class RBViewController extends DataStuctureController {
 
 		Optional<String> result = inputNodeDialog.showAndWait();
 		return result;
+	}
+
+
+
+	@FXML
+	public void handleInitialSteps() {
+		if (!initialSteps.isEmpty()) {
+			// lock buttons
+			lockButtons(true);
+			runButton.setDisable(true);
+
+			// parse steps and execute them
+			Pattern regex = Pattern.compile(";");
+
+			for (String command : regex.split(initialSteps)) {
+				switch (command.substring(0, command.indexOf("("))) {
+
+				case "min":
+					rb.min();
+					break;
+
+				case "max":
+					rb.max();
+					break;
+
+				case "random":
+					Integer[] arr = new Integer[99];
+					for (int i = 0; i < arr.length; i++) {
+						arr[i] = i;
+					}
+					rb = new RB(arr[0], 0);
+					rb.setX(ROOTX);
+					rb.setY(ROOTY);
+					for (int i = 1; i < Math.pow(2, MAXH); i++) {
+						int value = choose(arr[i], -arr[i]);
+						rb.insertNode(value, 0);
+						RB p = rb.lookupNodeNoStep(value);
+						saveNodeRelativeCoordinates(p);
+						if (rb.getNodeHeight(p) > MAXH) {
+							rb = rb.removeNode(value);
+						}
+					}
+					RB.steps.clear();
+					restoreCoordinates(rb);
+					drawTree(rb);
+					break;
+				}
+			}
+
+			// clear initial steps 
+			initialSteps = "";
+		}
+		
 	}
 }
