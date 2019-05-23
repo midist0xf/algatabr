@@ -786,10 +786,13 @@ public class RBViewController extends DataStuctureController {
 						int value = choose(arr[i], -arr[i]);
 						rb.insertNode(value, 0);
 						RB p = rb.lookupNodeNoStep(value);
-						saveNodeRelativeCoordinates(p);
-						if (rb.getNodeHeight(p) > MAXH) {
-							rb = rb.removeNode(value);
-						}
+						System.out.println("p value"+p);
+						if(p != null) {
+							saveNodeRelativeCoordinates(p);
+							if (rb.getNodeHeight(p) > MAXH) {
+								rb = rb.removeNode(value);
+							}							
+						}						
 					}
 					RB.steps.clear();
 					restoreCoordinates(rb);
