@@ -26,32 +26,32 @@
         "9",
         "Risposta corretta",
         "2",
-        "Risposta sbagliata, costruisci l'albero e prova",
+        "Risposta sbagliata, costruisci\nl'albero e prova",
         "4",
-        "Risposta sbagliata, costruisci l'albero e prova"
+        "Risposta sbagliata, costruisci\nl'albero e prova"
       ],
       "Supponi di inserire,in ordine: 7 5 1 8 3 6 0 9 4 2, quale nodo restituisce la procedura min?": [
         "0",
         "Risposta corretta",
         "7",
-        "Risposta sbagliata, costruisci l'albero e prova",
+        "Risposta sbagliata, costruisci\nl'albero e prova",
         "2",
-        "Risposta sbagliata, costruisci l'albero e prova"
+        "Risposta sbagliata, costruisci\nl'albero e prova"
       ],
       "Quale delle seguenti frasi e' vera?": [
-        "la complessita' di min/max dipende dalla altezza dell' albero",
+        "la complessita' di min/max dipende\ndalla altezza dell' albero",
         "Risposta corretta",
         "Non esiste la funzione min ricorsiva",
         "Risposta sbagliata",
         "La versione iterativa di min ha una complessita maggiore di quella ricorsiva",
-        "Risposta sbagliata, prova a creare l'albero per capire la risposta corretta"
+        "Risposta sbagliata, prova a creare\nl'albero per capire la risposta corretta"
       ],
       "La complessita' delle procedure min/max ...": [
         "E' O(h) con h altezza dell' albero",
         "Risposta corretta",
-        "dipende dal numero delle foglie maggiori/minori della radice",
+        "dipende dal numero delle foglie\nmaggiori/minori della radice",
         "Risposta sbagliata",
-        "E' O(n^h) con n numero nodi ed h altezza dell' albero",
+        "E' O(n^h) con n numero nodi ed h\naltezza dell' albero",
         "Risposta sbagliata"
       ]
     }
@@ -75,41 +75,41 @@
         "14",
         "Risposta corretta",
         "8",
-        "Risposta sbagliata, prova a pensare a tutti gli alberi possibili con la radice fissata, poi calcola in modo ricorsivo...",
+        "Risposta sbagliata, prova a pensare a tutti\ngli alberi possibili con la radice fissata, poi calcola in modo ricorsivo...",
         "24",
-        "Risposta sbagliata, prova a pensare a tutti gli alberi possibili con la radice fissata, poi calcola in modo ricorsivo..."
+        "Risposta sbagliata, prova a pensare a tutti\ngli alberi possibili con la radice fissata, poi calcola in modo ricorsivo..."
       ],
       "Supponi di inserire,in ordine: 7 5 1 8 3 6 0 9 4 2. Qual'e' l'ordine di visita dei nodi usando l' algoritmo di  in-visita?": [
         "0123456789",
         "Risposta corretta",
         "0132456789",
-        "Risposta sbagliata, ricorda che la in-ordine visita sx->padre->dx in modo ricorsivo",
+        "Risposta sbagliata, ricorda che la in-ordine\nvisita sx->padre->dx in modo ricorsivo",
         "0243165987",
-        "Risposta sbagliata, ricorda che la in-ordine visita sx->padre->dx in modo ricorsivo"
+        "Risposta sbagliata, ricorda che la in-ordine\nvisita sx->padre->dx in modo ricorsivo"
       ],
       "Considerare l' albero la cui visita per livelli e': 10, 5 20, 4 15 30, 11.\nQual'e' il numero medio di confronti per cercare una chiave k presente nell albero?": [
         "2.57",
-        "Risposta corretta, il calcolo del numero dei casi medi e' (1*1 + 2*2 + 3*3 + 4*1)/7",
+        "Risposta corretta, il calcolo del numero\ndei casi medi e' (1*1 + 2*2 + 3*3 + 4*1)/7",
         "2.5",
-        "Risposta sbagliata, bisogna considerare il costo medio fra tutti i possibili casi",
+        "Risposta sbagliata, bisogna considerare\nil costo medio fra tutti i possibili casi",
         "3.25",
-        "Risposta sbagliata, bisogna considerare il costo medio fra tutti i possibili casi"
+        "Risposta sbagliata, bisogna considerare\nil costo medio fra tutti i possibili casi"
       ],
       "Qual'e' l'altezza massima dell' albero in cui sono stati inseriti (in ordine) i valori 10 1 3 5 15 12 16": [
         "3",
         "Risposta corretta",
         "4",
-        "Risposta sbagliata, prova a creare l'albero per capire la risposta corretta",
+        "Risposta sbagliata, prova a creare\nl'albero per capire la risposta corretta",
         "5",
-        "Risposta sbagliata, prova a creare l'albero per capire la risposta corretta"
+        "Risposta sbagliata, prova a creare\nl'albero per capire la risposta corretta"
       ],
       "Dati un insieme di N interi ed un albero binario con nodi non etichettati, in quanti modi possiamo riempire l'albero con i valori dell' insieme per ottenere un albero binario di ricerca?": [
         "1",
-        "Risposta corretta, il valore minore finira' nel nodo piu' a sx mentre il maggiore nel nodo a dx... e cosi' via ricorsivamente",
+        "Risposta corretta, il valore minore finira' nel\nnodo piu' a sx mentre il maggiore nel nodo\na dx... e cosi' via ricorsivamente",
         "N!",
-        "Risposta sbagliata, prova a costruire un insieme di valori e fissa una struttura ad albero, poi inserisci i valori usando i comandi interattivi",
+        "Risposta sbagliata, prova a costruire un insieme\ndi valori e fissa una struttura ad albero, poi\ninserisci i valori usando i comandi interattivi",
         "(1/(N+1) * N/2)",
-        "Risposta sbagliata, prova a costruire un insieme di valori e fissa una struttura ad albero, poi inserisci i valori usando i comandi interattivi"
+        "Risposta sbagliata, prova a costruire un insieme\ndi valori e fissa una struttura ad albero, poi\ninserisci i valori usando i comandi interattivi"
       ]
     }
   },
@@ -219,7 +219,7 @@
         "la complessita' di min/max e' uguale rispetto agli alberi binari non bilanciati",
         "Risposta sbagliata",
         "la complessita' di min/max e' superiore rispetto agli alberi binari non bilanciati",
-        "Risposta sbagliata, prova a creare l'albero per capire la risposta corretta"
+        "Risposta sbagliata, prova a creare l'albero\nper capire la risposta corretta"
       ],
       "La complessita' delle procedure min/max ...": [
         "E' O(log(n))",
@@ -315,39 +315,39 @@
         "Dipende se il successore della radice e' rosso o nero",
         "Risposta corretta",
         "Si",
-        "Risposta sbagliata, prova a creare un albero con i comandi interattivi",
+        "Risposta sbagliata, prova a creare un albero\ncon i comandi interattivi",
         "No",
-        "Risposta sbagliata, prova a creare un albero con i comandi interattivi"
+        "Risposta sbagliata, prova a creare un albero\ncon i comandi interattivi"
       ],
       "Nell' albero costruito con inserimenti 10 3 4 5 20 3 15, Qual'e' la chiave della radice?": [
         "4",
         "Risposta corretta",
         "10",
-        "Risposta sbagliata, prova a creare tale albero, oppure guarda lo pseudocodice della insertNode",
+        "Risposta sbagliata, prova a creare tale albero,\noppure guarda lo pseudocodice della insertNode",
         "20",
-        "Risposta sbagliata, prova a creare tale albero, oppure guarda lo pseudocodice della insertNode"
+        "Risposta sbagliata, prova a creare tale albero,\noppure guarda lo pseudocodice della insertNode"
       ],
       "Nell' albero costruito con inserimenti 16 9 10 11 26 9 21, Quanti nodi rossi sono presenti?": [
         "2",
         "Risposta corretta",
         "3",
-        "Risposta sbagliata, prova a creare tale albero, oppure guarda lo pseudocodice della insertNode",
+        "Risposta sbagliata, prova a creare tale albero,\noppure guarda lo pseudocodice della insertNode",
         "4",
-        "Risposta sbagliata, prova a creare tale albero, oppure guarda lo pseudocodice della insertNode"
+        "Risposta sbagliata, prova a creare tale albero,\noppure guarda lo pseudocodice della insertNode"
       ],
       "Qual'e' la altezza massima dell' albero costruito con inserimenti 1 2 3 4 5?": [
         "2",
         "Risposta corretta",
         "4",
-        "Risposta sbagliata, prova a creare tale albero, oppure guarda lo pseudocodice della insertNode",
+        "Risposta sbagliata, prova a creare tale albero,\noppure guarda lo pseudocodice della insertNode",
         "3",
-        "Risposta sbagliata, prova a creare tale albero, oppure guarda lo pseudocodice della insertNode"
+        "Risposta sbagliata, prova a creare tale albero,\noppure guarda lo pseudocodice della insertNode"
       ],
       "Dato l' albero Binario costruito con inserimenti 2 4 6 1 10 7, stimare la differenza di visite di nodi eseguendo lookup(7) rispetto all'albero red black equivalente": [
         "L' albero Red Black esegue 2 visite mentre il Binario 5",
         "Risposta corretta",
         "Dato che entrambi gli alberi sono uguali, eseguono lo stesso numero di visite",
-        "Risposta sbagliata, gli alberi red black hanno il vantaggio di essere bilanciati",
+        "Risposta sbagliata, gli alberi red black hanno\nil vantaggio di essere bilanciati",
         "L' albero Red Black esegue solo 1 visita in meno del Binario",
         "Risposta sbagliata, perchè è possibile visitare al\nmassimo un numero O(log n) di casi, ognuno\ndei quali costa O(1)"
       ]
