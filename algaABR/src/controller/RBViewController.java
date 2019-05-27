@@ -302,6 +302,7 @@ public class RBViewController extends DataStuctureController {
 			int value = choose(arr[i], -arr[i]);
 			rb = rb.insertNode(value, 0);			
 			RB p = rb.lookupNodeNoStep(value);
+			System.out.println("p value" + p);
 			saveNodeRelativeCoordinates(p);
 			if (rb.getNodeHeight(p) > MAXH) {
 				rb.removeNode(value);
@@ -752,7 +753,10 @@ public class RBViewController extends DataStuctureController {
 	}
 
 
-
+	/**
+	 * Executes methods of the model if the lesson requires it
+	 * at the beginning.
+	 */
 	@FXML
 	public void handleInitialSteps() {
 		if (!initialSteps.isEmpty()) {
@@ -775,23 +779,25 @@ public class RBViewController extends DataStuctureController {
 					break;
 
 				case "random":
+					handleClearClick();
 					Integer[] arr = new Integer[99];
 					for (int i = 0; i < arr.length; i++) {
 						arr[i] = i;
 					}
+					Collections.shuffle(Arrays.asList(arr));
 					rb = new RB(arr[0], 0);
 					rb.setX(ROOTX);
 					rb.setY(ROOTY);
 					for (int i = 1; i < Math.pow(2, MAXH); i++) {
 						int value = choose(arr[i], -arr[i]);
-						rb.insertNode(value, 0);
+						rb = rb.insertNode(value, 0);
 						RB p = rb.lookupNodeNoStep(value);
-						if(p != null) {
+						//if(p != null) {
 							saveNodeRelativeCoordinates(p);
 							if (rb.getNodeHeight(p) > MAXH) {
 								rb = rb.removeNode(value);
 							}							
-						}						
+						//}						
 					}
 					RB.steps.clear();
 					restoreCoordinates(rb);
