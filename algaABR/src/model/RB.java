@@ -556,7 +556,7 @@ public class RB implements Serializable {
 
 			addStep(RB.steps, "successorNode", 7, 666, 666);
 		}
-		addStep(RB.steps, "successorNode", 11, 666, 666);
+		addStep(RB.steps, "successorNode", 11, (par == null) ? 666 : par.key, 666);
 		return par;
 	}
 
@@ -584,7 +584,7 @@ public class RB implements Serializable {
 
 			addStep(RB.steps, "predecessorNode", 7, 666, 666);
 		}
-		addStep(RB.steps, "predecessorNode", 11, 666, 666);
+		addStep(RB.steps, "predecessorNode", 11, (par == null)?666:par.key, 666);
 		return par;
 	}
 

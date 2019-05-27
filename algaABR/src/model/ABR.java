@@ -459,7 +459,7 @@ public class ABR implements Serializable {
 			
 			addStep(ABR.steps, "successorNode", 7, 666, 666);
 		}
-		addStep(ABR.steps, "successorNode", 11, 666, 666);
+		addStep(ABR.steps, "successorNode", 11, (par == null)?666:par.key, 666);
 		return par;
 	}
 	

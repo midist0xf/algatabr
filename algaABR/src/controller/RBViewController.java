@@ -429,8 +429,16 @@ public class RBViewController extends DataStuctureController {
 			} else {
 				step = RB.steps.get(RB.steps.size()-1);
 				c = searchNode(step.get(2).toString());
-				ft = highlightNodeTransition(c, Color.web("#EDA678"));
-				ft.play();				
+				if(c != null) {
+					ft = highlightNodeTransition(c, Color.web("#EDA678"));
+					ft.play();					
+				}else {
+					RB.steps.clear();
+					RBView.getChildren().clear();
+					drawTree(rb);
+					lockButtons(false);
+				}
+								
 			}			
 		}
 	}

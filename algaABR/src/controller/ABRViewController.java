@@ -528,8 +528,15 @@ public class ABRViewController extends DataStuctureController {
 			} else {
 				step = ABR.steps.get(ABR.steps.size() - 1);
 				c = searchNode(step.get(2).toString());
-				ft = highlightNodeTransition(c, Color.web("#EDA678"));
-				ft.play();
+				if(c != null) {
+					ft = highlightNodeTransition(c, Color.web("#EDA678"));
+					ft.play();					
+				}else {
+					ABR.steps.clear();
+					ABRView.getChildren().clear();
+					drawTree(abr);
+					lockButtons(false);
+				}
 			}
 		}
 	}
